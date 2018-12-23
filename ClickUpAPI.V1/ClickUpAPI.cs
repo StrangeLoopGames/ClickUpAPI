@@ -259,7 +259,7 @@ namespace PaironsTech.ClickUpAPI.V1
         /// <param name="taskId">taskId</param>
         /// <param name="requestData">RequestEditTask object</param>
         /// <returns>ResponseSuccess object expected</returns>
-        public Task<Response> EditTaskAsync(string taskId, RequestEditTask requestData)
+        public Response EditTask(string taskId, RequestEditTask requestData)
         {
             if (string.IsNullOrEmpty(taskId)) throw new ArgumentException("taskId can't be empty or null!");
             if (requestData == null) throw new ArgumentException("requestData can't be empty or null!");
