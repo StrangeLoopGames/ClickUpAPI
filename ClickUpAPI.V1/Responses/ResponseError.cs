@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace PaironsTech.ClickUpAPI.V1.Responses.Error
+namespace PaironsTech.ClickUpAPI.V1.Responses
 {
 
     /// <summary>
