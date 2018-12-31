@@ -2,7 +2,6 @@
 using PaironsTech.ClickUpAPI.V1.OptionalParams;
 using PaironsTech.ClickUpAPI.V1.Requests;
 using PaironsTech.ClickUpAPI.V1.Responses;
-using PaironsTech.ClickUpAPI.V1.Responses.Error;
 using PaironsTech.ClickUpAPI.V1.Responses.Model;
 using System;
 using System.Collections.Generic;
@@ -65,215 +64,245 @@ namespace PaironsTech.ClickUpAPI.V1
         /// <summary>
         /// Get the user that belongs to this token
         /// </summary>
-        /// <returns>ResponseAuthorizedUser object expected</returns>
-        public Response GetAuthorizedUser()
+        /// <param name="responseError">ResponseError response object</param>
+        /// <returns>ResponseAuthorizedUser response object</returns>
+        public ResponseAuthorizedUser GetAuthorizedUser(out ResponseError responseError)
         {
             string requestUri = "user";
+            Response genericResponse = null;
 
-            Response response = null;
             Task.Run(async () =>
             {
-                response = await ExecuteGetCallAsync<ResponseAuthorizedUser>(requestUri);
+                genericResponse = await ExecuteGetCallAsync<ResponseAuthorizedUser>(requestUri);
             })
             .Wait();
 
-            return response;
-        }
+            AssignGenericResponse(genericResponse, out ResponseAuthorizedUser responseAuthorizedUser, out responseError);
 
+            return responseAuthorizedUser;
+        }
+        
         /// <summary>
         /// Get the authorized teams for this token
         /// </summary>
-        /// <returns>ResponseAuthorizedTeams expected</returns>
-        public Response GetAuthorizedTeams()
+        /// <param name="responseError">ResponseError response object</param>
+        /// <returns>ResponseAuthorizedTeams response object</returns>
+        public ResponseAuthorizedTeams GetAuthorizedTeams(out ResponseError responseError)
         {
             string requestUri = "team";
+            Response genericResponse = null;
 
-            Response response = null;
             Task.Run(async () =>
             {
-                response = await ExecuteGetCallAsync<ResponseAuthorizedTeams>(requestUri);
+                genericResponse = await ExecuteGetCallAsync<ResponseAuthorizedTeams>(requestUri);
             })
             .Wait();
 
-            return response;
-        }
+            AssignGenericResponse(genericResponse, out ResponseAuthorizedTeams responseAuthorizedTeams, out responseError);
 
+            return responseAuthorizedTeams;
+        }
+        
         /// <summary>
         /// Get a team's details. This team must be one of the authorized teams for this token.
         /// </summary>
         /// <param name="teamId">teamId</param>
-        /// <returns>ResponseTeam object expected</returns>
-        public Response GetTeamByID(string teamId)
+        /// <param name="responseError">ResponseError response object</param>
+        /// <returns>ResponseTeam response object</returns>
+        public ResponseTeam GetTeamByID(string teamId, out ResponseError responseError)
         {
             if (string.IsNullOrEmpty(teamId)) throw new ArgumentException("teamId can't be empty or null!");
 
             string requestUri = "team/" + teamId;
+            Response genericResponse = null;
 
-            Response response = null;
             Task.Run(async () =>
             {
-                response = await ExecuteGetCallAsync<ResponseTeam>(requestUri);
+                genericResponse = await ExecuteGetCallAsync<ResponseTeam>(requestUri);
             })
             .Wait();
 
-            return response;
-        }
+            AssignGenericResponse(genericResponse, out ResponseTeam responseTeam, out responseError);
 
+            return responseTeam;
+        }
+        
         /// <summary>
         /// Get a team's spaces. This team must be one of the authorized teams for this token.
         /// </summary>
         /// <param name="teamId">teamId</param>
-        /// <returns>ResponseTeamSpace object expected</returns>
-        public Response GetTeamSpace(string teamId)
+        /// <param name="responseError">ResponseError response object</param>
+        /// <returns>ResponseTeamSpace response object</returns>
+        public ResponseTeamSpace GetTeamSpace(string teamId, out ResponseError responseError)
         {
             if (string.IsNullOrEmpty(teamId)) throw new ArgumentException("teamId can't be empty or null!");
 
             string requestUri = "team/" + teamId + "/space";
-
-            Response response = null;
+            Response genericResponse = null;
+            
             Task.Run(async () =>
             {
-                response = await ExecuteGetCallAsync<ResponseTeamSpace>(requestUri);
+                genericResponse = await ExecuteGetCallAsync<ResponseTeamSpace>(requestUri);
             })
             .Wait();
 
-            return response;
-        }
+            AssignGenericResponse(genericResponse, out ResponseTeamSpace responseTeamSpace, out responseError);
 
+            return responseTeamSpace;
+        }
+        
         /// <summary>
         /// Get a space's projects. The projects' lists will also be included.
         /// </summary>
         /// <param name="spaceId">spaceId</param>
-        /// <returns>ResponseSpaceProjects object expected</returns>
-        public Response GetSpaceProjects(string spaceId)
+        /// <param name="responseError">ResponseError response object</param>
+        /// <returns>ResponseSpaceProjects response object</returns>
+        public ResponseSpaceProjects GetSpaceProjects(string spaceId, out ResponseError responseError)
         {
             if (string.IsNullOrEmpty(spaceId)) throw new ArgumentException("spaceId can't be empty or null!");
 
             string requestUri = "space/" + spaceId + "/project";
+            Response genericResponse = null;
 
-            Response response = null;
             Task.Run(async () =>
             {
-                response = await ExecuteGetCallAsync<ResponseSpaceProjects>(requestUri);
+                genericResponse = await ExecuteGetCallAsync<ResponseSpaceProjects>(requestUri);
             })
             .Wait();
 
-            return response;
-        }
+            AssignGenericResponse(genericResponse, out ResponseSpaceProjects responseSpaceProjects, out responseError);
 
+            return responseSpaceProjects;
+        }
+        
         /// <summary>
         /// Create List in Project
         /// </summary>
         /// <param name="projectId">projectId</param>
         /// <param name="requestData">RequestCreateList object</param>
-        /// <returns>ModelList object expected</returns>
-        public Response CreateList(string projectId, RequestCreateList requestData)
+        /// <param name="responseError">ResponseError response object</param>
+        /// <returns>ModelList response object</returns>
+        public ModelList CreateList(string projectId, RequestCreateList requestData, out ResponseError responseError)
         {
             if (string.IsNullOrEmpty(projectId)) throw new ArgumentException("projectId can't be empty or null!");
             if (requestData == null) throw new ArgumentException("requestData can't be empty or null!");
 
             string requestUri = "project/" + projectId + "/list";
+            Response genericResponse = null;
 
-            Response response = null;
             Task.Run(async () =>
             {
-                response = await ExecutePostCallAsync<ModelList>(requestUri, requestData);
+                genericResponse = await ExecutePostCallAsync<ModelList>(requestUri, requestData);
             })
             .Wait();
 
-            return response;
-        }
+            AssignGenericResponse(genericResponse, out ModelList modelList, out responseError);
 
+            return modelList;
+        }
+        
         /// <summary>
         /// Edit List informations
         /// </summary>
         /// <param name="listId">listId</param>
         /// <param name="requestData">RequestEditList object</param>
-        /// <returns>ModelList object expected</returns>
-        public Response EditList(string listId, RequestEditList requestData)
+        /// <param name="responseError">ResponseError response object</param>
+        /// <returns>ModelList response object</returns>
+        public ModelList EditList(string listId, RequestEditList requestData, out ResponseError responseError)
         {
             if (string.IsNullOrEmpty(listId)) throw new ArgumentException("listId can't be empty or null!");
             if (requestData == null) throw new ArgumentException("requestData can't be empty or null!");
 
             string requestUri = "list/" + listId;
+            Response genericResponse = null;
 
-            Response response = null;
             Task.Run(async () =>
             {
-                response = await ExecutePutCallAsync<ModelList>(requestUri, requestData);
+                genericResponse = await ExecutePutCallAsync<ModelList>(requestUri, requestData);
             })
             .Wait();
 
-            return response;
-        }
+            AssignGenericResponse(genericResponse, out ModelList modelList, out responseError);
 
+            return modelList;
+        }
+        
         /// <summary>
         /// Get Tasks of the Team and filter its by optionalParams
         /// </summary>
         /// <param name="teamId">teamId</param>
         /// <param name="optionalParams">OptionalParamsGetTask object</param>
-        /// <returns>ResponseTasks object expected</returns>
-        public Response GetTasks(string teamId, OPGetTasks optionalParams)
+        /// <param name="responseError">ResponseError response object</param>
+        /// <returns>ResponseTasks response object</returns>
+        public ResponseTasks GetTasks(string teamId, OPGetTasks optionalParams, out ResponseError responseError)
         {
             if (string.IsNullOrEmpty(teamId)) throw new ArgumentException("teamId can't be empty or null!");
 
             string strParams = GenerateOptionalParams(optionalParams);
             string requestUri = "team/" + teamId + "/task" + (!string.IsNullOrEmpty(strParams) ? "?" + strParams : string.Empty);
+            Response genericResponse = null;
 
-            Response response = null;
             Task.Run(async () =>
             {
-                response = await ExecuteGetCallAsync<ResponseTasks>(requestUri);
+                genericResponse = await ExecuteGetCallAsync<ResponseTasks>(requestUri);
             })
             .Wait();
 
-            return response;
-        }
+            AssignGenericResponse(genericResponse, out ResponseTasks responseTasks, out responseError);
 
+            return responseTasks;
+        }
+        
         /// <summary>
         /// Create Task in List.
         /// </summary>
         /// <param name="listId">listId</param>
         /// <param name="requestData">RequestCreateTaskInList object</param>
+        /// <param name="responseError">ResponseError response object</param>
         /// <returns>ModelTask object Expected</returns>
-        public Response CreateTaskInList(string listId, RequestCreateTaskInList requestData)
+        public ModelTask CreateTaskInList(string listId, RequestCreateTaskInList requestData, out ResponseError responseError)
         {
             if (string.IsNullOrEmpty(listId)) throw new ArgumentException("listId can't be empty or null!");
             if (requestData == null) throw new ArgumentException("requestData can't be empty or null!");
 
             string requestUri = "list/" + listId + "/task";
+            Response genericResponse = null;
 
-            Response response = null;
             Task.Run(async () =>
             {
-                response = await ExecutePostCallAsync<ModelTask>(requestUri, requestData);
+                genericResponse = await ExecutePostCallAsync<ModelTask>(requestUri, requestData);
             })
             .Wait();
 
-            return response;
-        }
+            AssignGenericResponse(genericResponse, out ModelTask modelTask, out responseError);
 
+            return modelTask;
+        }
+        
         /// <summary>
         /// Edit Task informations.
         /// </summary>
         /// <param name="taskId">taskId</param>
         /// <param name="requestData">RequestEditTask object</param>
-        /// <returns>ResponseSuccess object expected</returns>
-        public Task<Response> EditTaskAsync(string taskId, RequestEditTask requestData)
+        /// <param name="responseError">ResponseError response object</param>
+        /// <returns>ResponseSuccess response object</returns>
+        public ResponseSuccess EditTask(string taskId, RequestEditTask requestData, out ResponseError responseError)
         {
             if (string.IsNullOrEmpty(taskId)) throw new ArgumentException("taskId can't be empty or null!");
             if (requestData == null) throw new ArgumentException("requestData can't be empty or null!");
 
             string requestUri = "task/" + taskId;
+            Response genericResponse = null;
 
-            Response response = null;
             Task.Run(async () =>
             {
-                response = await ExecutePutCallAsync<ResponseSuccess>(requestUri, requestData);
+                genericResponse = await ExecutePutCallAsync<ResponseSuccess>(requestUri, requestData);
             })
             .Wait();
 
-            return response;
+            AssignGenericResponse(genericResponse, out ResponseSuccess responseSuccess, out responseError);
+
+            return responseSuccess;
         }
 
 
@@ -282,7 +311,7 @@ namespace PaironsTech.ClickUpAPI.V1
 
         #region API Methods Async
 
-
+        
         /// <summary>
         /// Get the user that belongs to this token
         /// </summary>
@@ -471,75 +500,29 @@ namespace PaironsTech.ClickUpAPI.V1
         {
             switch (httpStatusCode)
             {
-                case HttpStatusCode.Accepted: throw new NotImplementedException();
-                case HttpStatusCode.AlreadyReported: throw new NotImplementedException();
-                case HttpStatusCode.Ambiguous: throw new NotImplementedException();
-                case HttpStatusCode.BadGateway: throw new NotImplementedException();
-                case HttpStatusCode.BadRequest: return DeserializeResponse<ResponseError400>(responseData);
-                case HttpStatusCode.Conflict: throw new NotImplementedException();
-                case HttpStatusCode.Continue: throw new NotImplementedException();
-                case HttpStatusCode.Created: throw new NotImplementedException();
-                case HttpStatusCode.EarlyHints: throw new NotImplementedException();
-                case HttpStatusCode.ExpectationFailed: throw new NotImplementedException();
-                case HttpStatusCode.FailedDependency: throw new NotImplementedException();
-                case HttpStatusCode.Forbidden: throw new NotImplementedException();
-                case HttpStatusCode.Found: throw new NotImplementedException();
-                case HttpStatusCode.GatewayTimeout: throw new NotImplementedException();
-                case HttpStatusCode.Gone: throw new NotImplementedException();
-                case HttpStatusCode.HttpVersionNotSupported: throw new NotImplementedException();
-                case HttpStatusCode.IMUsed: throw new NotImplementedException();
-                case HttpStatusCode.InsufficientStorage: throw new NotImplementedException();
-                case HttpStatusCode.InternalServerError: throw new NotImplementedException();
-                case HttpStatusCode.LengthRequired: throw new NotImplementedException();
-                case HttpStatusCode.Locked: throw new NotImplementedException();
-                case HttpStatusCode.LoopDetected: throw new NotImplementedException();
-                case HttpStatusCode.MethodNotAllowed: throw new NotImplementedException();
-                case HttpStatusCode.MisdirectedRequest: throw new NotImplementedException();
-                case HttpStatusCode.Moved: throw new NotImplementedException();
-                case HttpStatusCode.MultiStatus: throw new NotImplementedException();
-                case HttpStatusCode.NetworkAuthenticationRequired: throw new NotImplementedException();
-                case HttpStatusCode.NoContent: throw new NotImplementedException();
-                case HttpStatusCode.NonAuthoritativeInformation: throw new NotImplementedException();
-                case HttpStatusCode.NotAcceptable: throw new NotImplementedException();
-                case HttpStatusCode.NotExtended: throw new NotImplementedException();
-                case HttpStatusCode.NotFound: return DeserializeResponse<ResponseError404>(responseData);
-                case HttpStatusCode.NotImplemented: throw new NotImplementedException();
-                case HttpStatusCode.NotModified: throw new NotImplementedException();
                 case HttpStatusCode.OK: return DeserializeResponse<TResponse>(responseData);
-                case HttpStatusCode.PartialContent: throw new NotImplementedException();
-                case HttpStatusCode.PaymentRequired: throw new NotImplementedException();
-                case HttpStatusCode.PermanentRedirect: throw new NotImplementedException();
-                case HttpStatusCode.PreconditionFailed: throw new NotImplementedException();
-                case HttpStatusCode.PreconditionRequired: throw new NotImplementedException();
-                case HttpStatusCode.Processing: throw new NotImplementedException();
-                case HttpStatusCode.ProxyAuthenticationRequired: throw new NotImplementedException();
-                case HttpStatusCode.RedirectKeepVerb: throw new NotImplementedException();
-                case HttpStatusCode.RedirectMethod: throw new NotImplementedException();
-                case HttpStatusCode.RequestedRangeNotSatisfiable: throw new NotImplementedException();
-                case HttpStatusCode.RequestEntityTooLarge: throw new NotImplementedException();
-                case HttpStatusCode.RequestHeaderFieldsTooLarge: throw new NotImplementedException();
-                case HttpStatusCode.RequestTimeout: throw new NotImplementedException();
-                case HttpStatusCode.RequestUriTooLong: throw new NotImplementedException();
-                case HttpStatusCode.ResetContent: throw new NotImplementedException();
-                case HttpStatusCode.ServiceUnavailable: throw new NotImplementedException();
-                case HttpStatusCode.SwitchingProtocols: throw new NotImplementedException();
-                case HttpStatusCode.TooManyRequests: throw new NotImplementedException();
-                case HttpStatusCode.Unauthorized: return DeserializeResponse<ResponseError401>(responseData);
-                case HttpStatusCode.UnavailableForLegalReasons: throw new NotImplementedException();
-                case HttpStatusCode.UnprocessableEntity: throw new NotImplementedException();
-                case HttpStatusCode.UnsupportedMediaType: throw new NotImplementedException();
-                case HttpStatusCode.Unused: throw new NotImplementedException();
-                case HttpStatusCode.UpgradeRequired: throw new NotImplementedException();
-                case HttpStatusCode.UseProxy: throw new NotImplementedException();
-                case HttpStatusCode.VariantAlsoNegotiates: throw new NotImplementedException();
-
-                default: throw new NotImplementedException();
+                default: return DeserializeResponse<ResponseError>(responseData);
             }
         }
 
         private TResponse DeserializeResponse<TResponse>(string responseData) where TResponse : Response
         {
             return JsonConvert.DeserializeObject<TResponse>(responseData);
+        }
+
+        private void AssignGenericResponse<TResponse>(Response genericResponse, out TResponse response, out ResponseError responseError) where TResponse : Response
+        {
+            response = null;
+            responseError = null;
+
+            if (genericResponse is TResponse)
+            {
+                response = (TResponse)genericResponse;
+            }
+            else
+            {
+                responseError = (ResponseError)genericResponse;
+            }
         }
 
         private async Task<Response> ExecuteGetCallAsync<TResponseExpected>(string requestUri) where TResponseExpected : Response

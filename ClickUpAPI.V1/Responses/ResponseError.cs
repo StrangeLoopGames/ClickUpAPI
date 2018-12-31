@@ -1,26 +1,31 @@
 ﻿using Newtonsoft.Json;
 
-namespace PaironsTech.ClickUpAPI.V1.Responses.Error
+namespace PaironsTech.ClickUpAPI.V1.Responses
 {
 
     /// <summary>
-    /// Response class of Error 400
+    /// Response received if there is an error in the Request
     /// </summary>
-    public class ResponseError400 : ResponseError
+    public abstract class ResponseError : Response
     {
 
         /// <summary>
-        /// Message of the error
+        /// Message of the Error
         /// </summary>
         [JsonProperty("err")]
         public string Err { get; set; }
+
+        /// <summary>
+        /// Status of Http Request
+        /// </summary>
+        [JsonProperty("status")]
+        public int Status { get; set; }
 
         /// <summary>
         /// Code of the Error
         /// </summary>
         [JsonProperty("ECODE")]
         public string ECode { get; set; }
-
     }
 
 }
