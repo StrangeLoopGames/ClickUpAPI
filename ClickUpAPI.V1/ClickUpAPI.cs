@@ -109,23 +109,22 @@ namespace PaironsTech.ClickUpAPI.V1
         /// <summary>
         /// Get a team's details. This team must be one of the authorized teams for this token.
         /// </summary>
-        /// <param name="teamId">teamId</param>
+        /// <param name="paramGetTeamByID">param get team by ID</param>
         /// <returns>ResponseGeneric with ResponseTeam response object</returns>
-        public ResponseGeneric<ResponseTeam, ResponseError> GetTeamByID(string teamId)
+        public ResponseGeneric<ResponseTeam, ResponseError> GetTeamByID(ParamGetTeamByID paramGetTeamByID)
         {
-            if (string.IsNullOrEmpty(teamId)) throw new ArgumentException("teamId can't be empty or null!");
+            // Address Uri
+            Uri addressUri = new Uri("team/{team_id}");
 
-            string requestUri = "team/" + teamId;
+            // Headers
+            Dictionary<string, string> headers = new Dictionary<string, string>();
+            headers.Add("authorization", _accessToken);
 
-            ResponseGeneric<ResponseTeam> responseGeneric = new ResponseGeneric<ResponseTeam>();
-
-            Task.Run(async () =>
+            // Execute Call
+            return HttpRequest.ExecuteGetCall<ResponseTeam, ResponseError>(_baseAddress, addressUri, paramsData: paramGetTeamByID, httpRequestOptions: new HttpRequestSettings()
             {
-                responseGeneric = await ExecuteGetCallAsync<ResponseTeam>(requestUri);
-            })
-            .Wait();
-
-            return responseGeneric;
+                Headers = headers
+            });
         }
 
         /// <summary>
@@ -342,14 +341,22 @@ namespace PaironsTech.ClickUpAPI.V1
         /// <summary>
         /// Get a team's details. This team must be one of the authorized teams for this token.
         /// </summary>
-        /// <param name="teamId">teamId</param>
-        /// <returns>ResponseGeneric with ResponseTeam object expected</returns>
-        public Task<ResponseGeneric<ResponseTeam, ResponseError>> GetTeamByIDAsync(string teamId)
+        /// <param name="paramGetTeamByID">param get team by ID</param>
+        /// <returns>ResponseGeneric with ResponseTeam response object</returns>
+        public Task<ResponseGeneric<ResponseTeam, ResponseError>> GetTeamByIDAsync(ParamGetTeamByID paramGetTeamByID)
         {
-            if (string.IsNullOrEmpty(teamId)) throw new ArgumentException("teamId can't be empty or null!");
+            // Address Uri
+            Uri addressUri = new Uri("team/{team_id}");
 
-            string requestUri = "team/" + teamId;
-            return ExecuteGetCallAsync<ResponseTeam>(requestUri);
+            // Headers
+            Dictionary<string, string> headers = new Dictionary<string, string>();
+            headers.Add("authorization", _accessToken);
+
+            // Execute Call
+            return HttpRequest.ExecuteGetCallAsync<ResponseTeam, ResponseError>(_baseAddress, addressUri, paramsData: paramGetTeamByID, httpRequestOptions: new HttpRequestSettings()
+            {
+                Headers = headers
+            });
         }
 
         /// <summary>
