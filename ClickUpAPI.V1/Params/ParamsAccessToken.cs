@@ -8,7 +8,7 @@ namespace PaironsTech.ClickUpAPI.V1.Params
     /// <summary>
     /// The param object of Access Token Request
     /// </summary>
-    public class ParamAccessToken : IParams
+    public class ParamsAccessToken : IParams
     {
 
         #region Attributes

@@ -1,140 +1,139 @@
-﻿using Newtonsoft.Json;
+﻿using PaironsTech.ApiHelper.Attributes;
+using PaironsTech.ApiHelper.Interfaces;
 using PaironsTech.ClickUpAPI.V1.Enums;
 using System;
 using System.Collections.Generic;
 
-namespace PaironsTech.ClickUpAPI.V1.OptionalParams
+namespace PaironsTech.ClickUpAPI.V1.Params
 {
 
     /// <summary>
-    /// Optional Params of Request method GetTasks() 
+    /// The param object of Get Task request
     /// </summary>
-    public class OPGetTasks : OptionalParams
+    public class ParamsGetTasks : IParams
     {
+
+        #region Attributes
+
+        /// <summary>
+        /// The Team Id 
+        /// </summary>
+        [ParamProperty("team_id")]
+        public string TeamId { get; set; }
 
         /// <summary>
         /// Rappresent the Page Filter
         /// </summary>
-        [JsonProperty("page")]
+        [ParamProperty("page")]
         public int? Page { get; set; }
 
         /// <summary>
         /// Rappresent the order of Data
         /// </summary>
-        [JsonProperty("order_by")]
+        [ParamProperty("order_by")]
         public TaskOrderBy? OrderBy { get; set; }
 
         /// <summary>
         /// Reverse Order
         /// </summary>
-        [JsonProperty("reverse")]
+        [ParamProperty("reverse")]
         public bool? Reverse { get; set; }
 
         /// <summary>
         /// Include Subtasks
         /// </summary>
-        [JsonProperty("subtasks")]
+        [ParamProperty("subtasks")]
         public bool? Subtasks { get; set; }
 
         /// <summary>
         /// Query only on spaces with this ids
         /// </summary>
-        [JsonProperty("space_ids")]
+        [ParamProperty("space_ids")]
         public List<string> SpaceIds { get; set; }
 
         /// <summary>
         /// Query only on projects with this ids
         /// </summary>
-        [JsonProperty("projects_ids")]
+        [ParamProperty("projects_ids")]
         public List<string> ProjectIds { get; set; }
 
         /// <summary>
         /// Query only on lists with this ids
         /// </summary>
-        [JsonProperty("list_ids")]
+        [ParamProperty("list_ids")]
         public List<string> ListIds { get; set; }
 
         /// <summary>
         /// Query only on status with this status
         /// </summary>
-        [JsonProperty("statuses")]
+        [ParamProperty("statuses")]
         public List<string> Statuses { get; set; }
 
         /// <summary>
         /// Include Closed Task [Not set Statuses filter!]
         /// </summary>
-        [JsonProperty("include_closed")]
+        [ParamProperty("include_closed")]
         public bool? IncludeClosed { get; set; }
 
         /// <summary>
         /// Query only on task assign at users with this ids
         /// </summary>
-        [JsonProperty("assignees")]
+        [ParamProperty("assignees")]
         public List<long> Assignees { get; set; }
 
         /// <summary>
         /// Filter due date greater than posix time
         /// </summary>
-        [JsonProperty("due_date_gt")]
+        [ParamProperty("due_date_gt")]
         public DateTime? DueDateGt { get; set; }
 
         /// <summary>
         /// Filter due date less than posix time
         /// </summary>
-        [JsonProperty("due_date_lt")]
+        [ParamProperty("due_date_lt")]
         public DateTime? DueDateLt { get; set; }
 
         /// <summary>
         /// Filter date created greater than posix time
         /// </summary>
-        [JsonProperty("date_created_gt")]
+        [ParamProperty("date_created_gt")]
         public DateTime? DateCreatedGt { get; set; }
 
         /// <summary>
         /// Filter date created less than posix time
         /// </summary>
-        [JsonProperty("date_created_lt")]
+        [ParamProperty("date_created_lt")]
         public DateTime? DateCreatedLt { get; set; }
 
         /// <summary>
         /// Filter date updated greater than posix time
         /// </summary>
-        [JsonProperty("date_updated_gt")]
+        [ParamProperty("date_updated_gt")]
         public DateTime? DateUpdatedGt { get; set; }
 
         /// <summary>
         /// Filter date updated less than posix time
         /// </summary>
-        [JsonProperty("date_updated_lt")]
+        [ParamProperty("date_updated_lt")]
         public DateTime? DateUpdatedLt { get; set; }
-        
 
+        #endregion
 
-
+        #region Public Methods
 
         /// <summary>
-        /// Constructor of OptionalParams object for GetTasks() method.
+        /// Method that validate the data insert
         /// </summary>
-        public OPGetTasks()
+        public void ValidateData()
         {
-            Page = null;
-            OrderBy = null;
-            Reverse = null;
-            Subtasks = null;
-            SpaceIds = null;
-            ProjectIds = null;
-            ListIds = null;
-            Statuses = null;
-            IncludeClosed = null;
-            Assignees = null;
-            DueDateGt = null;
-            DueDateLt = null;
-            DateCreatedGt = null;
-            DateCreatedLt = null;
-            DateUpdatedGt = null;
-            DateUpdatedLt = null;
+            if (string.IsNullOrEmpty(TeamId))
+            {
+                throw new ArgumentNullException("TeamId");
+            }
         }
-        
+
+        #endregion
+
     }
 
 }

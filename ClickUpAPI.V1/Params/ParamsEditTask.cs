@@ -6,18 +6,18 @@ namespace PaironsTech.ClickUpAPI.V1.Params
 {
 
     /// <summary>
-    /// The param object of Get Team By ID
+    /// The param object of Edit Task Request
     /// </summary>
-    public class ParamGetTeamByID : IParams
+    public class ParamsEditTask : IParams
     {
 
         #region Attributes
 
         /// <summary>
-        /// The Team Id to search
+        /// The Task Id
         /// </summary>
-        [ParamProperty("team_id")]
-        public string TeamId { get; set; }
+        [ParamProperty("task_id")]
+        public string TaskId { get; set; }
 
         #endregion
 
@@ -29,9 +29,9 @@ namespace PaironsTech.ClickUpAPI.V1.Params
         /// </summary>
         public void ValidateData()
         {
-            if (string.IsNullOrEmpty(TeamId))
+            if (string.IsNullOrEmpty(TaskId))
             {
-                throw new ArgumentNullException("TeamId");
+                throw new ArgumentNullException("TaskId");
             }
         }
 
