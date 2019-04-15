@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using PaironsTech.ApiHelper.Interfaces;
 using PaironsTech.ClickUpAPI.V1.Enums;
 using System;
 
@@ -8,7 +9,7 @@ namespace PaironsTech.ClickUpAPI.V1.Responses.Model
     /// <summary>
     /// Model Object of User information response
     /// </summary>
-    public class ModelUser : Model
+    public class ModelUser : IResponseModel
     {
 
         /// <summary>

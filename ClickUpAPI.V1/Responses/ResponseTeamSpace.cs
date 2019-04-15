@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using PaironsTech.ApiHelper.Interfaces;
 using PaironsTech.ClickUpAPI.V1.Responses.Model;
 using System.Collections.Generic;
 
@@ -8,7 +9,7 @@ namespace PaironsTech.ClickUpAPI.V1.Responses
     /// <summary>
     /// Response object of the method GetTeamSpaces()
     /// </summary>
-    public class ResponseTeamSpace : Response
+    public class ResponseTeamSpace : IResponse
     {
 
         /// <summary>

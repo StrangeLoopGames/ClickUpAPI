@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using PaironsTech.ApiHelper.Interfaces;
 using PaironsTech.ClickUpAPI.V1.JsonConverters;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ namespace PaironsTech.ClickUpAPI.V1.Responses.Model
     /// <summary>
     /// Model object of Task information response
     /// </summary>
-    public class ModelTask : Model
+    public class ModelTask : IResponseModel
     {
 
         /// <summary>

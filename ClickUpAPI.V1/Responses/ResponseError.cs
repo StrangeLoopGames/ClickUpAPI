@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using PaironsTech.ApiHelper.Interfaces;
 
 namespace PaironsTech.ClickUpAPI.V1.Responses
 {
@@ -6,7 +7,7 @@ namespace PaironsTech.ClickUpAPI.V1.Responses
     /// <summary>
     /// Response received if there is an error in the Request
     /// </summary>
-    public abstract class ResponseError : Response
+    public abstract class ResponseError : IResponse
     {
 
         /// <summary>

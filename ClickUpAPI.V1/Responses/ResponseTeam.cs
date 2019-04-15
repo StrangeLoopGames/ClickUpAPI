@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using PaironsTech.ApiHelper.Interfaces;
 using PaironsTech.ClickUpAPI.V1.Responses.Model;
 
 namespace PaironsTech.ClickUpAPI.V1.Responses
@@ -7,7 +8,7 @@ namespace PaironsTech.ClickUpAPI.V1.Responses
     /// <summary>
     /// Response object of the method GetTeamByID()
     /// </summary>
-    public class ResponseTeam : Response
+    public class ResponseTeam : IResponse
     {
 
         /// <summary>

@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using PaironsTech.ApiHelper.Interfaces;
 
 namespace PaironsTech.ClickUpAPI.V1.Responses.Model
 {
@@ -6,7 +7,7 @@ namespace PaironsTech.ClickUpAPI.V1.Responses.Model
     /// <summary>
     /// Model object of Due Dates information response
     /// </summary>
-    public class ModelDueDates : Model
+    public class ModelDueDates : IResponseModel
     {
 
         /// <summary>

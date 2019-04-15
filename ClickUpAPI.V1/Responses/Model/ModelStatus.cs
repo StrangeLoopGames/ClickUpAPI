@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using PaironsTech.ApiHelper.Interfaces;
 
 namespace PaironsTech.ClickUpAPI.V1.Responses.Model
 {
@@ -6,7 +7,7 @@ namespace PaironsTech.ClickUpAPI.V1.Responses.Model
     /// <summary>
     /// Model Object of Status information Response
     /// </summary>
-    public class ModelStatus : Model
+    public class ModelStatus : IResponseModel
     {
 
         /// <summary>

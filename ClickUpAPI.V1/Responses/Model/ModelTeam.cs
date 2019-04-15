@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using PaironsTech.ApiHelper.Interfaces;
 using System.Collections.Generic;
 
 namespace PaironsTech.ClickUpAPI.V1.Responses.Model
@@ -7,7 +8,7 @@ namespace PaironsTech.ClickUpAPI.V1.Responses.Model
     /// <summary>
     /// Model Object of Team information response
     /// </summary>
-    public class ModelTeam : Model
+    public class ModelTeam : IResponseModel
     {
 
         /// <summary>

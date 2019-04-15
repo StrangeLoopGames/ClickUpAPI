@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using PaironsTech.ApiHelper.Interfaces;
 using System;
 
 namespace PaironsTech.ClickUpAPI.V1.Requests
@@ -7,8 +8,10 @@ namespace PaironsTech.ClickUpAPI.V1.Requests
     /// <summary>
     /// Request object for method CreateList()
     /// </summary>
-    public class RequestCreateList : Request
+    public class RequestCreateList : IRequest
     {
+
+        #region Attributes
 
         /// <summary>
         /// Name of the new list
@@ -16,17 +19,22 @@ namespace PaironsTech.ClickUpAPI.V1.Requests
         [JsonProperty("name")]
         public string Name { get; set; }
 
+        #endregion
+
+        #region Public Methods
 
         /// <summary>
-        /// Constructor of RequestCreateList
+        /// Validation method of data
         /// </summary>
-        /// <param name="name">name of the new list [Obligatory]</param>
-        public RequestCreateList(string name)
+        public void ValidateData()
         {
-            if(string.IsNullOrEmpty(name)) throw new ArgumentException("name can't be empty or null!");
-
-            Name = name;
+            if (string.IsNullOrEmpty(Name))
+            {
+                throw new ArgumentException("Name can't be empty or null!");
+            }
         }
+
+        #endregion
 
     }
 

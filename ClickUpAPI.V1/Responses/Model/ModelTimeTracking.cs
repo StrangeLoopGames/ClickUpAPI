@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using PaironsTech.ApiHelper.Interfaces;
 
 namespace PaironsTech.ClickUpAPI.V1.Responses.Model
 {
@@ -6,7 +7,7 @@ namespace PaironsTech.ClickUpAPI.V1.Responses.Model
     /// <summary>
     /// Model object of Time Tracking information response
     /// </summary>
-    public class ModelTimeTracking : Model
+    public class ModelTimeTracking : IResponseModel
     {
 
         /// <summary>

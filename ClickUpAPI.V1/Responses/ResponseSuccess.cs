@@ -1,9 +1,11 @@
-﻿namespace PaironsTech.ClickUpAPI.V1.Responses
+﻿using PaironsTech.ApiHelper.Interfaces;
+
+namespace PaironsTech.ClickUpAPI.V1.Responses
 {
 
     /// <summary>
     /// Response of the methods that have empty response like '{}'
     /// </summary>
-    public class ResponseSuccess : Response { }
+    public class ResponseSuccess : IResponse { }
 
 }
