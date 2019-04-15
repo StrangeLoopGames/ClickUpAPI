@@ -8,7 +8,7 @@ namespace PaironsTech.ClickUpAPI.V1.Responses.Model
     /// <summary>
     /// Model object of Priorities information response
     /// </summary>
-    public class ModelPriorities : IResponseModel
+    public class ResponseModelPriorities : IResponseModel
     {
 
         /// <summary>
@@ -21,7 +21,7 @@ namespace PaironsTech.ClickUpAPI.V1.Responses.Model
         /// List of Model Priority with priorities information
         /// </summary>
         [JsonProperty("priorities")]
-        public List<ModelPriority> Priorities { get; set; }
+        public List<ResponseModelPriority> Priorities { get; set; }
 
     }
 

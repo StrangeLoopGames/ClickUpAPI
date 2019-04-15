@@ -16,7 +16,7 @@ namespace PaironsTech.ClickUpAPI.V1.Responses
         /// List of Space Model with information of authorized Team
         /// </summary>
         [JsonProperty("spaces")]
-        public List<ModelSpace> Spaces { get; set; }
+        public List<ResponseModelSpace> Spaces { get; set; }
 
     }
 

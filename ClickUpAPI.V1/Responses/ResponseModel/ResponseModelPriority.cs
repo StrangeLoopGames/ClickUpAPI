@@ -7,7 +7,7 @@ namespace PaironsTech.ClickUpAPI.V1.Responses.Model
     /// <summary>
     /// Model object of Priority information response
     /// </summary>
-    public class ModelPriority : IResponseModel
+    public class ResponseModelPriority : IResponseModel
     {
 
         /// <summary>

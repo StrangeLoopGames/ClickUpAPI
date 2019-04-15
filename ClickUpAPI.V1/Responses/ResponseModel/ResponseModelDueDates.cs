@@ -7,7 +7,7 @@ namespace PaironsTech.ClickUpAPI.V1.Responses.Model
     /// <summary>
     /// Model object of Due Dates information response
     /// </summary>
-    public class ModelDueDates : IResponseModel
+    public class ResponseModelDueDates : IResponseModel
     {
 
         /// <summary>

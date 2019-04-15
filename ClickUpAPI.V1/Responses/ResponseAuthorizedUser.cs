@@ -15,7 +15,7 @@ namespace PaironsTech.ClickUpAPI.V1.Responses
         /// User Model Object with information of authorized User
         /// </summary>
         [JsonProperty("user")]
-        public ModelUser User { get; set; }
+        public ResponseModelUser User { get; set; }
 
     }
 

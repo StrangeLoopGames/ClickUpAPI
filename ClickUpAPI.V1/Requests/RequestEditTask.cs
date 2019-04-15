@@ -2,7 +2,7 @@
 using PaironsTech.ApiHelper.Interfaces;
 using PaironsTech.ApiHelper.JsonConverters;
 using PaironsTech.ClickUpAPI.V1.Enums;
-using PaironsTech.ClickUpAPI.V1.Requests.SupportModels;
+using PaironsTech.ClickUpAPI.V1.Requests.Model;
 using System;
 
 namespace PaironsTech.ClickUpAPI.V1.Requests
@@ -32,7 +32,7 @@ namespace PaironsTech.ClickUpAPI.V1.Requests
         /// List of users id added or removed to the task
         /// </summary>
         [JsonProperty("assignees")]
-        public SupportModel Assignees { get; set; }
+        public RequestModelSupportAssignees Assignees { get; set; }
 
         /// <summary>
         /// Status of the Task
@@ -65,7 +65,7 @@ namespace PaironsTech.ClickUpAPI.V1.Requests
         {
             if (string.IsNullOrEmpty(Name))
             {
-                throw new ArgumentException("Name can't be empty or null!");
+                throw new ArgumentNullException("Name");
             }
         }
 

@@ -7,7 +7,7 @@ namespace PaironsTech.ClickUpAPI.V1.Responses.Model
     /// <summary>
     /// Model object of Time Tracking information response
     /// </summary>
-    public class ModelTimeTracking : IResponseModel
+    public class ResponseModelTimeTracking : IResponseModel
     {
 
         /// <summary>

@@ -7,7 +7,7 @@ namespace PaironsTech.ClickUpAPI.V1.Responses.Model
     /// <summary>
     /// Model object of Tag information response
     /// </summary>
-    public class ModelTag : IResponseModel
+    public class ResponseModelTag : IResponseModel
     {
 
         /// <summary>

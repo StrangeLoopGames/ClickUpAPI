@@ -1,26 +1,37 @@
 ﻿using PaironsTech.ApiHelper;
 using PaironsTech.ClickUpAPI.V1.OptionalParams;
+using PaironsTech.ClickUpAPI.V1.Params;
 using PaironsTech.ClickUpAPI.V1.Requests;
 using PaironsTech.ClickUpAPI.V1.Responses;
-using PaironsTech.ClickUpAPI.V1.Responses.Model;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace PaironsTech.ClickUpAPI.V1
 {
+
+    /// <summary>
+    /// Object that interact through methods the API (v1) of ClickUp
+    /// </summary>
     public class ClickUpAPI
     {
-        
-        // Private Static Attributes 
+
+        #region Private Attributes
+
+        /// <summary>
+        /// Base Address of API call
+        /// </summary>
         private static readonly Uri _baseAddress = new Uri("https://api.clickup.com/api/v1/");
 
-
-        // Private Attributes
+        /// <summary>
+        /// The Access Token to add during the request
+        /// </summary>
         private string _accessToken { get; set; }
 
+        #endregion
 
-        // Constructors
+
+        #region Constructors
 
         /// <summary>
         /// Create object with Personal Access Token
@@ -34,47 +45,26 @@ namespace PaironsTech.ClickUpAPI.V1
         /// <summary>
         /// Create Object with ClientId, ClientSecrect
         /// </summary>
-        /// <param name="clientId">own clientId</param>
-        /// <param name="clientSecret">own clientSecret</param>
-        public ClickUpAPI(string clientId, string clientSecret, string code)
+        /// <param name="paramAccessToken">param access token object</param>
+        public ClickUpAPI(ParamAccessToken paramAccessToken)
         {
-
-            // TO DO : 
-            /*
             // Address Uri
-            Uri addressUri = new Uri("user");
-
-            // Headers
-            Dictionary<string, string> headers = new Dictionary<string, string>();
-            headers.Add("authorization", _accessToken);
+            Uri addressUri = new Uri("oauth/token?client_id={client_id}&client_secret={client_secret}&code={code}");
 
             // Execute Call
-            return HttpRequest.ExecuteGetCall<ResponseAuthorizedUser, ResponseError>(_baseAddress, addressUri, httpRequestOptions: new HttpRequestSettings()
+            ResponseGeneric<ResponseAccessToken, ResponseError> response = HttpRequest.ExecutePostCall<ResponseAccessToken, ResponseError>(_baseAddress, addressUri, paramsData: paramAccessToken);
+
+            // Manage Response
+            if (response.ResponseSuccess != null)
             {
-                Headers = headers
-            });
-            */
-
-
-            string requestUri = "oauth/token?client_id=" + clientId + "&client_secret=" + clientSecret + "&code=" + code;
-
-
-
-            // Execute Async call, wait response, get access Token and set in private attribute
-            Task.Run(async () =>
-            {
-                ResponseGeneric<ResponseAccessToken> response = await ExecutePostCallAsync<ResponseAccessToken>(requestUri, null);
-
-                if (response.ResponseSuccess != null)
-                    _accessToken = response.ResponseSuccess.AccessToken;
-
-            }).Wait();
+                _accessToken = response.ResponseSuccess.AccessToken;
+            }
         }
 
+        #endregion
 
 
         #region API Methods
-
 
         /// <summary>
         /// Get the user that belongs to this token
@@ -466,4 +456,5 @@ namespace PaironsTech.ClickUpAPI.V1
         #endregion
 
     }
+
 }

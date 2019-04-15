@@ -5,17 +5,16 @@ namespace PaironsTech.ClickUpAPI.V1.Responses.Model
 {
 
     /// <summary>
-    /// Model object of Dependency Warning information response
+    /// Model object of Custom Field information response
     /// </summary>
-    public class ModelDependencyWarning : IResponseModel
+    public class ResponseModelCustomFields : IResponseModel
     {
 
         /// <summary>
-        /// Check if the Dependecy Warning are enabled
+        /// Check if the Custom Fields are enabled
         /// </summary>
         [JsonProperty("enabled")]
         public bool? Enabled { get; set; }
 
     }
-
 }

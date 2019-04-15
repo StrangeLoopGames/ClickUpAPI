@@ -64,7 +64,7 @@ namespace PaironsTech.ClickUpAPI.V1.Requests
         {
             if (string.IsNullOrEmpty(Name))
             {
-                throw new ArgumentException("Name can't be empty or null!");
+                throw new ArgumentNullException("Name");
             }
 
             throw new NotImplementedException();

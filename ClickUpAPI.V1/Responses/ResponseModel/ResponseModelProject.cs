@@ -8,7 +8,7 @@ namespace PaironsTech.ClickUpAPI.V1.Responses.Model
     /// <summary>
     /// Model object of Project information response
     /// </summary>
-    public class ModelProject : IResponseModel
+    public class ResponseModelProject : IResponseModel
     {
 
         /// <summary>
@@ -33,13 +33,13 @@ namespace PaironsTech.ClickUpAPI.V1.Responses.Model
         /// List of List Model that contains the information of the lists in this project
         /// </summary>
         [JsonProperty("lists")]
-        public List<ModelList> Lists { get; set; }
+        public List<ResponseModelList> Lists { get; set; }
 
         /// <summary>
         /// List of Status Model that contains the information of Statuses (Only if Override Statuses is true)
         /// </summary>
         [JsonProperty("statuses")]
-        public List<ModelStatus> Statuses { get; set; }
+        public List<ResponseModelStatus> Statuses { get; set; }
 
     }
 

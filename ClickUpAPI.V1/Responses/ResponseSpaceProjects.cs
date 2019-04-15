@@ -16,7 +16,7 @@ namespace PaironsTech.ClickUpAPI.V1.Responses
         /// List of Project Model with information of the Space
         /// </summary>
         [JsonProperty("projects")]
-        public List<ModelProject> Projects { get; set; }
+        public List<ResponseModelProject> Projects { get; set; }
 
     }
 

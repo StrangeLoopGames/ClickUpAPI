@@ -8,7 +8,7 @@ namespace PaironsTech.ClickUpAPI.V1.Responses.Model
     /// <summary>
     /// Model object of Space information response
     /// </summary>
-    public class ModelSpace : IResponseModel
+    public class ResponseModelSpace : IResponseModel
     {
 
         /// <summary>
@@ -33,7 +33,7 @@ namespace PaironsTech.ClickUpAPI.V1.Responses.Model
         /// List of Model Status with the statuses of the Space
         /// </summary>
         [JsonProperty("statuses")]
-        public List<ModelStatus> Statuses { get; set; }
+        public List<ResponseModelStatus> Statuses { get; set; }
 
         /// <summary>
         /// Check if it's active multiple assignees in this Space
@@ -45,13 +45,13 @@ namespace PaironsTech.ClickUpAPI.V1.Responses.Model
         /// Model Feature Object that contains the information about features of this Space
         /// </summary>
         [JsonProperty("features")]
-        public ModelFeatures Features { get; set; }
+        public ResponseModelFeatures Features { get; set; }
 
         /// <summary>
         /// List of Model User Object with the informations about the members of the Space
         /// </summary>
         [JsonProperty("members")]
-        public List<ModelUser> Members { get; set; }
+        public List<ResponseModelUser> Members { get; set; }
 
     }
 

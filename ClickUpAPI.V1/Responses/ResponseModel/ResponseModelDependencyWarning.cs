@@ -5,13 +5,13 @@ namespace PaironsTech.ClickUpAPI.V1.Responses.Model
 {
 
     /// <summary>
-    /// Model object of Time Estimates information response
+    /// Model object of Dependency Warning information response
     /// </summary>
-    public class ModelTimeEstimates : IResponseModel
+    public class ResponseModelDependencyWarning : IResponseModel
     {
 
         /// <summary>
-        /// Check if Time Estimates is enabled
+        /// Check if the Dependecy Warning are enabled
         /// </summary>
         [JsonProperty("enabled")]
         public bool? Enabled { get; set; }

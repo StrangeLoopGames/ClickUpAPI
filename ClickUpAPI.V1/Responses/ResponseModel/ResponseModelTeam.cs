@@ -8,7 +8,7 @@ namespace PaironsTech.ClickUpAPI.V1.Responses.Model
     /// <summary>
     /// Model Object of Team information response
     /// </summary>
-    public class ModelTeam : IResponseModel
+    public class ResponseModelTeam : IResponseModel
     {
 
         /// <summary>
@@ -39,7 +39,7 @@ namespace PaironsTech.ClickUpAPI.V1.Responses.Model
         /// List of User Model object with the members of the Team
         /// </summary>
         [JsonProperty("members")]
-        public List<ModelUser> Members { get; set; }
+        public List<ResponseModelUser> Members { get; set; }
 
     }
 

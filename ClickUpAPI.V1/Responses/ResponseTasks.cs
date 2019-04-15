@@ -16,7 +16,7 @@ namespace PaironsTech.ClickUpAPI.V1.Responses
         /// List of Model Task with information of Tasks received
         /// </summary>
         [JsonProperty("tasks")]
-        public List<ModelTask> Tasks { get; set; }
+        public List<ResponseModelTask> Tasks { get; set; }
         
     }
 

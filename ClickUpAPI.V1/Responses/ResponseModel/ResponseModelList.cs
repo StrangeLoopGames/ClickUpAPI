@@ -7,7 +7,7 @@ namespace PaironsTech.ClickUpAPI.V1.Responses.Model
     /// <summary>
     /// Model object of List information response
     /// </summary>
-    public class ModelList : IResponseModel
+    public class ResponseModelList : IResponseModel
     {
 
         /// <summary>

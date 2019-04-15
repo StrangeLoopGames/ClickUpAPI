@@ -16,7 +16,7 @@ namespace PaironsTech.ClickUpAPI.V1.Responses
         /// List of Team Model with information of authorized Teams
         /// </summary>
         [JsonProperty("teams")]
-        public List<ModelTeam> Teams { get; set; }
+        public List<ResponseModelTeam> Teams { get; set; }
 
     }
 

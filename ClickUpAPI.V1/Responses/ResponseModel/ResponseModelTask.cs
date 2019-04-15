@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using PaironsTech.ApiHelper.Interfaces;
+using PaironsTech.ApiHelper.JsonConverters;
 using PaironsTech.ClickUpAPI.V1.JsonConverters;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ namespace PaironsTech.ClickUpAPI.V1.Responses.Model
     /// <summary>
     /// Model object of Task information response
     /// </summary>
-    public class ModelTask : IResponseModel
+    public class ResponseModelTask : IResponseModel
     {
 
         /// <summary>
@@ -35,7 +36,7 @@ namespace PaironsTech.ClickUpAPI.V1.Responses.Model
         /// Status of the task
         /// </summary>
         [JsonProperty("status")]
-        public ModelStatus Status { get; set; }
+        public ResponseModelStatus Status { get; set; }
 
         /// <summary>
         /// Order index of Task
@@ -47,40 +48,40 @@ namespace PaironsTech.ClickUpAPI.V1.Responses.Model
         /// Date Creation of the Task
         /// </summary>
         [JsonProperty("date_created")]
-        [JsonConverter(typeof(JsonConverterDateTime))]
+        [JsonConverter(typeof(JsonConverterDateTimeMilliseconds))]
         public DateTime? DateCreated { get; set; }
 
         /// <summary>
         /// Date last updated of the task
         /// </summary>
         [JsonProperty("date_updated")]
-        [JsonConverter(typeof(JsonConverterDateTime))]
+        [JsonConverter(typeof(JsonConverterDateTimeMilliseconds))]
         public DateTime? DateUpdated { get; set; }
 
         /// <summary>
         /// Date when task closed
         /// </summary>
         [JsonProperty("date_closed")]
-        [JsonConverter(typeof(JsonConverterDateTime))]
+        [JsonConverter(typeof(JsonConverterDateTimeMilliseconds))]
         public DateTime? DateClosed { get; set; }
 
         /// <summary>
         /// Model user with the information of the creator
         /// </summary>
         [JsonProperty("creator")]
-        public ModelUser Creator { get; set; }
+        public ResponseModelUser Creator { get; set; }
 
         /// <summary>
         /// List of Model User with the information of the user assigned at this task
         /// </summary>
         [JsonProperty("assignees")]
-        public List<ModelUser> Assignees { get; set; }
+        public List<ResponseModelUser> Assignees { get; set; }
 
         /// <summary>
         /// List of Model Tags with the information of the tag associated at this task
         /// </summary>
         [JsonProperty("tags")]
-        public List<ModelTag> Tags { get; set; }
+        public List<ResponseModelTag> Tags { get; set; }
 
         /// <summary>
         /// The Id of the parent Task
@@ -92,20 +93,20 @@ namespace PaironsTech.ClickUpAPI.V1.Responses.Model
         /// Model Priority with the information of priority assigned
         /// </summary>
         [JsonProperty("priority")]
-        public ModelPriority Priority { get; set; }
+        public ResponseModelPriority Priority { get; set; }
 
         /// <summary>
         /// Due Date of the Task
         /// </summary>
         [JsonProperty("due_date")]
-        [JsonConverter(typeof(JsonConverterDateTime))]
+        [JsonConverter(typeof(JsonConverterDateTimeMilliseconds))]
         public DateTime? DueDate { get; set; }
 
         /// <summary>
         /// Start Date of the Task
         /// </summary>
         [JsonProperty("start_date")]
-        [JsonConverter(typeof(JsonConverterDateTime))]
+        [JsonConverter(typeof(JsonConverterDateTimeMilliseconds))]
         public DateTime? StartDate { get; set; }
 
         /// <summary>
@@ -118,26 +119,26 @@ namespace PaironsTech.ClickUpAPI.V1.Responses.Model
         /// Estimated Time of execution of the Task
         /// </summary>
         [JsonProperty("time_estimated")]
-        [JsonConverter(typeof(JsonConverterTimeSpan))]
+        [JsonConverter(typeof(JsonConverterTimeSpanMilliseconds))]
         public TimeSpan TimeEstimate { get; set; }
 
         /// <summary>
         /// Model List with information of the list where task it's assigned
         /// </summary>
         [JsonProperty("list")]
-        public ModelList List { get; set; }
+        public ResponseModelList List { get; set; }
 
         /// <summary>
         /// Model Project with information of the project where task it's assigned
         /// </summary>
         [JsonProperty("project")]
-        public ModelProject Project { get; set; }
+        public ResponseModelProject Project { get; set; }
 
         /// <summary>
         /// Model Space with information of the space where task it's assigned
         /// </summary>
         [JsonProperty("space")]
-        public ModelSpace Space { get; set; }
+        public ResponseModelSpace Space { get; set; }
         
         /// <summary>
         /// Url of the Task

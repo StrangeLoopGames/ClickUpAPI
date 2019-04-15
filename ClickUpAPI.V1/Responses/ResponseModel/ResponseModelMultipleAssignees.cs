@@ -5,16 +5,17 @@ namespace PaironsTech.ClickUpAPI.V1.Responses.Model
 {
 
     /// <summary>
-    /// Model object of Custom Field information response
+    /// Model object of Multiple Assignees information response
     /// </summary>
-    public class ModelCustomFields : IResponseModel
+    public class ResponseModelMultipleAssignees : IResponseModel
     {
 
         /// <summary>
-        /// Check if the Custom Fields are enabled
+        /// Check if the Multiple Assignees are enabled
         /// </summary>
         [JsonProperty("enabled")]
         public bool? Enabled { get; set; }
 
     }
+
 }
