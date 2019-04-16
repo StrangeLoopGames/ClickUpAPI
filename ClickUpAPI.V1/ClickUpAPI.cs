@@ -1,5 +1,4 @@
 ﻿using PaironsTech.ApiHelper;
-using PaironsTech.ClickUpAPI.V1.OptionalParams;
 using PaironsTech.ClickUpAPI.V1.Params;
 using PaironsTech.ClickUpAPI.V1.Requests;
 using PaironsTech.ClickUpAPI.V1.Responses;
@@ -74,7 +73,7 @@ namespace PaironsTech.ClickUpAPI.V1
         public ResponseGeneric<ResponseAuthorizedUser, ResponseError> GetAuthorizedUser()
         {
             // Address Uri
-            Uri addressUri = new Uri("user");
+            Uri addressUri = new Uri("/user");
 
             // Headers
             Dictionary<string, string> headers = new Dictionary<string, string>();
@@ -289,7 +288,6 @@ namespace PaironsTech.ClickUpAPI.V1
 
         #region API Methods Async
 
-
         /// <summary>
         /// Get the user that belongs to this token
         /// </summary>
@@ -396,77 +394,114 @@ namespace PaironsTech.ClickUpAPI.V1
         /// <summary>
         /// Create List in Project
         /// </summary>
-        /// <param name="projectId">projectId</param>
+        /// <param name="paramsCreateList">param object of create list request</param>
         /// <param name="requestData">RequestCreateList object</param>
         /// <returns>ResponseGeneric with ModelList object expected</returns>
-        public Task<ResponseGeneric<ModelList, ResponseError>> CreateListAsync(string projectId, RequestCreateList requestData)
+        public Task<ResponseGeneric<ResponseModelList, ResponseError>> CreateListAsync(ParamsCreateList paramsCreateList, RequestCreateList requestData)
         {
-            if (string.IsNullOrEmpty(projectId)) throw new ArgumentException("projectId can't be empty or null!");
-            if (requestData == null) throw new ArgumentException("requestData can't be empty or null!");
+            // Address Uri
+            Uri addressUri = new Uri("project/{project_id}/list");
 
-            string requestUri = "project/" + projectId + "/list";
-            return ExecutePostCallAsync<ModelList, ResponseError>(requestUri, requestData);
+            // Headers
+            Dictionary<string, string> headers = new Dictionary<string, string>();
+            headers.Add("authorization", _accessToken);
+
+            // Execute Call
+            return HttpRequest.ExecutePostCallAsync<ResponseModelList, ResponseError>(_baseAddress, addressUri, paramsData: paramsCreateList, requestData: requestData, httpRequestOptions: new HttpRequestSettings()
+            {
+                Headers = headers,
+                ContentTypeRequest = "application/json"
+            });
         }
 
         /// <summary>
         /// Edit List informations
         /// </summary>
-        /// <param name="listId">listId</param>
+        /// <param name="paramsEditList">param object of Edi List request</param>
         /// <param name="requestData">RequestEditList object</param>
         /// <returns>ResponseGeneric with ModelList object expected</returns>
-        public Task<ResponseGeneric<ModelList, ResponseError>> EditListAsync(string listId, RequestEditList requestData)
+        public Task<ResponseGeneric<ResponseModelList, ResponseError>> EditListAsync(ParamsEditList paramsEditList, RequestEditList requestData)
         {
-            if (string.IsNullOrEmpty(listId)) throw new ArgumentException("listId can't be empty or null!");
-            if (requestData == null) throw new ArgumentException("requestData can't be empty or null!");
-            
-            string requestUri = "list/" + listId;
-            return ExecutePutCallAsync<ModelList>(requestUri, requestData);
+            // Address Uri
+            Uri addressUri = new Uri("list/{list_id}");
+
+            // Headers
+            Dictionary<string, string> headers = new Dictionary<string, string>();
+            headers.Add("authorization", _accessToken);
+
+            // Execute Call
+            return HttpRequest.ExecutePutCallAsync<ResponseModelList, ResponseError>(_baseAddress, addressUri, paramsData: paramsEditList, requestData: requestData, httpRequestOptions: new HttpRequestSettings()
+            {
+                Headers = headers,
+                ContentTypeRequest = "application/json"
+            });
         }
 
         /// <summary>
         /// Get Tasks of the Team and filter its by optionalParams
         /// </summary>
-        /// <param name="teamId">teamId</param>
+        /// <param name="paramsGetTasks">param object of get tasks request</param>
         /// <param name="optionalParams">OptionalParamsGetTask object</param>
         /// <returns>ResponseGeneric with ResponseTasks object expected</returns>
-        public Task<ResponseGeneric<ResponseTasks, ResponseError>> GetTasksAsync(string teamId, OPGetTasks optionalParams)    
+        public Task<ResponseGeneric<ResponseTasks, ResponseError>> GetTasksAsync(ParamsGetTasks paramsGetTasks)
         {
-            if (string.IsNullOrEmpty(teamId)) throw new ArgumentException("teamId can't be empty or null!");
+            // Address Uri
+            Uri addressUri = new Uri("team/{team_id}/task");
 
-            string strParams = GenerateOptionalParams(optionalParams);
-            string requestUri = "team/" + teamId + "/task" + (!string.IsNullOrEmpty(strParams) ? "?" + strParams : string.Empty);
-            return ExecuteGetCallAsync<ResponseTasks>(requestUri);
+            // Headers
+            Dictionary<string, string> headers = new Dictionary<string, string>();
+            headers.Add("authorization", _accessToken);
+
+            // Execute Call
+            return HttpRequest.ExecuteGetCallAsync<ResponseTasks, ResponseError>(_baseAddress, addressUri, paramsData: paramsGetTasks, httpRequestOptions: new HttpRequestSettings()
+            {
+                Headers = headers
+            });
         }
 
         /// <summary>
         /// Create Task in List.
         /// </summary>
-        /// <param name="listId">listId</param>
+        /// <param name="paramsCreateTaskInList">param object of Create Task in List request</param>
         /// <param name="requestData">RequestCreateTaskInList object</param>
         /// <returns>ResponseGeneric with ModelTask object Expected</returns>
-        public Task<ResponseGeneric<ModelTask, ResponseError>> CreateTaskInListAsync(string listId, RequestCreateTaskInList requestData)
+        public Task<ResponseGeneric<ResponseModelTask, ResponseError>> CreateTaskInListAsync(ParamsCreateTaskInList paramsCreateTaskInList, RequestCreateTaskInList requestData)
         {
-            if (string.IsNullOrEmpty(listId)) throw new ArgumentException("listId can't be empty or null!");
-            if (requestData == null) throw new ArgumentException("requestData can't be empty or null!");
+            // Address Uri
+            Uri addressUri = new Uri("list/{list_id}/task");
 
-            string requestUri = "list/" + listId + "/task";
-            return ExecutePostCallAsync<ModelTask>(requestUri, requestData);
+            // Headers
+            Dictionary<string, string> headers = new Dictionary<string, string>();
+            headers.Add("authorization", _accessToken);
+
+            // Execute Call
+            return HttpRequest.ExecutePostCallAsync<ResponseModelTask, ResponseError>(_baseAddress, addressUri, paramsData: paramsCreateTaskInList, requestData: requestData, httpRequestOptions: new HttpRequestSettings()
+            {
+                Headers = headers
+            });
         }
 
         /// <summary>
         /// Edit Task informations.
         /// </summary>
-        /// <param name="taskId">taskId</param>
+        /// <param name="paramsEditTask">param object of edit task request</param>
         /// <param name="requestData">RequestEditTask object</param>
         /// <returns>ResponseGeneric with ResponseSuccess object expected</returns>
-        public Task<ResponseGeneric<ResponseSuccess, ResponseError>> EditTaskAsync(string taskId, RequestEditTask requestData)
+        public Task<ResponseGeneric<ResponseSuccess, ResponseError>> EditTaskAsync(ParamsEditTask paramsEditTask, RequestEditTask requestData)
         {
-            if (string.IsNullOrEmpty(taskId)) throw new ArgumentException("taskId can't be empty or null!");
-            if (requestData == null) throw new ArgumentException("requestData can't be empty or null!");
-            string requestUri = "task/" + taskId;
-            return ExecutePutCallAsync<ResponseSuccess>(requestUri, requestData);
-        }
+            // Address Uri
+            Uri addressUri = new Uri("task/{task_id}");
 
+            // Headers
+            Dictionary<string, string> headers = new Dictionary<string, string>();
+            headers.Add("authorization", _accessToken);
+
+            // Execute Call
+            return HttpRequest.ExecutePutCallAsync<ResponseSuccess, ResponseError>(_baseAddress, addressUri, paramsData: paramsEditTask, requestData: requestData, httpRequestOptions: new HttpRequestSettings()
+            {
+                Headers = headers
+            });
+        }
 
         #endregion
 
