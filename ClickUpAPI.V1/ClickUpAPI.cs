@@ -49,7 +49,7 @@ namespace PaironsTech.ClickUpAPI.V1
         public ClickUpAPI(ParamsAccessToken paramAccessToken)
         {
             // Address Uri
-            Uri addressUri = new Uri("oauth/token?client_id={client_id}&client_secret={client_secret}&code={code}");
+            Uri addressUri = new Uri("oauth/token?client_id={client_id}&client_secret={client_secret}&code={code}", UriKind.Relative);
 
             // Execute Call
             ResponseGeneric<ResponseAccessToken, ResponseError> response = HttpRequest.ExecutePostCall<ResponseAccessToken, ResponseError>(_baseAddress, addressUri, paramsData: paramAccessToken);
@@ -73,7 +73,7 @@ namespace PaironsTech.ClickUpAPI.V1
         public ResponseGeneric<ResponseAuthorizedUser, ResponseError> GetAuthorizedUser()
         {
             // Address Uri
-            Uri addressUri = new Uri("/user");
+            Uri addressUri = new Uri("user", UriKind.Relative);
 
             // Headers
             Dictionary<string, string> headers = new Dictionary<string, string>();
@@ -93,7 +93,7 @@ namespace PaironsTech.ClickUpAPI.V1
         public ResponseGeneric<ResponseAuthorizedTeams, ResponseError> GetAuthorizedTeams()
         {
             // Address Uri
-            Uri addressUri = new Uri("team");
+            Uri addressUri = new Uri("team", UriKind.Relative);
 
             // Headers
             Dictionary<string, string> headers = new Dictionary<string, string>();
@@ -114,7 +114,7 @@ namespace PaironsTech.ClickUpAPI.V1
         public ResponseGeneric<ResponseTeam, ResponseError> GetTeamByID(ParamsGetTeamByID paramsGetTeamByID)
         {
             // Address Uri
-            Uri addressUri = new Uri("team/{team_id}");
+            Uri addressUri = new Uri("team/{team_id}", UriKind.Relative);
 
             // Headers
             Dictionary<string, string> headers = new Dictionary<string, string>();
@@ -135,7 +135,7 @@ namespace PaironsTech.ClickUpAPI.V1
         public ResponseGeneric<ResponseTeamSpace, ResponseError> GetTeamSpace(ParamsGetTeamSpace paramsGetTeamSpace)
         {
             // Address Uri
-            Uri addressUri = new Uri("team/{team_id}/space");
+            Uri addressUri = new Uri("team/{team_id}/space", UriKind.Relative);
 
             // Headers
             Dictionary<string, string> headers = new Dictionary<string, string>();
@@ -156,7 +156,7 @@ namespace PaironsTech.ClickUpAPI.V1
         public ResponseGeneric<ResponseSpaceProjects, ResponseError> GetSpaceProjects(ParamsGetSpaceProjects paramsGetSpaceProjects)
         {
             // Address Uri
-            Uri addressUri = new Uri("space/{space_id}/project");
+            Uri addressUri = new Uri("space/{space_id}/project", UriKind.Relative);
 
             // Headers
             Dictionary<string, string> headers = new Dictionary<string, string>();
@@ -178,7 +178,7 @@ namespace PaironsTech.ClickUpAPI.V1
         public ResponseGeneric<ResponseModelList, ResponseError> CreateList(ParamsCreateList paramsCreateList, RequestCreateList requestData)
         {
             // Address Uri
-            Uri addressUri = new Uri("space/{project_id}/project");
+            Uri addressUri = new Uri("space/{project_id}/project", UriKind.Relative);
 
             // Headers
             Dictionary<string, string> headers = new Dictionary<string, string>();
@@ -201,7 +201,7 @@ namespace PaironsTech.ClickUpAPI.V1
         public ResponseGeneric<ResponseModelList, ResponseError> EditList(ParamsEditList paramsEditList, RequestEditList requestData)
         {
             // Address Uri
-            Uri addressUri = new Uri("list/{list_id}/project");
+            Uri addressUri = new Uri("list/{list_id}/project", UriKind.Relative);
 
             // Headers
             Dictionary<string, string> headers = new Dictionary<string, string>();
@@ -224,7 +224,7 @@ namespace PaironsTech.ClickUpAPI.V1
         public ResponseGeneric<ResponseTasks, ResponseError> GetTasks(ParamsGetTasks paramsGetTasks)
         {
             // Address Uri
-            Uri addressUri = new Uri("team/{team_id}/task");
+            Uri addressUri = new Uri("team/{team_id}/task", UriKind.Relative);
 
             // Headers
             Dictionary<string, string> headers = new Dictionary<string, string>();
@@ -246,7 +246,7 @@ namespace PaironsTech.ClickUpAPI.V1
         public ResponseGeneric<ResponseModelTask, ResponseError> CreateTaskInList(ParamsCreateTaskInList paramCreateTaskInList, RequestCreateTaskInList requestData)
         {
             // Address Uri
-            Uri addressUri = new Uri("list/{list_id}/task");
+            Uri addressUri = new Uri("list/{list_id}/task", UriKind.Relative);
 
             // Headers
             Dictionary<string, string> headers = new Dictionary<string, string>();
@@ -269,7 +269,7 @@ namespace PaironsTech.ClickUpAPI.V1
         public ResponseGeneric<ResponseSuccess, ResponseError> EditTask(ParamsEditTask paramsEditTask, RequestEditTask requestData)
         {
             // Address Uri
-            Uri addressUri = new Uri("task/{task_id}");
+            Uri addressUri = new Uri("task/{task_id}", UriKind.Relative);
 
             // Headers
             Dictionary<string, string> headers = new Dictionary<string, string>();
@@ -295,7 +295,7 @@ namespace PaironsTech.ClickUpAPI.V1
         public Task<ResponseGeneric<ResponseAuthorizedUser, ResponseError>> GetAuthorizedUserAsync()
         {
             // Address Uri
-            Uri addressUri = new Uri("user");
+            Uri addressUri = new Uri("user", UriKind.Relative);
 
             // Headers
             Dictionary<string, string> headers = new Dictionary<string, string>();
@@ -315,7 +315,7 @@ namespace PaironsTech.ClickUpAPI.V1
         public Task<ResponseGeneric<ResponseAuthorizedTeams, ResponseError>> GetAuthorizedTeamsAsync()
         {
             // Address Uri
-            Uri addressUri = new Uri("team");
+            Uri addressUri = new Uri("team", UriKind.Relative);
 
             // Headers
             Dictionary<string, string> headers = new Dictionary<string, string>();
@@ -336,7 +336,7 @@ namespace PaironsTech.ClickUpAPI.V1
         public Task<ResponseGeneric<ResponseTeam, ResponseError>> GetTeamByIDAsync(ParamsGetTeamByID paramGetTeamByID)
         {
             // Address Uri
-            Uri addressUri = new Uri("team/{team_id}");
+            Uri addressUri = new Uri("team/{team_id}", UriKind.Relative);
 
             // Headers
             Dictionary<string, string> headers = new Dictionary<string, string>();
@@ -357,7 +357,7 @@ namespace PaironsTech.ClickUpAPI.V1
         public Task<ResponseGeneric<ResponseTeamSpace, ResponseError>> GetTeamSpacesAsync(ParamsGetTeamSpace paramGetTeamSpace)
         {
             // Address Uri
-            Uri addressUri = new Uri("team/{team_id}/sspace");
+            Uri addressUri = new Uri("team/{team_id}/sspace", UriKind.Relative);
 
             // Headers
             Dictionary<string, string> headers = new Dictionary<string, string>();
@@ -378,7 +378,7 @@ namespace PaironsTech.ClickUpAPI.V1
         public Task<ResponseGeneric<ResponseSpaceProjects, ResponseError>> GetSpaceProjectsAsync(ParamsGetSpaceProjects paramsGetSpaceProjects)
         {
             // Address Uri
-            Uri addressUri = new Uri("space/{space_id}/project");
+            Uri addressUri = new Uri("space/{space_id}/project", UriKind.Relative);
 
             // Headers
             Dictionary<string, string> headers = new Dictionary<string, string>();
@@ -400,7 +400,7 @@ namespace PaironsTech.ClickUpAPI.V1
         public Task<ResponseGeneric<ResponseModelList, ResponseError>> CreateListAsync(ParamsCreateList paramsCreateList, RequestCreateList requestData)
         {
             // Address Uri
-            Uri addressUri = new Uri("project/{project_id}/list");
+            Uri addressUri = new Uri("project/{project_id}/list", UriKind.Relative);
 
             // Headers
             Dictionary<string, string> headers = new Dictionary<string, string>();
@@ -423,7 +423,7 @@ namespace PaironsTech.ClickUpAPI.V1
         public Task<ResponseGeneric<ResponseModelList, ResponseError>> EditListAsync(ParamsEditList paramsEditList, RequestEditList requestData)
         {
             // Address Uri
-            Uri addressUri = new Uri("list/{list_id}");
+            Uri addressUri = new Uri("list/{list_id}", UriKind.Relative);
 
             // Headers
             Dictionary<string, string> headers = new Dictionary<string, string>();
@@ -446,7 +446,7 @@ namespace PaironsTech.ClickUpAPI.V1
         public Task<ResponseGeneric<ResponseTasks, ResponseError>> GetTasksAsync(ParamsGetTasks paramsGetTasks)
         {
             // Address Uri
-            Uri addressUri = new Uri("team/{team_id}/task");
+            Uri addressUri = new Uri("team/{team_id}/task", UriKind.Relative);
 
             // Headers
             Dictionary<string, string> headers = new Dictionary<string, string>();
@@ -468,7 +468,7 @@ namespace PaironsTech.ClickUpAPI.V1
         public Task<ResponseGeneric<ResponseModelTask, ResponseError>> CreateTaskInListAsync(ParamsCreateTaskInList paramsCreateTaskInList, RequestCreateTaskInList requestData)
         {
             // Address Uri
-            Uri addressUri = new Uri("list/{list_id}/task");
+            Uri addressUri = new Uri("list/{list_id}/task", UriKind.Relative);
 
             // Headers
             Dictionary<string, string> headers = new Dictionary<string, string>();
@@ -490,7 +490,7 @@ namespace PaironsTech.ClickUpAPI.V1
         public Task<ResponseGeneric<ResponseSuccess, ResponseError>> EditTaskAsync(ParamsEditTask paramsEditTask, RequestEditTask requestData)
         {
             // Address Uri
-            Uri addressUri = new Uri("task/{task_id}");
+            Uri addressUri = new Uri("task/{task_id}", UriKind.Relative);
 
             // Headers
             Dictionary<string, string> headers = new Dictionary<string, string>();
