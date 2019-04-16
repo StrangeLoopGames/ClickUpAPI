@@ -7,7 +7,7 @@ namespace PaironsTech.ClickUpAPI.V1.Responses
     /// <summary>
     /// Response received if there is an error in the Request
     /// </summary>
-    public abstract class ResponseError : IResponse
+    public class ResponseError : IResponse
     {
 
         /// <summary>

@@ -178,7 +178,7 @@ namespace PaironsTech.ClickUpAPI.V1
         public ResponseGeneric<ResponseModelList, ResponseError> CreateList(ParamsCreateList paramsCreateList, RequestCreateList requestData)
         {
             // Address Uri
-            Uri addressUri = new Uri("space/{project_id}/project", UriKind.Relative);
+            Uri addressUri = new Uri("project/{project_id}/list", UriKind.Relative);
 
             // Headers
             Dictionary<string, string> headers = new Dictionary<string, string>();
@@ -201,7 +201,7 @@ namespace PaironsTech.ClickUpAPI.V1
         public ResponseGeneric<ResponseModelList, ResponseError> EditList(ParamsEditList paramsEditList, RequestEditList requestData)
         {
             // Address Uri
-            Uri addressUri = new Uri("list/{list_id}/project", UriKind.Relative);
+            Uri addressUri = new Uri("list/{list_id}", UriKind.Relative);
 
             // Headers
             Dictionary<string, string> headers = new Dictionary<string, string>();
