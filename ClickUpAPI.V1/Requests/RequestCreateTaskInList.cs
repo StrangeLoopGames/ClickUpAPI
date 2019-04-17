@@ -66,8 +66,6 @@ namespace PaironsTech.ClickUpAPI.V1.Requests
             {
                 throw new ArgumentNullException("Name");
             }
-
-            throw new NotImplementedException();
         }
 
         #endregion

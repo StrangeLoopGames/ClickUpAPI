@@ -1,5 +1,6 @@
 ﻿using PaironsTech.ApiHelper.Attributes;
 using PaironsTech.ApiHelper.Interfaces;
+using PaironsTech.ApiHelper.ParamConverters;
 using PaironsTech.ClickUpAPI.V1.Enums;
 using System;
 using System.Collections.Generic;
@@ -49,24 +50,28 @@ namespace PaironsTech.ClickUpAPI.V1.Params
         /// Query only on spaces with this ids
         /// </summary>
         [ParamProperty("space_ids")]
+        [ParamConverter(typeof(ParamConverterIEnumerableString))]
         public List<string> SpaceIds { get; set; }
 
         /// <summary>
         /// Query only on projects with this ids
         /// </summary>
         [ParamProperty("projects_ids")]
+        [ParamConverter(typeof(ParamConverterIEnumerableString))]
         public List<string> ProjectIds { get; set; }
 
         /// <summary>
         /// Query only on lists with this ids
         /// </summary>
         [ParamProperty("list_ids")]
+        [ParamConverter(typeof(ParamConverterIEnumerableString))]
         public List<string> ListIds { get; set; }
 
         /// <summary>
         /// Query only on status with this status
         /// </summary>
         [ParamProperty("statuses")]
+        [ParamConverter(typeof(ParamConverterIEnumerableString))]
         public List<string> Statuses { get; set; }
 
         /// <summary>
@@ -79,42 +84,49 @@ namespace PaironsTech.ClickUpAPI.V1.Params
         /// Query only on task assign at users with this ids
         /// </summary>
         [ParamProperty("assignees")]
+        [ParamConverter(typeof(ParamConverterIEnumerableLong))]
         public List<long> Assignees { get; set; }
 
         /// <summary>
         /// Filter due date greater than posix time
         /// </summary>
         [ParamProperty("due_date_gt")]
+        [ParamConverter(typeof(ParamConverterDateTimeMilliseconds))]
         public DateTime? DueDateGt { get; set; }
 
         /// <summary>
         /// Filter due date less than posix time
         /// </summary>
         [ParamProperty("due_date_lt")]
+        [ParamConverter(typeof(ParamConverterDateTimeMilliseconds))]
         public DateTime? DueDateLt { get; set; }
 
         /// <summary>
         /// Filter date created greater than posix time
         /// </summary>
         [ParamProperty("date_created_gt")]
+        [ParamConverter(typeof(ParamConverterDateTimeMilliseconds))]
         public DateTime? DateCreatedGt { get; set; }
 
         /// <summary>
         /// Filter date created less than posix time
         /// </summary>
         [ParamProperty("date_created_lt")]
+        [ParamConverter(typeof(ParamConverterDateTimeMilliseconds))]
         public DateTime? DateCreatedLt { get; set; }
 
         /// <summary>
         /// Filter date updated greater than posix time
         /// </summary>
         [ParamProperty("date_updated_gt")]
+        [ParamConverter(typeof(ParamConverterDateTimeMilliseconds))]
         public DateTime? DateUpdatedGt { get; set; }
 
         /// <summary>
         /// Filter date updated less than posix time
         /// </summary>
         [ParamProperty("date_updated_lt")]
+        [ParamConverter(typeof(ParamConverterDateTimeMilliseconds))]
         public DateTime? DateUpdatedLt { get; set; }
 
         #endregion

@@ -1,9 +1,12 @@
 ﻿using NUnit.Framework;
 using PaironsTech.ApiHelper;
+using PaironsTech.ClickUpAPI.V1.Enums;
 using PaironsTech.ClickUpAPI.V1.Params;
 using PaironsTech.ClickUpAPI.V1.Requests;
 using PaironsTech.ClickUpAPI.V1.Responses;
 using PaironsTech.ClickUpAPI.V1.Responses.Model;
+using System;
+using System.Collections.Generic;
 using System.Net;
 
 namespace PaironsTech.ClickUpAPI.V1.Tests
@@ -16,10 +19,39 @@ namespace PaironsTech.ClickUpAPI.V1.Tests
     public class ClickUpAPITests
     {
 
+        #region Private Test Variables
+
         /// <summary>
         /// Access Token of ClickUp, used for test request
         /// </summary>
-        private static readonly string _accessToken = "pk_RWWD1Y3IV5ZLTI1EOSG9ES48RVYCMZRQ";
+        private static readonly string _accessToken = "pk_1O9TG5WQIC8E656880JH8KITR28W4V3A";
+
+        /// <summary>
+        /// The Team Id used for test request
+        /// </summary>
+        private static readonly string _teamId = "2180065";
+
+        /// <summary>
+        /// The Space Id used for test request
+        /// </summary>
+        private static readonly string _spaceId = "2271405";
+
+        /// <summary>
+        /// The Project Id used for test request
+        /// </summary>
+        private static readonly string _projectId = "2697881";
+
+        /// <summary>
+        /// The List Id used for test request
+        /// </summary>
+        private static readonly string _listId = "4230623";
+
+        /// <summary>
+        /// The Task Id used for test request
+        /// </summary>
+        private static readonly string _taskId = "tdnaf";
+
+        #endregion
 
 
         #region Tests Sync Methods
@@ -30,22 +62,29 @@ namespace PaironsTech.ClickUpAPI.V1.Tests
         [Test]
         public void ShouldGetAuthorizedUser()
         {
-            ClickUpAPI clickUpAPI = new ClickUpAPI(_accessToken);
-            ResponseGeneric<ResponseAuthorizedUser, ResponseError> response = clickUpAPI.GetAuthorizedUser();
-            if (response.RequestStatus == HttpStatusCode.OK)
+            try
             {
-                if (response.ResponseSuccess != null)
+                ClickUpAPI clickUpAPI = new ClickUpAPI(_accessToken);
+                ResponseGeneric<ResponseAuthorizedUser, ResponseError> responseAuthorizedUser = clickUpAPI.GetAuthorizedUser();
+                if (responseAuthorizedUser != null)
                 {
-                    Assert.That(response.ResponseSuccess != null); // Always Return True
+                    if (responseAuthorizedUser.ResponseSuccess != null || responseAuthorizedUser.ResponseError != null)
+                    {
+                        Assert.That(responseAuthorizedUser.ResponseSuccess != null || responseAuthorizedUser.ResponseError != null);
+                    }
+                    else
+                    {
+                        Assert.That(responseAuthorizedUser.ResponseSuccess != null || responseAuthorizedUser.ResponseError != null, "The ResponseSuccess and the ResponseError of the GenericResponse  of the request through the method 'GetAuthorizedUser' are null!"); // Always return false
+                    }
                 }
                 else
                 {
-                    Assert.That(response.ResponseSuccess != null, "The ResponseSuccess of the Response of the request 'GetAuthorizedUser' is equals to null."); // Always return false
+                    Assert.That(responseAuthorizedUser != null, "The Response of the request through the method 'GetAuthorizedUser' is null!"); // Always return false
                 }
             }
-            else
+            catch (Exception ex)
             {
-                Assert.That(response.RequestStatus == HttpStatusCode.OK, "The Request Status of the Response of the request 'GetAuthorizedUser' is not equals to 200 [OK status]"); // Always return false
+                Assert.That(true == false, "The Test Method of 'GetAuthorizedUser' generate exception: " + ex.Message); // Always return false
             }
         }
 
@@ -55,22 +94,29 @@ namespace PaironsTech.ClickUpAPI.V1.Tests
         [Test]
         public void ShouldGetAuthorizedTeams()
         {
-            ClickUpAPI clickUpAPI = new ClickUpAPI(_accessToken);
-            ResponseGeneric<ResponseAuthorizedTeams, ResponseError> response = clickUpAPI.GetAuthorizedTeams();
-            if (response.RequestStatus == HttpStatusCode.OK)
+            try
             {
-                if (response.ResponseSuccess != null)
+                ClickUpAPI clickUpAPI = new ClickUpAPI(_accessToken);
+                ResponseGeneric<ResponseAuthorizedTeams, ResponseError> responseAuthorizedTeams = clickUpAPI.GetAuthorizedTeams();
+                if (responseAuthorizedTeams != null)
                 {
-                    Assert.That(response.ResponseSuccess != null); // Always Return True
+                    if (responseAuthorizedTeams.ResponseSuccess != null || responseAuthorizedTeams.ResponseError != null)
+                    {
+                        Assert.That(responseAuthorizedTeams.ResponseSuccess != null || responseAuthorizedTeams.ResponseError != null);
+                    }
+                    else
+                    {
+                        Assert.That(responseAuthorizedTeams.ResponseSuccess != null || responseAuthorizedTeams.ResponseError != null, "The ResponseSuccess and the ResponseError of the GenericResponse of the request through the method 'GetAuthorizedTeams' are null!"); // Always return false
+                    }
                 }
                 else
                 {
-                    Assert.That(response.ResponseSuccess != null, "The ResponseSuccess of the Response of the request 'GetAuthorizedTeams' is equals to null."); // Always return false
+                    Assert.That(responseAuthorizedTeams != null, "The Response of the request through the method 'GetAuthorizedTeams' is null!"); // Always return false
                 }
             }
-            else
+            catch (Exception ex)
             {
-                Assert.That(response.RequestStatus == HttpStatusCode.OK, "The Request Status of the Response of the request 'GetAuthorizedTeams' is not equals to 200 [OK status]"); // Always return false
+                Assert.That(true == false, "The Test Method of 'GetAuthorizedTeams' generate exception: " + ex.Message); // Always return false
             }
         }
 
@@ -80,50 +126,29 @@ namespace PaironsTech.ClickUpAPI.V1.Tests
         [Test]
         public void ShouldGetTeamByID()
         {
-            ClickUpAPI clickUpAPI = new ClickUpAPI(_accessToken);
-
-            // I Donwload a list of teams and I get the first team if exist
-            ResponseGeneric<ResponseAuthorizedTeams, ResponseError> responseAuthorizedTeams = clickUpAPI.GetAuthorizedTeams();
-            if (responseAuthorizedTeams.RequestStatus == HttpStatusCode.OK)
+            try
             {
-                if (responseAuthorizedTeams.ResponseSuccess != null)
+                ClickUpAPI clickUpAPI = new ClickUpAPI(_accessToken);
+                ResponseGeneric<ResponseTeam, ResponseError> responseTeamById = clickUpAPI.GetTeamByID(new ParamsGetTeamByID() { TeamId = _teamId });
+                if (responseTeamById != null)
                 {
-                    if (responseAuthorizedTeams.ResponseSuccess.Teams.Count != 0)
+                    if (responseTeamById.ResponseSuccess != null || responseTeamById.ResponseError != null)
                     {
-                        ResponseGeneric<ResponseTeam, ResponseError> responseGetTeamByID = clickUpAPI.GetTeamByID(new ParamsGetTeamByID()
-                        {
-                            TeamId = responseAuthorizedTeams.ResponseSuccess.Teams[0].Id
-                        });
-
-                        if (responseGetTeamByID.RequestStatus == HttpStatusCode.OK)
-                        {
-                            if (responseGetTeamByID.ResponseSuccess != null)
-                            {
-                                Assert.That(responseGetTeamByID.ResponseSuccess != null); // Always return true
-                            }
-                            else
-                            {
-                                Assert.That(responseGetTeamByID.ResponseSuccess != null, "The ResponseSuccess of the Response of the request 'GetTeamByID' in ShouldGetTeamByID() method is equals to null."); // Always return false
-                            }
-                        }
-                        else
-                        {
-                            Assert.That(responseGetTeamByID.RequestStatus == HttpStatusCode.OK, "The Request Status of the Response of the request 'GetTeamByID' in ShouldGetTeamByID() method is not equals to 200 [OK status]"); // Always return false
-                        }
+                        Assert.That(responseTeamById.ResponseSuccess != null || responseTeamById.ResponseError != null);
                     }
                     else
                     {
-                        Assert.That(responseAuthorizedTeams.ResponseSuccess.Teams.Count == 0, "The ResponseSuccess of the Response of the request 'GetAuthorizedTeams' in ShouldGetTeamByID() method not have childs.");   // Always return true
+                        Assert.That(responseTeamById.ResponseSuccess != null || responseTeamById.ResponseError != null, "The ResponseSuccess and the ResponseError of the GenericResponse of the request through the method 'GetTeamByID' are null!"); // Always return false
                     }
                 }
                 else
                 {
-                    Assert.That(responseAuthorizedTeams.ResponseSuccess != null, "The ResponseSuccess of the Response of the request 'GetAuthorizedTeams' in ShouldGetTeamByID() method is equals to null."); // Always return false
+                    Assert.That(responseTeamById != null, "The Response of the request through the method 'GetTeamByID' is null!"); // Always return false
                 }
             }
-            else
+            catch (Exception ex)
             {
-                Assert.That(responseAuthorizedTeams.RequestStatus == HttpStatusCode.OK, "The Request Status of the Response of the request 'GetAuthorizedTeams' in ShouldGetTeamByID() method is not equals to 200 [OK status]"); // Always return false
+                Assert.That(true == false, "The Test Method of 'GetTeamByID' generate exception: " + ex.Message); // Always return false
             }
         }
 
@@ -133,50 +158,29 @@ namespace PaironsTech.ClickUpAPI.V1.Tests
         [Test]
         public void ShouldGetTeamSpace()
         {
-            ClickUpAPI clickUpAPI = new ClickUpAPI(_accessToken);
-
-            // I Donwload a list of teams and I get the first team if exist
-            ResponseGeneric<ResponseAuthorizedTeams, ResponseError> responseAuthorizedTeams = clickUpAPI.GetAuthorizedTeams();
-            if (responseAuthorizedTeams.RequestStatus == HttpStatusCode.OK)
+            try
             {
-                if (responseAuthorizedTeams.ResponseSuccess != null)
+                ClickUpAPI clickUpAPI = new ClickUpAPI(_accessToken);
+                ResponseGeneric<ResponseTeamSpace, ResponseError> responseTeamSpace = clickUpAPI.GetTeamSpace(new ParamsGetTeamSpace() { TeamId = _teamId });
+                if (responseTeamSpace != null)
                 {
-                    if (responseAuthorizedTeams.ResponseSuccess.Teams.Count != 0)
+                    if (responseTeamSpace.ResponseSuccess != null || responseTeamSpace.ResponseError != null)
                     {
-                        ResponseGeneric<ResponseTeamSpace, ResponseError> responseGetTeamSpace = clickUpAPI.GetTeamSpace(new ParamsGetTeamSpace()
-                        {
-                            TeamId = responseAuthorizedTeams.ResponseSuccess.Teams[0].Id
-                        });
-
-                        if (responseGetTeamSpace.RequestStatus == HttpStatusCode.OK)
-                        {
-                            if (responseGetTeamSpace.ResponseSuccess != null)
-                            {
-                                Assert.That(responseGetTeamSpace.ResponseSuccess != null); // Always return true
-                            }
-                            else
-                            {
-                                Assert.That(responseGetTeamSpace.ResponseSuccess != null, "The ResponseSuccess of the Response of the request 'GetTeamSpace' in ShouldGetTeamSpace() method is equals to null."); // Always return false
-                            }
-                        }
-                        else
-                        {
-                            Assert.That(responseGetTeamSpace.RequestStatus == HttpStatusCode.OK, "The Request Status of the Response of the request 'GetTeamSpace' in ShouldGetTeamSpace() method is not equals to 200 [OK status]"); // Always return false
-                        }
+                        Assert.That(responseTeamSpace.ResponseSuccess != null || responseTeamSpace.ResponseError != null);
                     }
                     else
                     {
-                        Assert.That(responseAuthorizedTeams.ResponseSuccess.Teams.Count == 0, "The ResponseSuccess of the Response of the request 'GetAuthorizedTeams' in ShouldGetTeamSpace() method not have childs.");   // Always return true
+                        Assert.That(responseTeamSpace.ResponseSuccess != null || responseTeamSpace.ResponseError != null, "The ResponseSuccess and the ResponseError of the GenericResponse of the request through the method 'GetTeamSpace' are null!"); // Always return false
                     }
                 }
                 else
                 {
-                    Assert.That(responseAuthorizedTeams.ResponseSuccess != null, "The ResponseSuccess of the Response of the request 'GetAuthorizedTeams' in ShouldGetTeamSpace() method is equals to null."); // Always return false
+                    Assert.That(responseTeamSpace != null, "The Response of the request through the method 'GetTeamSpace' is null!"); // Always return false
                 }
             }
-            else
+            catch (Exception ex)
             {
-                Assert.That(responseAuthorizedTeams.RequestStatus == HttpStatusCode.OK, "The Request Status of the Response of the request 'GetAuthorizedTeams' in ShouldGetTeamSpace() method is not equals to 200 [OK status]"); // Always return false
+                Assert.That(true == false, "The Test Method of 'GetTeamSpace' generate exception: " + ex.Message); // Always return false
             }
         }
 
@@ -186,76 +190,29 @@ namespace PaironsTech.ClickUpAPI.V1.Tests
         [Test]
         public void ShouldGetSpaceProjects()
         {
-            ClickUpAPI clickUpAPI = new ClickUpAPI(_accessToken);
-
-            // I Donwload a list of teams and I get the first team if exist
-            ResponseGeneric<ResponseAuthorizedTeams, ResponseError> responseAuthorizedTeams = clickUpAPI.GetAuthorizedTeams();
-            if (responseAuthorizedTeams.RequestStatus == HttpStatusCode.OK)
+            try
             {
-                if (responseAuthorizedTeams.ResponseSuccess != null)
+                ClickUpAPI clickUpAPI = new ClickUpAPI(_accessToken);
+                ResponseGeneric<ResponseSpaceProjects, ResponseError> responseSpaceProjects = clickUpAPI.GetSpaceProjects(new ParamsGetSpaceProjects() { SpaceId = _spaceId });
+                if (responseSpaceProjects != null)
                 {
-                    if (responseAuthorizedTeams.ResponseSuccess.Teams.Count != 0)
+                    if (responseSpaceProjects.ResponseSuccess != null || responseSpaceProjects.ResponseError != null)
                     {
-                        ResponseGeneric<ResponseTeamSpace, ResponseError> responseGetTeamSpace = clickUpAPI.GetTeamSpace(new ParamsGetTeamSpace()
-                        {
-                            TeamId = responseAuthorizedTeams.ResponseSuccess.Teams[0].Id
-                        });
-
-                        if (responseGetTeamSpace.RequestStatus == HttpStatusCode.OK)
-                        {
-                            if (responseGetTeamSpace.ResponseSuccess != null)
-                            {
-                                if (responseGetTeamSpace.ResponseSuccess.Spaces.Count != 0)
-                                {
-                                    ResponseGeneric<ResponseSpaceProjects, ResponseError> responseGetSpaceProjects = clickUpAPI.GetSpaceProjects(new ParamsGetSpaceProjects()
-                                    {
-                                        SpaceId = responseGetTeamSpace.ResponseSuccess.Spaces[0].Id
-                                    });
-
-                                    if (responseGetSpaceProjects.RequestStatus == HttpStatusCode.OK)
-                                    {
-                                        if (responseGetSpaceProjects.ResponseSuccess != null)
-                                        {
-                                            Assert.That(responseGetSpaceProjects.ResponseSuccess != null); // Always return true
-                                        }
-                                        else
-                                        {
-                                            Assert.That(responseGetSpaceProjects.ResponseSuccess != null, "The ResponseSuccess of the Response of the request 'GetSpaceProjects' in ShouldGetSpaceProjects() method is equals to null."); // Always return false
-                                        }
-                                    }
-                                    else
-                                    {
-                                        Assert.That(responseGetSpaceProjects.RequestStatus == HttpStatusCode.OK, "The Request Status of the Response of the request 'GetSpaceProjects' in ShouldGetSpaceProjects() method is not equals to 200 [OK status]"); // Always return false
-                                    }
-                                }
-                                else
-                                {
-                                    Assert.That(responseGetTeamSpace.ResponseSuccess.Spaces.Count != 0, "The ResponseSuccess of the Response of the request 'GetTeamSpace' in ShouldGetSpaceProjects() method return 0 spaces. If thereisn't spaces test can be able to access at Space Id and test 'GetSpaceProjects' method"); // Always return false
-                                }
-                            }
-                            else
-                            {
-                                Assert.That(responseGetTeamSpace.ResponseSuccess != null, "The ResponseSuccess of the Response of the request 'GetTeamSpace' in ShouldGetSpaceProjects() method is equals to null."); // Always return false
-                            }
-                        }
-                        else
-                        {
-                            Assert.That(responseGetTeamSpace.RequestStatus == HttpStatusCode.OK, "The Request Status of the Response of the request 'GetTeamSpace' in ShouldGetSpaceProjects() method is not equals to 200 [OK status]"); // Always return false
-                        }
+                        Assert.That(responseSpaceProjects.ResponseSuccess != null || responseSpaceProjects.ResponseError != null);
                     }
                     else
                     {
-                        Assert.That(responseAuthorizedTeams.ResponseSuccess.Teams.Count == 0, "The ResponseSuccess of the Response of the request 'GetAuthorizedTeams' in ShouldGetSpaceProjects() method not have childs.");   // Always return true
+                        Assert.That(responseSpaceProjects.ResponseSuccess != null || responseSpaceProjects.ResponseError != null, "The ResponseSuccess and the ResponseError of the GenericResponse of the request through the method 'GetSpaceProjects' are null!"); // Always return false
                     }
                 }
                 else
                 {
-                    Assert.That(responseAuthorizedTeams.ResponseSuccess != null, "The ResponseSuccess of the Response of the request 'GetAuthorizedTeams' in ShouldGetSpaceProjects() method is equals to null."); // Always return false
+                    Assert.That(responseSpaceProjects != null, "The Response of the request through the method 'GetSpaceProjects' is null!"); // Always return false
                 }
             }
-            else
+            catch (Exception ex)
             {
-                Assert.That(responseAuthorizedTeams.RequestStatus == HttpStatusCode.OK, "The Request Status of the Response of the request 'GetAuthorizedTeams' in ShouldGetSpaceProjects() method is not equals to 200 [OK status]"); // Always return false
+                Assert.That(true == false, "The Test Method of 'GetSpaceProjects' generate exception: " + ex.Message); // Always return false
             }
         }
 
@@ -265,109 +222,36 @@ namespace PaironsTech.ClickUpAPI.V1.Tests
         [Test]
         public void ShouldCreateList()
         {
-            ClickUpAPI clickUpAPI = new ClickUpAPI(_accessToken);
-
-            // I Donwload a list of teams and I get the first team if exist
-            ResponseGeneric<ResponseAuthorizedTeams, ResponseError> responseAuthorizedTeams = clickUpAPI.GetAuthorizedTeams();
-            if (responseAuthorizedTeams.RequestStatus == HttpStatusCode.OK)
+            try
             {
-                if (responseAuthorizedTeams.ResponseSuccess != null)
-                {
-                    if (responseAuthorizedTeams.ResponseSuccess.Teams.Count != 0)
+                ClickUpAPI clickUpAPI = new ClickUpAPI(_accessToken);
+                ResponseGeneric<ResponseModelList, ResponseError> responseCreateList = clickUpAPI.CreateList
+                (
+                    new ParamsCreateList() { ProjectId = _projectId },
+                    new RequestCreateList()
                     {
-                        ResponseGeneric<ResponseTeamSpace, ResponseError> responseGetTeamSpace = clickUpAPI.GetTeamSpace(new ParamsGetTeamSpace()
-                        {
-                            TeamId = responseAuthorizedTeams.ResponseSuccess.Teams[0].Id
-                        });
-
-                        if (responseGetTeamSpace.RequestStatus == HttpStatusCode.OK)
-                        {
-                            if (responseGetTeamSpace.ResponseSuccess != null)
-                            {
-                                if (responseGetTeamSpace.ResponseSuccess.Spaces.Count != 0)
-                                {
-                                    ResponseGeneric<ResponseSpaceProjects, ResponseError> responseGetSpaceProjects = clickUpAPI.GetSpaceProjects(new ParamsGetSpaceProjects()
-                                    {
-                                        SpaceId = responseGetTeamSpace.ResponseSuccess.Spaces[0].Id
-                                    });
-
-                                    if (responseGetSpaceProjects.RequestStatus == HttpStatusCode.OK)
-                                    {
-                                        if (responseGetSpaceProjects.ResponseSuccess != null)
-                                        {
-                                            if (responseGetSpaceProjects.ResponseSuccess.Projects.Count != 0)
-                                            {
-                                                ResponseGeneric<ResponseModelList, ResponseError> responseCreateList = clickUpAPI.CreateList
-                                                (
-                                                    new ParamsCreateList()
-                                                    {
-                                                        ProjectId = responseGetSpaceProjects.ResponseSuccess.Projects[0].Id
-                                                    },
-                                                    new RequestCreateList()
-                                                    {
-                                                        Name = "New List From ClickUpAPI.V1.Tests"
-                                                    }
-                                                );
-
-                                                if (responseCreateList.RequestStatus == HttpStatusCode.OK)
-                                                {
-                                                    if (responseCreateList.ResponseSuccess != null)
-                                                    {
-                                                        Assert.That(responseCreateList.ResponseSuccess != null); // Always return true
-                                                    }
-                                                    else
-                                                    {
-                                                        Assert.That(responseCreateList.ResponseSuccess != null, "The ResponseSuccess of the Response of the request 'CreateList' in ShouldCreateList() method is equals to null."); // Always return false
-                                                    }
-                                                }
-                                                else
-                                                {
-                                                    Assert.That(responseCreateList.RequestStatus == HttpStatusCode.OK, "The Request Status of the Response of the request 'CreateList' in ShouldCreateList() method is not equals to 200 [OK status]"); // Always return false
-                                                }
-                                            }
-                                            else
-                                            {
-                                                Assert.That(responseGetSpaceProjects.ResponseSuccess.Projects.Count != 0, "The ResponseSuccess of the Response of the request 'GetSpaceProjects' in ShouldCreateList() method return 0 projects. If there isn't project, test can not be able to access at project Id and test 'CreateList' method"); // Always return false
-                                            }
-                                        }
-                                        else
-                                        {
-                                            Assert.That(responseGetSpaceProjects.ResponseSuccess != null, "The ResponseSuccess of the Response of the request 'GetSpaceProjects' in ShouldCreateList() method is equals to null."); // Always return false
-                                        }
-                                    }
-                                    else
-                                    {
-                                        Assert.That(responseGetSpaceProjects.RequestStatus == HttpStatusCode.OK, "The Request Status of the Response of the request 'GetSpaceProjects' in ShouldCreateList() method is not equals to 200 [OK status]"); // Always return false
-                                    }
-                                }
-                                else
-                                {
-                                    Assert.That(responseGetTeamSpace.ResponseSuccess.Spaces.Count != 0, "The ResponseSuccess of the Response of the request 'GetTeamSpace' in ShouldCreateList() method return 0 spaces. If thereisn't spaces test can be able to access at Space Id and test 'GetSpaceProjects' method"); // Always return false
-                                }
-                            }
-                            else
-                            {
-                                Assert.That(responseGetTeamSpace.ResponseSuccess != null, "The ResponseSuccess of the Response of the request 'GetTeamSpace' in ShouldCreateList() method is equals to null."); // Always return false
-                            }
-                        }
-                        else
-                        {
-                            Assert.That(responseGetTeamSpace.RequestStatus == HttpStatusCode.OK, "The Request Status of the Response of the request 'GetTeamSpace' in ShouldCreateList() method is not equals to 200 [OK status]"); // Always return false
-                        }
+                        Name = "New List created from ClickUpAPI.V1.Test"
+                    }
+                );
+                if (responseCreateList != null)
+                {
+                    if (responseCreateList.ResponseSuccess != null || responseCreateList.ResponseError != null)
+                    {
+                        Assert.That(responseCreateList.ResponseSuccess != null || responseCreateList.ResponseError != null);
                     }
                     else
                     {
-                        Assert.That(responseAuthorizedTeams.ResponseSuccess.Teams.Count == 0, "The ResponseSuccess of the Response of the request 'GetAuthorizedTeams' in ShouldCreateList() method not have childs.");   // Always return true
+                        Assert.That(responseCreateList.ResponseSuccess != null || responseCreateList.ResponseError != null, "The ResponseSuccess and the ResponseError of the GenericResponse of the request through the method 'CreateList' are null!"); // Always return false
                     }
                 }
                 else
                 {
-                    Assert.That(responseAuthorizedTeams.ResponseSuccess != null, "The ResponseSuccess of the Response of the request 'GetAuthorizedTeams' in ShouldCreateList() method is equals to null."); // Always return false
+                    Assert.That(responseCreateList != null, "The Response of the request through the method 'CreateList' is null!"); // Always return false
                 }
             }
-            else
+            catch (Exception ex)
             {
-                Assert.That(responseAuthorizedTeams.RequestStatus == HttpStatusCode.OK, "The Request Status of the Response of the request 'GetAuthorizedTeams' in ShouldCreateList() method is not equals to 200 [OK status]"); // Always return false
+                Assert.That(true == false, "The Test Method of 'CreateList' generate exception: " + ex.Message); // Always return false
             }
         }
 
@@ -377,163 +261,165 @@ namespace PaironsTech.ClickUpAPI.V1.Tests
         [Test]
         public void ShouldEditList()
         {
-            ClickUpAPI clickUpAPI = new ClickUpAPI(_accessToken);
-
-            // I Donwload a list of teams and I get the first team if exist
-            ResponseGeneric<ResponseAuthorizedTeams, ResponseError> responseAuthorizedTeams = clickUpAPI.GetAuthorizedTeams();
-            if (responseAuthorizedTeams.RequestStatus == HttpStatusCode.OK)
+            try
             {
-                if (responseAuthorizedTeams.ResponseSuccess != null)
-                {
-                    if (responseAuthorizedTeams.ResponseSuccess.Teams.Count != 0)
+                ClickUpAPI clickUpAPI = new ClickUpAPI(_accessToken);
+                ResponseGeneric<ResponseModelList, ResponseError> responseEditList = clickUpAPI.EditList
+                (
+                    new ParamsEditList() { ListId = _listId },
+                    new RequestEditList()
                     {
-                        ResponseGeneric<ResponseTeamSpace, ResponseError> responseGetTeamSpace = clickUpAPI.GetTeamSpace(new ParamsGetTeamSpace()
-                        {
-                            TeamId = responseAuthorizedTeams.ResponseSuccess.Teams[0].Id
-                        });
-
-                        if (responseGetTeamSpace.RequestStatus == HttpStatusCode.OK)
-                        {
-                            if (responseGetTeamSpace.ResponseSuccess != null)
-                            {
-                                if (responseGetTeamSpace.ResponseSuccess.Spaces.Count != 0)
-                                {
-                                    ResponseGeneric<ResponseSpaceProjects, ResponseError> responseGetSpaceProjects = clickUpAPI.GetSpaceProjects(new ParamsGetSpaceProjects()
-                                    {
-                                        SpaceId = responseGetTeamSpace.ResponseSuccess.Spaces[0].Id
-                                    });
-
-                                    if (responseGetSpaceProjects.RequestStatus == HttpStatusCode.OK)
-                                    {
-                                        if (responseGetSpaceProjects.ResponseSuccess != null)
-                                        {
-                                            if (responseGetSpaceProjects.ResponseSuccess.Projects.Count != 0)
-                                            {
-                                                ResponseGeneric<ResponseModelList, ResponseError> responseCreateList = clickUpAPI.CreateList
-                                                (
-                                                    new ParamsCreateList()
-                                                    {
-                                                        ProjectId = responseGetSpaceProjects.ResponseSuccess.Projects[0].Id
-                                                    },
-                                                    new RequestCreateList()
-                                                    {
-                                                        Name = "New List From ClickUpAPI.V1.Tests to Edit"
-                                                    }
-                                                );
-
-                                                if (responseCreateList.RequestStatus == HttpStatusCode.OK)
-                                                {
-                                                    if (responseCreateList.ResponseSuccess != null)
-                                                    {
-                                                        ResponseGeneric<ResponseModelList, ResponseError> responseEditList = clickUpAPI.EditList
-                                                        (
-                                                            new ParamsEditList()
-                                                            {
-                                                                ListId = responseCreateList.ResponseSuccess.Id
-                                                            },
-                                                            new RequestEditList()
-                                                            {
-                                                                Name = "List Edit From ClickUpAPI.V1.Tests"
-                                                            }
-                                                        );
-
-                                                        if (responseEditList.RequestStatus == HttpStatusCode.OK)
-                                                        {
-                                                            if (responseEditList.ResponseSuccess != null)
-                                                            {
-                                                                Assert.That(responseEditList.ResponseSuccess != null); // Always return true
-                                                            }
-                                                            else
-                                                            {
-                                                                Assert.That(responseCreateList.ResponseSuccess != null, "The ResponseSuccess of the Response of the request 'EditList' in ShouldEditList() method is equals to null."); // Always return false
-                                                            }
-                                                        }
-                                                        else
-                                                        {
-                                                            Assert.That(responseCreateList.RequestStatus == HttpStatusCode.OK, "The Request Status of the Response of the request 'EditList' in ShouldEditList() method is not equals to 200 [OK status]"); // Always return false
-                                                        }
-                                                    }
-                                                    else
-                                                    {
-                                                        Assert.That(responseCreateList.ResponseSuccess != null, "The ResponseSuccess of the Response of the request 'CreateList' in ShouldEditList() method is equals to null."); // Always return false
-                                                    }
-                                                }
-                                                else
-                                                {
-                                                    Assert.That(responseCreateList.RequestStatus == HttpStatusCode.OK, "The Request Status of the Response of the request 'CreateList' in ShouldEditList() method is not equals to 200 [OK status]"); // Always return false
-                                                }
-                                            }
-                                            else
-                                            {
-                                                Assert.That(responseGetSpaceProjects.ResponseSuccess.Projects.Count != 0, "The ResponseSuccess of the Response of the request 'GetSpaceProjects' in ShouldEditList() method return 0 projects. If there isn't project, test can not be able to access at project Id and test 'CreateList' method"); // Always return false
-                                            }
-                                        }
-                                        else
-                                        {
-                                            Assert.That(responseGetSpaceProjects.ResponseSuccess != null, "The ResponseSuccess of the Response of the request 'GetSpaceProjects' in ShouldEditList() method is equals to null."); // Always return false
-                                        }
-                                    }
-                                    else
-                                    {
-                                        Assert.That(responseGetSpaceProjects.RequestStatus == HttpStatusCode.OK, "The Request Status of the Response of the request 'GetSpaceProjects' in ShouldEditList() method is not equals to 200 [OK status]"); // Always return false
-                                    }
-                                }
-                                else
-                                {
-                                    Assert.That(responseGetTeamSpace.ResponseSuccess.Spaces.Count != 0, "The ResponseSuccess of the Response of the request 'GetTeamSpace' in ShouldEditList() method return 0 spaces. If thereisn't spaces test can be able to access at Space Id and test 'GetSpaceProjects' method"); // Always return false
-                                }
-                            }
-                            else
-                            {
-                                Assert.That(responseGetTeamSpace.ResponseSuccess != null, "The ResponseSuccess of the Response of the request 'GetTeamSpace' in ShouldEditList() method is equals to null."); // Always return false
-                            }
-                        }
-                        else
-                        {
-                            Assert.That(responseGetTeamSpace.RequestStatus == HttpStatusCode.OK, "The Request Status of the Response of the request 'GetTeamSpace' in ShouldEditList() method is not equals to 200 [OK status]"); // Always return false
-                        }
+                        Name = "Edit List from ClickUpAPI.V1.Test "
+                    }
+                );
+                if (responseEditList != null)
+                {
+                    if (responseEditList.ResponseSuccess != null || responseEditList.ResponseError != null)
+                    {
+                        Assert.That(responseEditList.ResponseSuccess != null || responseEditList.ResponseError != null);
                     }
                     else
                     {
-                        Assert.That(responseAuthorizedTeams.ResponseSuccess.Teams.Count == 0, "The ResponseSuccess of the Response of the request 'GetAuthorizedTeams' in ShouldEditList() method not have childs.");   // Always return true
+                        Assert.That(responseEditList.ResponseSuccess != null || responseEditList.ResponseError != null, "The ResponseSuccess and the ResponseError of the GenericResponse of the request through the method 'EditList' are null!"); // Always return false
                     }
                 }
                 else
                 {
-                    Assert.That(responseAuthorizedTeams.ResponseSuccess != null, "The ResponseSuccess of the Response of the request 'GetAuthorizedTeams' in ShouldEditList() method is equals to null."); // Always return false
+                    Assert.That(responseEditList != null, "The Response of the request through the method 'EditList' is null!"); // Always return false
                 }
             }
-            else
+            catch (Exception ex)
             {
-                Assert.That(responseAuthorizedTeams.RequestStatus == HttpStatusCode.OK, "The Request Status of the Response of the request 'GetAuthorizedTeams' in ShouldEditList() method is not equals to 200 [OK status]"); // Always return false
+                Assert.That(true == false, "The Test Method of 'EditList' generate exception: " + ex.Message); // Always return false
             }
         }
 
         /// <summary>
-        /// 
+        /// Tests of GetTasks method
         /// </summary>
         [Test]
         public void ShouldGetTasks()
         {
-
+            try
+            {
+                ClickUpAPI clickUpAPI = new ClickUpAPI(_accessToken);
+                ResponseGeneric<ResponseTasks, ResponseError> responseGetTasks = clickUpAPI.GetTasks
+                (
+                    new ParamsGetTasks()
+                    {
+                        TeamId = _teamId,
+                        ListIds = new List<string>()
+                        {
+                            _listId, _listId
+                        }
+                    }
+                );
+                if (responseGetTasks != null)
+                {
+                    if (responseGetTasks.ResponseSuccess != null || responseGetTasks.ResponseError != null)
+                    {
+                        Assert.That(responseGetTasks.ResponseSuccess != null || responseGetTasks.ResponseError != null);
+                    }
+                    else
+                    {
+                        Assert.That(responseGetTasks.ResponseSuccess != null || responseGetTasks.ResponseError != null, "The ResponseSuccess and the ResponseError of the GenericResponse of the request through the method 'GetTasks' are null!"); // Always return false
+                    }
+                }
+                else
+                {
+                    Assert.That(responseGetTasks != null, "The Response of the request through the method 'GetTasks' is null!"); // Always return false
+                }
+            }
+            catch (Exception ex)
+            {
+                Assert.That(true == false, "The Test Method of 'GetTasks' generate exception: " + ex.Message); // Always return false
+            }
         }
 
         /// <summary>
-        /// 
+        /// Tests of CreateTaskInList method
         /// </summary>
         [Test]
         public void ShouldCreateTaskInList()
         {
-
+            try
+            {
+                ClickUpAPI clickUpAPI = new ClickUpAPI(_accessToken);
+                ResponseGeneric<ResponseModelTask, ResponseError> responseCreateTaskInList = clickUpAPI.CreateTaskInList
+                (
+                    new ParamsCreateTaskInList()
+                    {
+                        ListId = _listId
+                    },
+                    new RequestCreateTaskInList()
+                    {
+                        Name = "New Task created from tests of ClickUpAPI.V1",
+                        DueDate = new DateTime(2022, 04, 17, 15, 17, 13),
+                        Priority = TaskPriority.Low
+                    }
+                );
+                if (responseCreateTaskInList != null)
+                {
+                    if (responseCreateTaskInList.ResponseSuccess != null || responseCreateTaskInList.ResponseError != null)
+                    {
+                        Assert.That(responseCreateTaskInList.ResponseSuccess != null || responseCreateTaskInList.ResponseError != null);
+                    }
+                    else
+                    {
+                        Assert.That(responseCreateTaskInList.ResponseSuccess != null || responseCreateTaskInList.ResponseError != null, "The ResponseSuccess and the ResponseError of the GenericResponse of the request through the method 'CreateTaskInList' are null!"); // Always return false
+                    }
+                }
+                else
+                {
+                    Assert.That(responseCreateTaskInList != null, "The Response of the request through the method 'CreateTaskInList' is null!"); // Always return false
+                }
+            }
+            catch (Exception ex)
+            {
+                Assert.That(true == false, "The Test Method of 'CreateTaskInList' generate exception: " + ex.Message); // Always return false
+            }
         }
 
         /// <summary>
-        /// 
+        /// Tests of EditTask method
         /// </summary>
         [Test]
         public void ShouldEditTask()
         {
-
+            try
+            {
+                ClickUpAPI clickUpAPI = new ClickUpAPI(_accessToken);
+                ResponseGeneric<ResponseSuccess, ResponseError> responseEditTask = clickUpAPI.EditTask
+                (
+                    new ParamsEditTask()
+                    {
+                        TaskId = _taskId,
+                    },
+                    new RequestEditTask()
+                    {
+                        Name = "Task edited from tests of ClickUpAPI.V1"
+                    }
+                );
+                if (responseEditTask != null)
+                {
+                    if (responseEditTask.ResponseSuccess != null || responseEditTask.ResponseError != null)
+                    {
+                        Assert.That(responseEditTask.ResponseSuccess != null || responseEditTask.ResponseError != null);
+                    }
+                    else
+                    {
+                        Assert.That(responseEditTask.ResponseSuccess != null || responseEditTask.ResponseError != null, "The ResponseSuccess and the ResponseError of the GenericResponse of the request through the method 'EditTask' are null!"); // Always return false
+                    }
+                }
+                else
+                {
+                    Assert.That(responseEditTask != null, "The Response of the request through the method 'EditTask' is null!"); // Always return false
+                }
+            }
+            catch (Exception ex)
+            {
+                Assert.That(true == false, "The Test Method of 'EditTask' generate exception: " + ex.Message); // Always return false
+            }
         }
 
         #endregion
