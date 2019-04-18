@@ -22,6 +22,20 @@ namespace PaironsTech.ClickUpAPI.V1.Params
         #endregion
 
 
+        #region Constructor
+
+        /// <summary>
+        /// The constructor of ParamsCreateList
+        /// </summary>
+        /// <param name="projectId"></param>
+        public ParamsCreateList(string projectId)
+        {
+            ProjectId = projectId;
+        }
+
+        #endregion
+
+
         #region Public Methods
 
         /// <summary>

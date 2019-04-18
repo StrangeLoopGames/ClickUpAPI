@@ -22,6 +22,20 @@ namespace PaironsTech.ClickUpAPI.V1.Requests
         #endregion
 
 
+        #region Constructor
+
+        /// <summary>
+        /// The constructor of RequestEditList
+        /// </summary>
+        /// <param name="name"></param>
+        public RequestEditList(string name)
+        {
+            Name = name;
+        }
+
+        #endregion
+
+
         #region Public Methods
 
         /// <summary>

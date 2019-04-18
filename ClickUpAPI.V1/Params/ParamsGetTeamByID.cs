@@ -22,6 +22,20 @@ namespace PaironsTech.ClickUpAPI.V1.Params
         #endregion
 
 
+        #region Constructor
+
+        /// <summary>
+        /// The Constructor of ParamsGetTeamByID
+        /// </summary>
+        /// <param name="teamId"></param>
+        public ParamsGetTeamByID(string teamId)
+        {
+            TeamId = teamId;
+        }
+
+        #endregion
+
+
         #region Public Methods
 
         /// <summary>

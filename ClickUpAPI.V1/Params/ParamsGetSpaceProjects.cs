@@ -22,6 +22,20 @@ namespace PaironsTech.ClickUpAPI.V1.Params
         #endregion
 
 
+        #region Constructor
+
+        /// <summary>
+        /// The constructor of ParamsGetSpaceProjects
+        /// </summary>
+        /// <param name="spaceId"></param>
+        public ParamsGetSpaceProjects(string spaceId)
+        {
+            SpaceId = spaceId;
+        }
+
+        #endregion
+
+
         #region Public Methods
 
         /// <summary>

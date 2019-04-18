@@ -56,6 +56,20 @@ namespace PaironsTech.ClickUpAPI.V1.Requests
         #endregion
 
 
+        #region Constructor
+
+        /// <summary>
+        /// Constructor of RequestEditTask
+        /// </summary>
+        /// <param name="name"></param>
+        public RequestEditTask(string name)
+        {
+            Name = name;
+        }
+
+        #endregion
+
+
         #region Public Methods
 
         /// <summary>

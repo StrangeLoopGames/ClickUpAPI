@@ -34,6 +34,24 @@ namespace PaironsTech.ClickUpAPI.V1.Params
         #endregion
 
 
+        #region Constructor
+
+        /// <summary>
+        /// The constructor of ParamsAccessToken
+        /// </summary>
+        /// <param name="clientId"></param>
+        /// <param name="clientSecret"></param>
+        /// <param name="code"></param>
+        public ParamsAccessToken(string clientId, string clientSecret, string code)
+        {
+            ClientId = clientId;
+            ClientSecret = clientSecret;
+            Code = code;
+        }
+
+        #endregion
+
+
         #region Public Methods
 
         /// <summary>

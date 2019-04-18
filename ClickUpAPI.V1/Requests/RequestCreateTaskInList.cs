@@ -55,6 +55,21 @@ namespace PaironsTech.ClickUpAPI.V1.Requests
 
         #endregion
 
+
+        #region Constructor
+
+        /// <summary>
+        /// Constructor of RequestCreateTaskInList
+        /// </summary>
+        /// <param name="name"></param>
+        public RequestCreateTaskInList(string name)
+        {
+            Name = name;
+        }
+
+        #endregion
+
+
         #region Public Methods
 
         /// <summary>

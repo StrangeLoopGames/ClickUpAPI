@@ -49,28 +49,28 @@ namespace PaironsTech.ClickUpAPI.V1.Params
         /// <summary>
         /// Query only on spaces with this ids
         /// </summary>
-        [ParamProperty("space_ids")]
+        [ParamProperty("space_ids[]")]
         [ParamConverter(typeof(ParamConverterIEnumerableString))]
         public List<string> SpaceIds { get; set; }
 
         /// <summary>
         /// Query only on projects with this ids
         /// </summary>
-        [ParamProperty("projects_ids")]
+        [ParamProperty("projects_ids[]")]
         [ParamConverter(typeof(ParamConverterIEnumerableString))]
         public List<string> ProjectIds { get; set; }
 
         /// <summary>
         /// Query only on lists with this ids
         /// </summary>
-        [ParamProperty("list_ids")]
+        [ParamProperty("list_ids[]")]
         [ParamConverter(typeof(ParamConverterIEnumerableString))]
         public List<string> ListIds { get; set; }
 
         /// <summary>
         /// Query only on status with this status
         /// </summary>
-        [ParamProperty("statuses")]
+        [ParamProperty("statuses[]")]
         [ParamConverter(typeof(ParamConverterIEnumerableString))]
         public List<string> Statuses { get; set; }
 
@@ -83,7 +83,7 @@ namespace PaironsTech.ClickUpAPI.V1.Params
         /// <summary>
         /// Query only on task assign at users with this ids
         /// </summary>
-        [ParamProperty("assignees")]
+        [ParamProperty("assignees[]")]
         [ParamConverter(typeof(ParamConverterIEnumerableLong))]
         public List<long> Assignees { get; set; }
 
@@ -130,6 +130,21 @@ namespace PaironsTech.ClickUpAPI.V1.Params
         public DateTime? DateUpdatedLt { get; set; }
 
         #endregion
+
+
+        #region Constructor
+
+        /// <summary>
+        /// The constructor of ParamsGetTasks
+        /// </summary>
+        /// <param name="teamId"></param>
+        public ParamsGetTasks(string teamId)
+        {
+            TeamId = teamId;
+        }
+
+        #endregion
+
 
         #region Public Methods
 

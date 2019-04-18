@@ -22,6 +22,20 @@ namespace PaironsTech.ClickUpAPI.V1.Params
         #endregion
 
 
+        #region Constructor
+
+        /// <summary>
+        /// Constructor of ParamsEditTask
+        /// </summary>
+        /// <param name="taskId"></param>
+        public ParamsEditTask(string taskId)
+        {
+            TaskId = taskId;
+        }
+
+        #endregion
+
+
         #region Public Methods
 
         /// <summary>
