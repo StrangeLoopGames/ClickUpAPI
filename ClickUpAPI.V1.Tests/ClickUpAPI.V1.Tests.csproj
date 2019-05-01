@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
@@ -12,12 +12,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ClickUpAPI.V1\ClickUpAPI.V1.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="ApiHelper">
-      <HintPath>..\ClickUpAPI.V1\Dlls\ApiHelper.dll</HintPath>
-    </Reference>
   </ItemGroup>
 
 </Project>
