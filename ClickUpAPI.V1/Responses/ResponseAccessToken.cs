@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using PaironsTech.ApiHelper.Interfaces;
 
 namespace PaironsTech.ClickUpAPI.V1.Responses
 {
@@ -6,7 +7,7 @@ namespace PaironsTech.ClickUpAPI.V1.Responses
     /// <summary>
     /// Response object of the Authentication
     /// </summary>
-    public class ResponseAccessToken : Response
+    public class ResponseAccessToken : IResponse
     {
 
         /// <summary>

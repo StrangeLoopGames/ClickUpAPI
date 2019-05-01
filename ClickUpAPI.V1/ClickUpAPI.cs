@@ -1,31 +1,37 @@
-﻿using Newtonsoft.Json;
-using PaironsTech.ClickUpAPI.V1.OptionalParams;
+﻿using PaironsTech.ApiHelper;
+using PaironsTech.ClickUpAPI.V1.Params;
 using PaironsTech.ClickUpAPI.V1.Requests;
 using PaironsTech.ClickUpAPI.V1.Responses;
 using PaironsTech.ClickUpAPI.V1.Responses.Model;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace PaironsTech.ClickUpAPI.V1
 {
+
+    /// <summary>
+    /// Object that interact through methods the API (v1) of ClickUp
+    /// </summary>
     public class ClickUpAPI
     {
-        
-        // Private Static Attributes 
+
+        #region Private Attributes
+
+        /// <summary>
+        /// Base Address of API call
+        /// </summary>
         private static readonly Uri _baseAddress = new Uri("https://api.clickup.com/api/v1/");
 
-
-        // Private Attributes
+        /// <summary>
+        /// The Access Token to add during the request
+        /// </summary>
         private string _accessToken { get; set; }
 
+        #endregion
 
-        // Constructors
+
+        #region Constructors
 
         /// <summary>
         /// Create object with Personal Access Token
@@ -39,548 +45,466 @@ namespace PaironsTech.ClickUpAPI.V1
         /// <summary>
         /// Create Object with ClientId, ClientSecrect
         /// </summary>
-        /// <param name="clientId">own clientId</param>
-        /// <param name="clientSecret">own clientSecret</param>
-        public ClickUpAPI(string clientId, string clientSecret, string code)
+        /// <param name="paramAccessToken">param access token object</param>
+        public ClickUpAPI(ParamsAccessToken paramAccessToken)
         {
-            string requestUri = "oauth/token?client_id=" + clientId + "&client_secret=" + clientSecret + "&code=" + code;
+            // Address Uri
+            Uri addressUri = new Uri("oauth/token?client_id={client_id}&client_secret={client_secret}&code={code}", UriKind.Relative);
 
-            // Execute Async call, wait response, get access Token and set in private attribute
-            Task.Run(async () =>
+            // Execute Call
+            ResponseGeneric<ResponseAccessToken, ResponseError> response = HttpRequest.ExecutePostCall<ResponseAccessToken, ResponseError>(_baseAddress, addressUri, paramsData: paramAccessToken);
+
+            // Manage Response
+            if (response.ResponseSuccess != null)
             {
-                ResponseGeneric<ResponseAccessToken> response = await ExecutePostCallAsync<ResponseAccessToken>(requestUri, null);
-
-                if (response.ResponseSuccess != null)
-                    _accessToken = response.ResponseSuccess.AccessToken;
-
-            }).Wait();
+                _accessToken = response.ResponseSuccess.AccessToken;
+            }
         }
 
+        #endregion
 
 
         #region API Methods
-
 
         /// <summary>
         /// Get the user that belongs to this token
         /// </summary>
         /// <returns>ResponseGeneric with ResponseAuthorizedUser response object</returns>
-        public ResponseGeneric<ResponseAuthorizedUser> GetAuthorizedUser()
+        public ResponseGeneric<ResponseAuthorizedUser, ResponseError> GetAuthorizedUser()
         {
-            string requestUri = "user";
+            // Address Uri
+            Uri addressUri = new Uri("user", UriKind.Relative);
 
-            ResponseGeneric<ResponseAuthorizedUser> responseGeneric = new ResponseGeneric<ResponseAuthorizedUser>();
+            // Headers
+            Dictionary<string, string> headers = new Dictionary<string, string>();
+            headers.Add("authorization", _accessToken);
 
-            Task.Run(async () =>
+            // Execute Call
+            return HttpRequest.ExecuteGetCall<ResponseAuthorizedUser, ResponseError>(_baseAddress, addressUri, httpRequestOptions: new HttpRequestSettings()
             {
-                responseGeneric = await ExecuteGetCallAsync<ResponseAuthorizedUser>(requestUri);
-            })
-            .Wait();
-            
-            return responseGeneric;
+                Headers = headers
+            });
         }
 
         /// <summary>
         /// Get the authorized teams for this token
         /// </summary>
         /// <returns>ResponseGeneric with ResponseAuthorizedTeams response object</returns>
-        public ResponseGeneric<ResponseAuthorizedTeams> GetAuthorizedTeams()
+        public ResponseGeneric<ResponseAuthorizedTeams, ResponseError> GetAuthorizedTeams()
         {
-            string requestUri = "team";
+            // Address Uri
+            Uri addressUri = new Uri("team", UriKind.Relative);
 
-            ResponseGeneric<ResponseAuthorizedTeams> responseGeneric = new ResponseGeneric<ResponseAuthorizedTeams>();
+            // Headers
+            Dictionary<string, string> headers = new Dictionary<string, string>();
+            headers.Add("authorization", _accessToken);
 
-            Task.Run(async () =>
+            // Execute Call
+            return HttpRequest.ExecuteGetCall<ResponseAuthorizedTeams, ResponseError>(_baseAddress, addressUri, httpRequestOptions: new HttpRequestSettings()
             {
-                responseGeneric = await ExecuteGetCallAsync<ResponseAuthorizedTeams>(requestUri);
-            })
-            .Wait();
-            
-            return responseGeneric;
+                Headers = headers
+            });
         }
 
         /// <summary>
         /// Get a team's details. This team must be one of the authorized teams for this token.
         /// </summary>
-        /// <param name="teamId">teamId</param>
+        /// <param name="paramsGetTeamByID">param object of get team by ID request</param>
         /// <returns>ResponseGeneric with ResponseTeam response object</returns>
-        public ResponseGeneric<ResponseTeam> GetTeamByID(string teamId)
+        public ResponseGeneric<ResponseTeam, ResponseError> GetTeamByID(ParamsGetTeamByID paramsGetTeamByID)
         {
-            if (string.IsNullOrEmpty(teamId)) throw new ArgumentException("teamId can't be empty or null!");
+            // Address Uri
+            Uri addressUri = new Uri("team/{team_id}", UriKind.Relative);
 
-            string requestUri = "team/" + teamId;
+            // Headers
+            Dictionary<string, string> headers = new Dictionary<string, string>();
+            headers.Add("authorization", _accessToken);
 
-            ResponseGeneric<ResponseTeam> responseGeneric = new ResponseGeneric<ResponseTeam>();
-
-            Task.Run(async () =>
+            // Execute Call
+            return HttpRequest.ExecuteGetCall<ResponseTeam, ResponseError>(_baseAddress, addressUri, paramsData: paramsGetTeamByID, httpRequestOptions: new HttpRequestSettings()
             {
-                responseGeneric = await ExecuteGetCallAsync<ResponseTeam>(requestUri);
-            })
-            .Wait();
-
-            return responseGeneric;
+                Headers = headers
+            });
         }
 
         /// <summary>
         /// Get a team's spaces. This team must be one of the authorized teams for this token.
         /// </summary>
-        /// <param name="teamId">teamId</param>
+        /// <param name="paramsGetTeamSpace">param object of get team space request</param>
         /// <returns>ResponseGeneric with ResponseTeamSpace response object</returns>
-        public ResponseGeneric<ResponseTeamSpace> GetTeamSpace(string teamId)
+        public ResponseGeneric<ResponseTeamSpace, ResponseError> GetTeamSpace(ParamsGetTeamSpace paramsGetTeamSpace)
         {
-            if (string.IsNullOrEmpty(teamId)) throw new ArgumentException("teamId can't be empty or null!");
+            // Address Uri
+            Uri addressUri = new Uri("team/{team_id}/space", UriKind.Relative);
 
-            string requestUri = "team/" + teamId + "/space";
+            // Headers
+            Dictionary<string, string> headers = new Dictionary<string, string>();
+            headers.Add("authorization", _accessToken);
 
-            ResponseGeneric<ResponseTeamSpace> responseGeneric = new ResponseGeneric<ResponseTeamSpace>();
-
-            Task.Run(async () =>
+            // Execute Call
+            return HttpRequest.ExecuteGetCall<ResponseTeamSpace, ResponseError>(_baseAddress, addressUri, paramsData: paramsGetTeamSpace, httpRequestOptions: new HttpRequestSettings()
             {
-                responseGeneric = await ExecuteGetCallAsync<ResponseTeamSpace>(requestUri);
-            })
-            .Wait();
-
-            return responseGeneric;
+                Headers = headers
+            });
         }
 
         /// <summary>
         /// Get a space's projects. The projects' lists will also be included.
         /// </summary>
-        /// <param name="spaceId">spaceId</param>
+        /// <param name="paramsGetSpaceProjects">param object of get space project request</param>
         /// <returns>ResponseGeneric with ResponseSpaceProjects response object</returns>
-        public ResponseGeneric<ResponseSpaceProjects> GetSpaceProjects(string spaceId)
+        public ResponseGeneric<ResponseSpaceProjects, ResponseError> GetSpaceProjects(ParamsGetSpaceProjects paramsGetSpaceProjects)
         {
-            if (string.IsNullOrEmpty(spaceId)) throw new ArgumentException("spaceId can't be empty or null!");
+            // Address Uri
+            Uri addressUri = new Uri("space/{space_id}/project", UriKind.Relative);
 
-            string requestUri = "space/" + spaceId + "/project";
+            // Headers
+            Dictionary<string, string> headers = new Dictionary<string, string>();
+            headers.Add("authorization", _accessToken);
 
-            ResponseGeneric<ResponseSpaceProjects> responseGeneric = new ResponseGeneric<ResponseSpaceProjects>();
-
-            Task.Run(async () =>
+            // Execute Call
+            return HttpRequest.ExecuteGetCall<ResponseSpaceProjects, ResponseError>(_baseAddress, addressUri, paramsData: paramsGetSpaceProjects, httpRequestOptions: new HttpRequestSettings()
             {
-                responseGeneric = await ExecuteGetCallAsync<ResponseSpaceProjects>(requestUri);
-            })
-            .Wait();
-
-            return responseGeneric;
+                Headers = headers
+            });
         }
 
         /// <summary>
         /// Create List in Project
         /// </summary>
-        /// <param name="projectId">projectId</param>
+        /// <param name="paramsCreateList">param object of create list request</param>
         /// <param name="requestData">RequestCreateList object</param>
         /// <returns>ResponseGeneric with ModelList response object</returns>
-        public ResponseGeneric<ModelList> CreateList(string projectId, RequestCreateList requestData)
+        public ResponseGeneric<ResponseModelList, ResponseError> CreateList(ParamsCreateList paramsCreateList, RequestCreateList requestData)
         {
-            if (string.IsNullOrEmpty(projectId)) throw new ArgumentException("projectId can't be empty or null!");
-            if (requestData == null) throw new ArgumentException("requestData can't be empty or null!");
+            // Address Uri
+            Uri addressUri = new Uri("project/{project_id}/list", UriKind.Relative);
 
-            string requestUri = "project/" + projectId + "/list";
+            // Headers
+            Dictionary<string, string> headers = new Dictionary<string, string>();
+            headers.Add("authorization", _accessToken);
 
-            ResponseGeneric<ModelList> responseGeneric = new ResponseGeneric<ModelList>();
-
-            Task.Run(async () =>
+            // Execute Call
+            return HttpRequest.ExecutePostCall<ResponseModelList, ResponseError>(_baseAddress, addressUri, paramsData: paramsCreateList, requestData: requestData, httpRequestOptions: new HttpRequestSettings()
             {
-                responseGeneric = await ExecutePostCallAsync<ModelList>(requestUri, requestData);
-            })
-            .Wait();
-
-            return responseGeneric;
+                Headers = headers,
+                ContentTypeRequest = "application/json"
+            });
         }
 
         /// <summary>
         /// Edit List informations
         /// </summary>
-        /// <param name="listId">listId</param>
+        /// <param name="paramsEditList">params object of edit list request</param>
         /// <param name="requestData">RequestEditList object</param>
         /// <returns>ResponseGeneric with ModelList response object</returns>
-        public ResponseGeneric<ModelList> EditList(string listId, RequestEditList requestData)
+        public ResponseGeneric<ResponseModelList, ResponseError> EditList(ParamsEditList paramsEditList, RequestEditList requestData)
         {
-            if (string.IsNullOrEmpty(listId)) throw new ArgumentException("listId can't be empty or null!");
-            if (requestData == null) throw new ArgumentException("requestData can't be empty or null!");
+            // Address Uri
+            Uri addressUri = new Uri("list/{list_id}", UriKind.Relative);
 
-            string requestUri = "list/" + listId;
+            // Headers
+            Dictionary<string, string> headers = new Dictionary<string, string>();
+            headers.Add("authorization", _accessToken);
 
-            ResponseGeneric<ModelList> responseGeneric = new ResponseGeneric<ModelList>();
-            
-            Task.Run(async () =>
+            // Execute Call
+            return HttpRequest.ExecutePutCall<ResponseModelList, ResponseError>(_baseAddress, addressUri, paramsData: paramsEditList, requestData: requestData, httpRequestOptions: new HttpRequestSettings()
             {
-                responseGeneric = await ExecutePutCallAsync<ModelList>(requestUri, requestData);
-            })
-            .Wait();
-
-            return responseGeneric;
+                Headers = headers,
+                ContentTypeRequest = "application/json"
+            });
         }
 
         /// <summary>
         /// Get Tasks of the Team and filter its by optionalParams
         /// </summary>
-        /// <param name="teamId">teamId</param>
+        /// <param name="paramsGetTasks">params obkect of get tasks request</param>
         /// <param name="optionalParams">OptionalParamsGetTask object</param>
         /// <returns>ResponseGeneric with ResponseTasks response object</returns>
-        public ResponseGeneric<ResponseTasks> GetTasks(string teamId, OPGetTasks optionalParams)
+        public ResponseGeneric<ResponseTasks, ResponseError> GetTasks(ParamsGetTasks paramsGetTasks)
         {
-            if (string.IsNullOrEmpty(teamId)) throw new ArgumentException("teamId can't be empty or null!");
+            // Address Uri
+            Uri addressUri = new Uri("team/{team_id}/task", UriKind.Relative);
 
-            string strParams = GenerateOptionalParams(optionalParams);
-            string requestUri = "team/" + teamId + "/task" + (!string.IsNullOrEmpty(strParams) ? "?" + strParams : string.Empty);
+            // Headers
+            Dictionary<string, string> headers = new Dictionary<string, string>();
+            headers.Add("authorization", _accessToken);
 
-            ResponseGeneric<ResponseTasks> responseGeneric = new ResponseGeneric<ResponseTasks>();
-
-            Task.Run(async () =>
+            // Execute Call
+            return HttpRequest.ExecuteGetCall<ResponseTasks, ResponseError>(_baseAddress, addressUri, paramsData: paramsGetTasks, httpRequestOptions: new HttpRequestSettings()
             {
-                responseGeneric = await ExecuteGetCallAsync<ResponseTasks>(requestUri);
-            })
-            .Wait();
-
-            return responseGeneric;
+                Headers = headers
+            });
         }
 
         /// <summary>
         /// Create Task in List.
         /// </summary>
-        /// <param name="listId">listId</param>
+        /// <param name="paramCreateTaskInList">params object of create task in list request</param>
         /// <param name="requestData">RequestCreateTaskInList object</param>
         /// <returns>ResponseGeneric with ModelTask object Expected</returns>
-        public ResponseGeneric<ModelTask> CreateTaskInList(string listId, RequestCreateTaskInList requestData)
+        public ResponseGeneric<ResponseModelTask, ResponseError> CreateTaskInList(ParamsCreateTaskInList paramCreateTaskInList, RequestCreateTaskInList requestData)
         {
-            if (string.IsNullOrEmpty(listId)) throw new ArgumentException("listId can't be empty or null!");
-            if (requestData == null) throw new ArgumentException("requestData can't be empty or null!");
+            // Address Uri
+            Uri addressUri = new Uri("list/{list_id}/task", UriKind.Relative);
 
-            string requestUri = "list/" + listId + "/task";
+            // Headers
+            Dictionary<string, string> headers = new Dictionary<string, string>();
+            headers.Add("authorization", _accessToken);
 
-            ResponseGeneric<ModelTask> responseGeneric = new ResponseGeneric<ModelTask>();
-
-            Task.Run(async () =>
+            // Execute Call
+            return HttpRequest.ExecutePostCall<ResponseModelTask, ResponseError>(_baseAddress, addressUri, paramsData: paramCreateTaskInList, requestData: requestData, httpRequestOptions: new HttpRequestSettings()
             {
-                responseGeneric = await ExecutePostCallAsync<ModelTask>(requestUri, requestData);
-            })
-            .Wait();
-
-            return responseGeneric;
+                Headers = headers,
+                ContentTypeRequest = "application/json"
+            });
         }
 
         /// <summary>
         /// Edit Task informations.
         /// </summary>
-        /// <param name="taskId">taskId</param>
+        /// <param name="paramsEditTask">param object of Edit Task request</param>
         /// <param name="requestData">RequestEditTask object</param>
         /// <returns>ResponseGeneric with ResponseSuccess response object</returns>
-        public ResponseGeneric<ResponseSuccess> EditTask(string taskId, RequestEditTask requestData)
+        public ResponseGeneric<ResponseSuccess, ResponseError> EditTask(ParamsEditTask paramsEditTask, RequestEditTask requestData)
         {
-            if (string.IsNullOrEmpty(taskId)) throw new ArgumentException("taskId can't be empty or null!");
-            if (requestData == null) throw new ArgumentException("requestData can't be empty or null!");
+            // Address Uri
+            Uri addressUri = new Uri("task/{task_id}", UriKind.Relative);
 
-            string requestUri = "task/" + taskId;
+            // Headers
+            Dictionary<string, string> headers = new Dictionary<string, string>();
+            headers.Add("authorization", _accessToken);
 
-            ResponseGeneric<ResponseSuccess> responseGeneric = new ResponseGeneric<ResponseSuccess>();
-
-            Task.Run(async () =>
+            // Execute Call
+            return HttpRequest.ExecutePutCall<ResponseSuccess, ResponseError>(_baseAddress, addressUri, paramsData: paramsEditTask, requestData: requestData, httpRequestOptions: new HttpRequestSettings()
             {
-                responseGeneric = await ExecutePutCallAsync<ResponseSuccess>(requestUri, requestData);
-            })
-            .Wait();
-
-            return responseGeneric;
+                Headers = headers,
+                ContentTypeRequest = "application/json"
+            });
         }
-
 
         #endregion
 
 
         #region API Methods Async
 
-
         /// <summary>
         /// Get the user that belongs to this token
         /// </summary>
         /// <returns>ResponseGeneric with ResponseAuthorizedUser object expected</returns>
-        public Task<ResponseGeneric<ResponseAuthorizedUser>> GetAuthorizedUserAsync()
+        public Task<ResponseGeneric<ResponseAuthorizedUser, ResponseError>> GetAuthorizedUserAsync()
         {
-            string requestUri = "user";
-            return ExecuteGetCallAsync<ResponseAuthorizedUser>(requestUri);
+            // Address Uri
+            Uri addressUri = new Uri("user", UriKind.Relative);
+
+            // Headers
+            Dictionary<string, string> headers = new Dictionary<string, string>();
+            headers.Add("authorization", _accessToken);
+
+            // Execute Call
+            return HttpRequest.ExecuteGetCallAsync<ResponseAuthorizedUser, ResponseError>(_baseAddress, addressUri, httpRequestOptions: new HttpRequestSettings()
+            {
+                Headers = headers
+            });
         }
 
         /// <summary>
         /// Get the authorized teams for this token
         /// </summary>
         /// <returns>ResponseGeneric with ResponseAuthorizedTeams expected</returns>
-        public Task<ResponseGeneric<ResponseAuthorizedTeams>> GetAuthorizedTeamsAsync()
+        public Task<ResponseGeneric<ResponseAuthorizedTeams, ResponseError>> GetAuthorizedTeamsAsync()
         {
-            string requestUri = "team";
-            return ExecuteGetCallAsync<ResponseAuthorizedTeams>(requestUri);
+            // Address Uri
+            Uri addressUri = new Uri("team", UriKind.Relative);
+
+            // Headers
+            Dictionary<string, string> headers = new Dictionary<string, string>();
+            headers.Add("authorization", _accessToken);
+
+            // Execute Call
+            return HttpRequest.ExecuteGetCallAsync<ResponseAuthorizedTeams, ResponseError>(_baseAddress, addressUri, httpRequestOptions: new HttpRequestSettings()
+            {
+                Headers = headers
+            });
         }
 
         /// <summary>
         /// Get a team's details. This team must be one of the authorized teams for this token.
         /// </summary>
-        /// <param name="teamId">teamId</param>
-        /// <returns>ResponseGeneric with ResponseTeam object expected</returns>
-        public Task<ResponseGeneric<ResponseTeam>> GetTeamByIDAsync(string teamId)
+        /// <param name="paramGetTeamByID">param object of get team by ID request</param>
+        /// <returns>ResponseGeneric with ResponseTeam response object</returns>
+        public Task<ResponseGeneric<ResponseTeam, ResponseError>> GetTeamByIDAsync(ParamsGetTeamByID paramGetTeamByID)
         {
-            if (string.IsNullOrEmpty(teamId)) throw new ArgumentException("teamId can't be empty or null!");
+            // Address Uri
+            Uri addressUri = new Uri("team/{team_id}", UriKind.Relative);
 
-            string requestUri = "team/" + teamId;
-            return ExecuteGetCallAsync<ResponseTeam>(requestUri);
+            // Headers
+            Dictionary<string, string> headers = new Dictionary<string, string>();
+            headers.Add("authorization", _accessToken);
+
+            // Execute Call
+            return HttpRequest.ExecuteGetCallAsync<ResponseTeam, ResponseError>(_baseAddress, addressUri, paramsData: paramGetTeamByID, httpRequestOptions: new HttpRequestSettings()
+            {
+                Headers = headers
+            });
         }
 
         /// <summary>
         /// Get a team's spaces. This team must be one of the authorized teams for this token.
         /// </summary>
-        /// <param name="teamId">teamId</param>
+        /// <param name="paramGetTeamSpace">param object of get team space request</param>
         /// <returns>ResponseGeneric with ResponseTeamSpace object expected</returns>
-        public Task<ResponseGeneric<ResponseTeamSpace>> GetTeamSpacesAsync(string teamId)
+        public Task<ResponseGeneric<ResponseTeamSpace, ResponseError>> GetTeamSpacesAsync(ParamsGetTeamSpace paramGetTeamSpace)
         {
-            if (string.IsNullOrEmpty(teamId)) throw new ArgumentException("teamId can't be empty or null!");
+            // Address Uri
+            Uri addressUri = new Uri("team/{team_id}/sspace", UriKind.Relative);
 
-            string requestUri = "team/" + teamId + "/space";
-            return ExecuteGetCallAsync<ResponseTeamSpace>(requestUri);
+            // Headers
+            Dictionary<string, string> headers = new Dictionary<string, string>();
+            headers.Add("authorization", _accessToken);
+
+            // Execute Call
+            return HttpRequest.ExecuteGetCallAsync<ResponseTeamSpace, ResponseError>(_baseAddress, addressUri, paramsData: paramGetTeamSpace, httpRequestOptions: new HttpRequestSettings()
+            {
+                Headers = headers
+            });
         }
 
         /// <summary>
         /// Get a space's projects. The projects' lists will also be included.
         /// </summary>
-        /// <param name="spaceId">spaceId</param>
+        /// <param name="paramsGetSpaceProjects">params object of get space projects request</param>
         /// <returns>ResponseGeneric with ResponseSpaceProjects object expected</returns>
-        public Task<ResponseGeneric<ResponseSpaceProjects>> GetSpaceProjectsAsync(string spaceId)
+        public Task<ResponseGeneric<ResponseSpaceProjects, ResponseError>> GetSpaceProjectsAsync(ParamsGetSpaceProjects paramsGetSpaceProjects)
         {
-            if (string.IsNullOrEmpty(spaceId)) throw new ArgumentException("spaceId can't be empty or null!");
+            // Address Uri
+            Uri addressUri = new Uri("space/{space_id}/project", UriKind.Relative);
 
-            string requestUri = "space/" + spaceId + "/project";
-            return ExecuteGetCallAsync<ResponseSpaceProjects>(requestUri);
+            // Headers
+            Dictionary<string, string> headers = new Dictionary<string, string>();
+            headers.Add("authorization", _accessToken);
+
+            // Execute Call
+            return HttpRequest.ExecuteGetCallAsync<ResponseSpaceProjects, ResponseError>(_baseAddress, addressUri, paramsData: paramsGetSpaceProjects, httpRequestOptions: new HttpRequestSettings()
+            {
+                Headers = headers
+            });
         }
 
         /// <summary>
         /// Create List in Project
         /// </summary>
-        /// <param name="projectId">projectId</param>
+        /// <param name="paramsCreateList">param object of create list request</param>
         /// <param name="requestData">RequestCreateList object</param>
         /// <returns>ResponseGeneric with ModelList object expected</returns>
-        public Task<ResponseGeneric<ModelList>> CreateListAsync(string projectId, RequestCreateList requestData)
+        public Task<ResponseGeneric<ResponseModelList, ResponseError>> CreateListAsync(ParamsCreateList paramsCreateList, RequestCreateList requestData)
         {
-            if (string.IsNullOrEmpty(projectId)) throw new ArgumentException("projectId can't be empty or null!");
-            if (requestData == null) throw new ArgumentException("requestData can't be empty or null!");
+            // Address Uri
+            Uri addressUri = new Uri("project/{project_id}/list", UriKind.Relative);
 
-            string requestUri = "project/" + projectId + "/list";
-            return ExecutePostCallAsync<ModelList>(requestUri, requestData);
+            // Headers
+            Dictionary<string, string> headers = new Dictionary<string, string>();
+            headers.Add("authorization", _accessToken);
+
+            // Execute Call
+            return HttpRequest.ExecutePostCallAsync<ResponseModelList, ResponseError>(_baseAddress, addressUri, paramsData: paramsCreateList, requestData: requestData, httpRequestOptions: new HttpRequestSettings()
+            {
+                Headers = headers,
+                ContentTypeRequest = "application/json"
+            });
         }
 
         /// <summary>
         /// Edit List informations
         /// </summary>
-        /// <param name="listId">listId</param>
+        /// <param name="paramsEditList">param object of Edi List request</param>
         /// <param name="requestData">RequestEditList object</param>
         /// <returns>ResponseGeneric with ModelList object expected</returns>
-        public Task<ResponseGeneric<ModelList>> EditListAsync(string listId, RequestEditList requestData)
+        public Task<ResponseGeneric<ResponseModelList, ResponseError>> EditListAsync(ParamsEditList paramsEditList, RequestEditList requestData)
         {
-            if (string.IsNullOrEmpty(listId)) throw new ArgumentException("listId can't be empty or null!");
-            if (requestData == null) throw new ArgumentException("requestData can't be empty or null!");
-            
-            string requestUri = "list/" + listId;
-            return ExecutePutCallAsync<ModelList>(requestUri, requestData);
+            // Address Uri
+            Uri addressUri = new Uri("list/{list_id}", UriKind.Relative);
+
+            // Headers
+            Dictionary<string, string> headers = new Dictionary<string, string>();
+            headers.Add("authorization", _accessToken);
+
+            // Execute Call
+            return HttpRequest.ExecutePutCallAsync<ResponseModelList, ResponseError>(_baseAddress, addressUri, paramsData: paramsEditList, requestData: requestData, httpRequestOptions: new HttpRequestSettings()
+            {
+                Headers = headers,
+                ContentTypeRequest = "application/json"
+            });
         }
 
         /// <summary>
         /// Get Tasks of the Team and filter its by optionalParams
         /// </summary>
-        /// <param name="teamId">teamId</param>
+        /// <param name="paramsGetTasks">param object of get tasks request</param>
         /// <param name="optionalParams">OptionalParamsGetTask object</param>
         /// <returns>ResponseGeneric with ResponseTasks object expected</returns>
-        public Task<ResponseGeneric<ResponseTasks>> GetTasksAsync(string teamId, OPGetTasks optionalParams)    
+        public Task<ResponseGeneric<ResponseTasks, ResponseError>> GetTasksAsync(ParamsGetTasks paramsGetTasks)
         {
-            if (string.IsNullOrEmpty(teamId)) throw new ArgumentException("teamId can't be empty or null!");
+            // Address Uri
+            Uri addressUri = new Uri("team/{team_id}/task", UriKind.Relative);
 
-            string strParams = GenerateOptionalParams(optionalParams);
-            string requestUri = "team/" + teamId + "/task" + (!string.IsNullOrEmpty(strParams) ? "?" + strParams : string.Empty);
-            return ExecuteGetCallAsync<ResponseTasks>(requestUri);
+            // Headers
+            Dictionary<string, string> headers = new Dictionary<string, string>();
+            headers.Add("authorization", _accessToken);
+
+            // Execute Call
+            return HttpRequest.ExecuteGetCallAsync<ResponseTasks, ResponseError>(_baseAddress, addressUri, paramsData: paramsGetTasks, httpRequestOptions: new HttpRequestSettings()
+            {
+                Headers = headers
+            });
         }
 
         /// <summary>
         /// Create Task in List.
         /// </summary>
-        /// <param name="listId">listId</param>
+        /// <param name="paramsCreateTaskInList">param object of Create Task in List request</param>
         /// <param name="requestData">RequestCreateTaskInList object</param>
         /// <returns>ResponseGeneric with ModelTask object Expected</returns>
-        public Task<ResponseGeneric<ModelTask>> CreateTaskInListAsync(string listId, RequestCreateTaskInList requestData)
+        public Task<ResponseGeneric<ResponseModelTask, ResponseError>> CreateTaskInListAsync(ParamsCreateTaskInList paramsCreateTaskInList, RequestCreateTaskInList requestData)
         {
-            if (string.IsNullOrEmpty(listId)) throw new ArgumentException("listId can't be empty or null!");
-            if (requestData == null) throw new ArgumentException("requestData can't be empty or null!");
+            // Address Uri
+            Uri addressUri = new Uri("list/{list_id}/task", UriKind.Relative);
 
-            string requestUri = "list/" + listId + "/task";
-            return ExecutePostCallAsync<ModelTask>(requestUri, requestData);
+            // Headers
+            Dictionary<string, string> headers = new Dictionary<string, string>();
+            headers.Add("authorization", _accessToken);
+
+            // Execute Call
+            return HttpRequest.ExecutePostCallAsync<ResponseModelTask, ResponseError>(_baseAddress, addressUri, paramsData: paramsCreateTaskInList, requestData: requestData, httpRequestOptions: new HttpRequestSettings()
+            {
+                Headers = headers
+            });
         }
 
         /// <summary>
         /// Edit Task informations.
         /// </summary>
-        /// <param name="taskId">taskId</param>
+        /// <param name="paramsEditTask">param object of edit task request</param>
         /// <param name="requestData">RequestEditTask object</param>
         /// <returns>ResponseGeneric with ResponseSuccess object expected</returns>
-        public Task<ResponseGeneric<ResponseSuccess>> EditTaskAsync(string taskId, RequestEditTask requestData)
+        public Task<ResponseGeneric<ResponseSuccess, ResponseError>> EditTaskAsync(ParamsEditTask paramsEditTask, RequestEditTask requestData)
         {
-            if (string.IsNullOrEmpty(taskId)) throw new ArgumentException("taskId can't be empty or null!");
-            if (requestData == null) throw new ArgumentException("requestData can't be empty or null!");
-            string requestUri = "task/" + taskId;
-            return ExecutePutCallAsync<ResponseSuccess>(requestUri, requestData);
-        }
+            // Address Uri
+            Uri addressUri = new Uri("task/{task_id}", UriKind.Relative);
 
+            // Headers
+            Dictionary<string, string> headers = new Dictionary<string, string>();
+            headers.Add("authorization", _accessToken);
 
-        #endregion
-
-
-        #region Private Methods
-
-
-        /****************************
-         * 
-         *  Manage Optional Params
-         * 
-         ***************************/
-
-        private string GenerateOptionalParams(OptionalParams.OptionalParams optionalParams)
-        {
-            List<string> listParamKeyValue = new List<string>();
-            PropertyInfo[] props = optionalParams.GetType().GetProperties();
-            foreach (PropertyInfo prop in props)
+            // Execute Call
+            return HttpRequest.ExecutePutCallAsync<ResponseSuccess, ResponseError>(_baseAddress, addressUri, paramsData: paramsEditTask, requestData: requestData, httpRequestOptions: new HttpRequestSettings()
             {
-                object value = prop.GetValue(optionalParams);
-
-                if (value != null)
-                    listParamKeyValue.Add(SerializePropName(prop) + "=" + SerializePropValue(prop, value));
-            }
-            
-            return string.Join("&", listParamKeyValue);
-        }
-
-        private string SerializePropName(PropertyInfo prop)
-        {
-            List<JsonPropertyAttribute> attrsJsonProperty = prop.GetCustomAttributes<JsonPropertyAttribute>(true).ToList();
-            if (attrsJsonProperty.Count > 0) return attrsJsonProperty[0].PropertyName;
-            return prop.Name;
-        }
-
-        private string SerializePropValue(PropertyInfo prop, object value)
-        {
-            if (value is DateTime dateTime) return new DateTimeOffset(((DateTime)value)).ToUnixTimeMilliseconds().ToString();
-            if (value is TimeSpan timeSpan) return timeSpan.TotalMilliseconds.ToString();
-
-            return value.ToString();
-        }
-
-
-
-        /*********************************
-         * 
-         *  Manage Response and Request
-         * 
-         ********************************/
-
-        private Response ManageResponses<TResponse>(HttpStatusCode httpStatusCode, string responseData) where TResponse : Response
-        {
-            switch (httpStatusCode)
-            {
-                case HttpStatusCode.OK: return DeserializeResponse<TResponse>(responseData);
-                default: return DeserializeResponse<ResponseError>(responseData);
-            }
-        }
-
-        private TResponse DeserializeResponse<TResponse>(string responseData) where TResponse : Response
-        {
-            return JsonConvert.DeserializeObject<TResponse>(responseData);
-        }
-
-        private async Task<ResponseGeneric<TResponseExpected>> ExecuteGetCallAsync<TResponseExpected>(string requestUri) where TResponseExpected : Response
-        {
-            ResponseGeneric<TResponseExpected> responseGeneric = new ResponseGeneric<TResponseExpected>();
-
-            using (var httpClient = new HttpClient { BaseAddress = _baseAddress })
-            {
-                httpClient.DefaultRequestHeaders.TryAddWithoutValidation("authorization", _accessToken);
-
-                using (var httpResponse = await httpClient.GetAsync(requestUri))
-                {
-                    string responseData = await httpResponse.Content.ReadAsStringAsync();
-
-                    Response response = ManageResponses<TResponseExpected>(httpResponse.StatusCode, responseData);
-
-                    if (response is TResponseExpected)
-                    {
-                        responseGeneric.ResponseSuccess = (TResponseExpected)response;
-                    }
-                    else
-                    {
-                        responseGeneric.ResponseError = (ResponseError)response;
-                    }
-                }
-            }
-
-            return responseGeneric;
-        }
-
-        private async Task<ResponseGeneric<TResponseExpected>> ExecutePostCallAsync<TResponseExpected>(string requestUri, Request request) where TResponseExpected : Response
-        {
-            ResponseGeneric<TResponseExpected> responseGeneric = new ResponseGeneric<TResponseExpected>();
-
-            using (var httpClient = new HttpClient { BaseAddress = _baseAddress })
-            {
-                httpClient.DefaultRequestHeaders.TryAddWithoutValidation("authorization", _accessToken);
-
-                using (var content = request != null ? new StringContent(JsonConvert.SerializeObject(request), Encoding.Default, "application/json") : new StringContent("{}", Encoding.Default, "application/json"))
-                {
-                    using (var httpResponse = await httpClient.PostAsync(requestUri, content))
-                    {
-                        string responseData = await httpResponse.Content.ReadAsStringAsync();
-
-                        Response response = ManageResponses<TResponseExpected>(httpResponse.StatusCode, responseData);
-
-                        if (response is TResponseExpected)
-                        {
-                            responseGeneric.ResponseSuccess = (TResponseExpected)response;
-                        }
-                        else
-                        {
-                            responseGeneric.ResponseError = (ResponseError)response;
-                        }
-                    }
-                }
-            }
-
-            return responseGeneric;
-        }
-
-        private async Task<ResponseGeneric<TResponseExpected>> ExecutePutCallAsync<TResponseExpected>(string requestUri, Request request) where TResponseExpected : Response
-        {
-            ResponseGeneric<TResponseExpected> responseGeneric = new ResponseGeneric<TResponseExpected>();
-
-            using (var httpClient = new HttpClient { BaseAddress = _baseAddress })
-            {
-                httpClient.DefaultRequestHeaders.TryAddWithoutValidation("authorization", _accessToken);
-
-                using (var content = request != null ? new StringContent(JsonConvert.SerializeObject(request), Encoding.Default, "application/json") : new StringContent("{}", Encoding.Default, "application/json"))
-                {
-                    using (var httpResponse = await httpClient.PutAsync(requestUri, content))
-                    {
-                        string responseData = await httpResponse.Content.ReadAsStringAsync();
-
-                        Response response = ManageResponses<TResponseExpected>(httpResponse.StatusCode, responseData);
-
-                        if (response is TResponseExpected)
-                        {
-                            responseGeneric.ResponseSuccess = (TResponseExpected)response;
-                        }
-                        else
-                        {
-                            responseGeneric.ResponseError = (ResponseError)response;
-                        }
-                    }
-                }
-            }
-
-            return responseGeneric;
+                Headers = headers
+            });
         }
 
         #endregion
 
     }
+
 }

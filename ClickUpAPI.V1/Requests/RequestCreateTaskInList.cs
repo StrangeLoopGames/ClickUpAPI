@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
+using PaironsTech.ApiHelper.Interfaces;
+using PaironsTech.ApiHelper.JsonConverters;
 using PaironsTech.ClickUpAPI.V1.Enums;
-using PaironsTech.ClickUpAPI.V1.JsonConverters;
 using System;
 using System.Collections.Generic;
 
@@ -10,8 +11,10 @@ namespace PaironsTech.ClickUpAPI.V1.Requests
     /// <summary>
     /// Request object for method CreateTaskInList()
     /// </summary>
-    public class RequestCreateTaskInList : Request
+    public class RequestCreateTaskInList : IRequest
     {
+
+        #region Attributes
 
         /// <summary>
         /// Name of the task
@@ -47,28 +50,40 @@ namespace PaironsTech.ClickUpAPI.V1.Requests
         /// Due Date of the task
         /// </summary>
         [JsonProperty("due_date")]
-        [JsonConverter(typeof(JsonConverterDateTime))]
+        [JsonConverter(typeof(JsonConverterDateTimeMilliseconds))]
         public DateTime? DueDate { get; set; }
 
+        #endregion
 
 
-
+        #region Constructor
 
         /// <summary>
         /// Constructor of RequestCreateTaskInList
         /// </summary>
-        /// <param name="name">name of the new Task [Obligatory]</param>
+        /// <param name="name"></param>
         public RequestCreateTaskInList(string name)
         {
-            if (string.IsNullOrEmpty(name)) throw new ArgumentException("name can't be empty or null!");
-
             Name = name;
-            Content = null;
-            Assignees = null;
-            Status = null;
-            Priority = null;
-            DueDate = null;
         }
+
+        #endregion
+
+
+        #region Public Methods
+
+        /// <summary>
+        /// Validation method of data
+        /// </summary>
+        public void ValidateData()
+        {
+            if (string.IsNullOrEmpty(Name))
+            {
+                throw new ArgumentNullException("Name");
+            }
+        }
+
+        #endregion
 
     }
 
