@@ -316,6 +316,26 @@ namespace Chinchilla.ClickUp
 			return result;
 		}
 
+		/// <summary>
+		/// Create a webhook in a Team
+		/// </summary>
+		/// <param name="paramsCreateTeamWebhook">param object of create webhook request</param>
+		/// <param name="requestData">RequestCreateTeamWebhook object</param>
+		/// <returns>ResponseGeneric with ResponseWebhook response object</returns>
+		public ResponseGeneric<ResponseWebhook, ResponseError> CreateTeamWebhook(ParamsCreateTeamWebhook paramsCreateTeamWebhook, RequestCreateTeamWebhook requestData)
+		{
+			requestData.ValidateData();
+
+			var client = new RestClient(_baseAddress);
+			var request = new RestRequest($"team/{paramsCreateTeamWebhook.TeamId}/webhook", Method.POST);
+			request.AddHeader("authorization", _accessToken);
+			request.AddJsonBody(requestData);
+
+			// execute the request
+			ResponseGeneric<ResponseWebhook, ResponseError> result = RestSharperHelper.ExecuteRequest<ResponseWebhook, ResponseError>(client, request);
+			return result;
+		}
+
 		#endregion
 
 		#region API Methods Async
@@ -551,6 +571,25 @@ namespace Chinchilla.ClickUp
 
 			// execute the request
 			return RestSharperHelper.ExecuteRequestAsync<ResponseModelTask, ResponseError>(client, request);
+		}
+
+		/// <summary>
+		/// Create a webhook in a Team
+		/// </summary>
+		/// <param name="paramsCreateTeamWebhook">param object of create webhook request</param>
+		/// <param name="requestData">RequestCreateTeamWebhook object</param>
+		/// <returns>ResponseGeneric with ResponseWebhook response object</returns>
+		public Task<ResponseGeneric<ResponseWebhook, ResponseError>> CreateTeamWebhookAsync(ParamsCreateTeamWebhook paramsCreateTeamWebhook, RequestCreateTeamWebhook requestData)
+		{
+			requestData.ValidateData();
+
+			var client = new RestClient(_baseAddress);
+			var request = new RestRequest($"team/{paramsCreateTeamWebhook.TeamId}/webhook", Method.POST);
+			request.AddHeader("authorization", _accessToken);
+			request.AddJsonBody(requestData);
+
+			// execute the request
+			return RestSharperHelper.ExecuteRequestAsync<ResponseWebhook, ResponseError>(client, request);
 		}
 
 		#endregion

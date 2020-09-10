@@ -254,8 +254,8 @@ namespace Chinchilla.ClickUp.Tests
 					Assert.Fail($"The Test Method of '{methodName}' generate an error with status: {response.RequestStatus} and response: {response.ResponseError.Err}");
 				else
 				{
-					Assert.That(response.ResponseSuccess.Folders.Count == 1, $"The Response of the request through the method '{methodName}' did not return one space!");
-					Assert.That(response.ResponseSuccess.Folders.Single().Lists.Count > 2, $"The Response of the request through the method '{methodName}' returned a space without at least two lists!");
+					Assert.That(response.ResponseSuccess.Folders.Count > 1, $"The Response of the request through the method '{methodName}' did not return one space!");
+					Assert.That(response.ResponseSuccess.Folders.Any(x => x.Lists.Count > 2), $"The Response of the request through the method '{methodName}' returned a space but without at least two lists!");
 				}
 			}
 			else
@@ -572,6 +572,44 @@ namespace Chinchilla.ClickUp.Tests
 			}
 		}
 
+		/// <summary>
+		/// Tests of CreateTeamWebhook method
+		/// </summary>
+		[Test]
+		public void ShouldCreateTeamWebhook()
+		{
+			string methodName = "CreateTeamWebhook";
+			string endpoint = $"https://localhost:{new Random().Next(100, 9999)}";
+			ResponseGeneric<ResponseWebhook, ResponseError> response = null;
+			try
+			{
+				ClickUpApi clickUpAPI = new ClickUpApi(_accessToken);
+				response = clickUpAPI.CreateTeamWebhook
+				(
+					new ParamsCreateTeamWebhook(_teamId),
+					new RequestCreateTeamWebhook(endpoint)
+				);
+			}
+			catch (Exception ex)
+			{
+				Assert.Fail($"The Test Method of '{methodName}' generate exception: {ex.Message}"); // Always return false
+			}
+			if (response != null)
+			{
+				Assert.That(response.ResponseSuccess != null || response.ResponseError != null, $"The ResponseSuccess and the ResponseError of the GenericResponse of the request through the method '{methodName}' are null!"); // Always return false
+				if (response.ResponseError != null)
+					Assert.Fail($"The Test Method of '{methodName}' generate an error with status: {response.RequestStatus} and response: {response.ResponseError.Err}");
+				else
+				{
+					Assert.That(response.ResponseSuccess.Webhook.Endpoint == endpoint, $"The Response of the request through the method '{methodName}' did not return a new webhook with the same name!");
+				}
+			}
+			else
+			{
+				Assert.Fail($"The Response of the request through the method '{methodName}' is null!");
+			}
+		}
+
 		#endregion
 
 
@@ -834,8 +872,8 @@ namespace Chinchilla.ClickUp.Tests
 					Assert.Fail($"The Test Method of '{methodName}' generate an error with status: {response.RequestStatus} and response: {response.ResponseError.Err}");
 				else
 				{
-					Assert.That(response.ResponseSuccess.Folders.Count == 1, $"The Response of the request through the method '{methodName}' did not return one space!");
-					Assert.That(response.ResponseSuccess.Folders.Single().Lists.Count > 2, $"The Response of the request through the method '{methodName}' returned a space without at least two lists!");
+					Assert.That(response.ResponseSuccess.Folders.Count > 1, $"The Response of the request through the method '{methodName}' did not return one space!");
+					Assert.That(response.ResponseSuccess.Folders.Any(x => x.Lists.Count > 2), $"The Response of the request through the method '{methodName}' returned a space but without at least two lists!");
 				}
 			}
 			else
@@ -1127,6 +1165,47 @@ namespace Chinchilla.ClickUp.Tests
 				else
 				{
 					Assert.That(response.ResponseSuccess.Name == newTaskName, $"The Response of the request through the method '{methodName}' did not return an edited list with the same name!");
+				}
+			}
+			else
+			{
+				Assert.Fail($"The Response of the request through the method '{methodName}' is null!");
+			}
+		}
+
+		/// <summary>
+		/// Tests of CreateTeamWebhookAsync method
+		/// </summary>
+		[Test]
+		public void ShouldCreateTeamWebhookAsync()
+		{
+			string methodName = "CreateTeamWebhookAsync";
+			string endpoint = $"https://localhost:{new Random().Next(100, 9999)}";
+			ResponseGeneric<ResponseWebhook, ResponseError> response = null;
+			try
+			{
+				ClickUpApi clickUpAPI = new ClickUpApi(_accessToken);
+				Task.Run(async () => {
+					response = await clickUpAPI.CreateTeamWebhookAsync
+					(
+						new ParamsCreateTeamWebhook(_teamId),
+						new RequestCreateTeamWebhook(endpoint)
+					);
+				})
+				.Wait();
+			}
+			catch (Exception ex)
+			{
+				Assert.Fail($"The Test Method of '{methodName}' generate exception: {ex.Message}"); // Always return false
+			}
+			if (response != null)
+			{
+				Assert.That(response.ResponseSuccess != null || response.ResponseError != null, $"The ResponseSuccess and the ResponseError of the GenericResponse of the request through the method '{methodName}' are null!"); // Always return false
+				if (response.ResponseError != null)
+					Assert.Fail($"The Test Method of '{methodName}' generate an error with status: {response.RequestStatus} and response: {response.ResponseError.Err}");
+				else
+				{
+					Assert.That(response.ResponseSuccess.Webhook.Endpoint == endpoint, $"The Response of the request through the method '{methodName}' did not return a new webhook with the same name!");
 				}
 			}
 			else
