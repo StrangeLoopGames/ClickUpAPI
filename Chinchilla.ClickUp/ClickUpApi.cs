@@ -69,6 +69,7 @@ namespace Chinchilla.ClickUp
 
 		#region API Methods
 
+		#region User
 		/// <summary>
 		/// Get the user that belongs to this token
 		/// </summary>
@@ -83,7 +84,9 @@ namespace Chinchilla.ClickUp
 			ResponseGeneric<ResponseAuthorizedUser, ResponseError> result = RestSharperHelper.ExecuteRequest<ResponseAuthorizedUser, ResponseError>(client, request);
 			return result;
 		}
+		#endregion
 
+		#region Teams
 		/// <summary>
 		/// Get the authorized teams for this token
 		/// </summary>
@@ -114,20 +117,22 @@ namespace Chinchilla.ClickUp
 			ResponseGeneric<ResponseTeam, ResponseError> result = RestSharperHelper.ExecuteRequest<ResponseTeam, ResponseError>(client, request);
 			return result;
 		}
+		#endregion
 
+		#region Spaces
 		/// <summary>
 		/// Get a team's spaces. This team must be one of the authorized teams for this token.
 		/// </summary>
 		/// <param name="paramsGetTeamSpace">param object of get team space request</param>
 		/// <returns>ResponseGeneric with ResponseTeamSpace response object</returns>
-		public ResponseGeneric<ResponseTeamSpace, ResponseError> GetTeamSpaces(ParamsGetTeamSpace paramsGetTeamSpace)
+		public ResponseGeneric<ResponseTeamSpaces, ResponseError> GetTeamSpaces(ParamsGetTeamSpaces paramsGetTeamSpace)
 		{
 			var client = new RestClient(_baseAddress);
 			var request = new RestRequest($"team/{paramsGetTeamSpace.TeamId}/space", Method.GET);
 			request.AddHeader("authorization", _accessToken);
 
 			// execute the request
-			ResponseGeneric<ResponseTeamSpace, ResponseError> result = RestSharperHelper.ExecuteRequest<ResponseTeamSpace, ResponseError>(client, request);
+			ResponseGeneric<ResponseTeamSpaces, ResponseError> result = RestSharperHelper.ExecuteRequest<ResponseTeamSpaces, ResponseError>(client, request);
 			return result;
 		}
 
@@ -150,7 +155,9 @@ namespace Chinchilla.ClickUp
 			ResponseGeneric<ResponseModelSpace, ResponseError> result = RestSharperHelper.ExecuteRequest<ResponseModelSpace, ResponseError>(client, request);
 			return result;
 		}
+		#endregion
 
+		#region Folders
 		/// <summary>
 		/// Get a space's folders. The folders' lists will also be included.
 		/// </summary>
@@ -184,6 +191,24 @@ namespace Chinchilla.ClickUp
 
 			// execute the request
 			ResponseGeneric<ResponseModelFolder, ResponseError> result = RestSharperHelper.ExecuteRequest<ResponseModelFolder, ResponseError>(client, request);
+			return result;
+		}
+		#endregion
+
+		#region Lists
+		/// <summary>
+		/// Get a list by id
+		/// </summary>
+		/// <param name="paramsGetListById">param object of get list by id request</param>
+		/// <returns>ResponseGeneric with ResponseModelList response object</returns>
+		public ResponseGeneric<ResponseModelList, ResponseError> GetListById(ParamsGetListById paramsGetListById)
+		{
+			var client = new RestClient(_baseAddress);
+			var request = new RestRequest($"list/{paramsGetListById.ListId}", Method.GET);
+			request.AddHeader("authorization", _accessToken);
+
+			// execute the request
+			ResponseGeneric<ResponseModelList, ResponseError> result = RestSharperHelper.ExecuteRequest<ResponseModelList, ResponseError>(client, request);
 			return result;
 		}
 
@@ -260,7 +285,9 @@ namespace Chinchilla.ClickUp
 			ResponseGeneric<ResponseModelList, ResponseError> result = RestSharperHelper.ExecuteRequest<ResponseModelList, ResponseError>(client, request);
 			return result;
 		}
+		#endregion
 
+		#region Tasks
 		/// <summary>
 		/// Get Tasks of the Team and filter its by optionalParams
 		/// </summary>
@@ -315,6 +342,24 @@ namespace Chinchilla.ClickUp
 			ResponseGeneric<ResponseModelTask, ResponseError> result = RestSharperHelper.ExecuteRequest<ResponseModelTask, ResponseError>(client, request);
 			return result;
 		}
+		#endregion
+
+		#region Webhooks
+		/// <summary>
+		/// Get a team's webhooks. This team must be one of the authorized teams for this token.
+		/// </summary>
+		/// <param name="paramsGetTeamWebhook">param object of get team Webhook request</param>
+		/// <returns>ResponseGeneric with ResponseTeamWebhook response object</returns>
+		public ResponseGeneric<ResponseWebhooks, ResponseError> GetTeamWebhooks(ParamsGetTeamWebhooks paramsGetTeamWebhook)
+		{
+			var client = new RestClient(_baseAddress);
+			var request = new RestRequest($"team/{paramsGetTeamWebhook.TeamId}/webhook", Method.GET);
+			request.AddHeader("authorization", _accessToken);
+
+			// execute the request
+			ResponseGeneric<ResponseWebhooks, ResponseError> result = RestSharperHelper.ExecuteRequest<ResponseWebhooks, ResponseError>(client, request);
+			return result;
+		}
 
 		/// <summary>
 		/// Create a webhook in a Team
@@ -335,11 +380,13 @@ namespace Chinchilla.ClickUp
 			ResponseGeneric<ResponseWebhook, ResponseError> result = RestSharperHelper.ExecuteRequest<ResponseWebhook, ResponseError>(client, request);
 			return result;
 		}
+		#endregion
 
 		#endregion
 
 		#region API Methods Async
 
+		#region User
 		/// <summary>
 		/// Get the user that belongs to this token
 		/// </summary>
@@ -353,7 +400,9 @@ namespace Chinchilla.ClickUp
 			// execute the request
 			return RestSharperHelper.ExecuteRequestAsync<ResponseAuthorizedUser, ResponseError>(client, request);
 		}
+		#endregion
 
+		#region Teams
 		/// <summary>
 		/// Get the authorized teams for this token
 		/// </summary>
@@ -382,20 +431,22 @@ namespace Chinchilla.ClickUp
 			// execute the request
 			return RestSharperHelper.ExecuteRequestAsync<ResponseTeam, ResponseError>(client, request);
 		}
+		#endregion
 
+		#region Spaces
 		/// <summary>
 		/// Get a team's spaces. This team must be one of the authorized teams for this token.
 		/// </summary>
 		/// <param name="paramGetTeamSpace">param object of get team space request</param>
 		/// <returns>ResponseGeneric with ResponseTeamSpace object expected</returns>
-		public Task<ResponseGeneric<ResponseTeamSpace, ResponseError>> GetTeamSpacesAsync(ParamsGetTeamSpace paramsGetTeamSpace)
+		public Task<ResponseGeneric<ResponseTeamSpaces, ResponseError>> GetTeamSpacesAsync(ParamsGetTeamSpaces paramsGetTeamSpace)
 		{
 			var client = new RestClient(_baseAddress);
 			var request = new RestRequest($"team/{paramsGetTeamSpace.TeamId}/space", Method.GET);
 			request.AddHeader("authorization", _accessToken);
 
 			// execute the request
-			return RestSharperHelper.ExecuteRequestAsync<ResponseTeamSpace, ResponseError>(client, request);
+			return RestSharperHelper.ExecuteRequestAsync<ResponseTeamSpaces, ResponseError>(client, request);
 		}
 
 		/// <summary>
@@ -416,7 +467,9 @@ namespace Chinchilla.ClickUp
 			// execute the request
 			return RestSharperHelper.ExecuteRequestAsync<ResponseModelSpace, ResponseError>(client, request);
 		}
+		#endregion
 
+		#region Folders
 		/// <summary>
 		/// Get a space's folders. The folders' lists will also be included.
 		/// </summary>
@@ -449,6 +502,23 @@ namespace Chinchilla.ClickUp
 
 			// execute the request
 			return RestSharperHelper.ExecuteRequestAsync<ResponseModelFolder, ResponseError>(client, request);
+		}
+		#endregion
+
+		#region Lists
+		/// <summary>
+		/// Get a list by id
+		/// </summary>
+		/// <param name="paramsGetListById">param object of get list by id request</param>
+		/// <returns>ResponseGeneric with ResponseModelList response object</returns>
+		public Task<ResponseGeneric<ResponseModelList, ResponseError>> GetListByIdAsync(ParamsGetListById paramsGetListById)
+		{
+			var client = new RestClient(_baseAddress);
+			var request = new RestRequest($"list/{paramsGetListById.ListId}", Method.GET);
+			request.AddHeader("authorization", _accessToken);
+
+			// execute the request
+			return RestSharperHelper.ExecuteRequestAsync<ResponseModelList, ResponseError>(client, request);
 		}
 
 		/// <summary>
@@ -520,7 +590,9 @@ namespace Chinchilla.ClickUp
 			// execute the request
 			return RestSharperHelper.ExecuteRequestAsync<ResponseModelList, ResponseError>(client, request);
 		}
+		#endregion
 
+		#region Tasks
 		/// <summary>
 		/// Get Tasks of the Team and filter its by optionalParams
 		/// </summary>
@@ -572,6 +644,23 @@ namespace Chinchilla.ClickUp
 			// execute the request
 			return RestSharperHelper.ExecuteRequestAsync<ResponseModelTask, ResponseError>(client, request);
 		}
+		#endregion
+
+		#region Webhooks
+		/// <summary>
+		/// Get a team's webhooks. This team must be one of the authorized teams for this token.
+		/// </summary>
+		/// <param name="paramsGetTeamWebhook">param object of get team Webhook request</param>
+		/// <returns>ResponseGeneric with ResponseTeamWebhook response object</returns>
+		public Task<ResponseGeneric<ResponseWebhooks, ResponseError>> GetTeamWebhooksAsync(ParamsGetTeamWebhooks paramsGetTeamWebhook)
+		{
+			var client = new RestClient(_baseAddress);
+			var request = new RestRequest($"team/{paramsGetTeamWebhook.TeamId}/webhook", Method.GET);
+			request.AddHeader("authorization", _accessToken);
+
+			// execute the request
+			return RestSharperHelper.ExecuteRequestAsync<ResponseWebhooks, ResponseError>(client, request);
+		}
 
 		/// <summary>
 		/// Create a webhook in a Team
@@ -591,6 +680,7 @@ namespace Chinchilla.ClickUp
 			// execute the request
 			return RestSharperHelper.ExecuteRequestAsync<ResponseWebhook, ResponseError>(client, request);
 		}
+		#endregion
 
 		#endregion
 	}

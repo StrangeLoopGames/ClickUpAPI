@@ -56,6 +56,8 @@ namespace Chinchilla.ClickUp.Tests
 
 		#region Tests Sync Methods
 
+		#region User
+
 		/// <summary>
 		/// Tests of GetAutorizedUser method
 		/// </summary>
@@ -89,7 +91,9 @@ namespace Chinchilla.ClickUp.Tests
 				Assert.Fail($"The Response of the request through the method '{methodName}' is null!");
 			}
 		}
+		#endregion
 
+		#region Teams
 		/// <summary>
 		/// Tests of GetAuthotizedTeams method
 		/// </summary>
@@ -158,19 +162,21 @@ namespace Chinchilla.ClickUp.Tests
 				Assert.Fail($"The Response of the request through the method '{methodName}' is null!");
 			}
 		}
+		#endregion
 
+		#region Spaces
 		/// <summary>
-		/// Tests of GetTeamSpace method
+		/// Tests of GetTeamSpaces method
 		/// </summary>
 		[Test]
 		public void ShouldGetTeamSpaces()
 		{
 			string methodName = "GetTeamSpaces";
-			ResponseGeneric<ResponseTeamSpace, ResponseError> response = null;
+			ResponseGeneric<ResponseTeamSpaces, ResponseError> response = null;
 			try
 			{
 				ClickUpApi clickUpAPI = new ClickUpApi(_accessToken);
-				response = clickUpAPI.GetTeamSpaces(new ParamsGetTeamSpace(_teamId));
+				response = clickUpAPI.GetTeamSpaces(new ParamsGetTeamSpaces(_teamId));
 			}
 			catch (Exception ex)
 			{
@@ -183,7 +189,7 @@ namespace Chinchilla.ClickUp.Tests
 					Assert.Fail($"The Test Method of '{methodName}' generate an error with status: {response.RequestStatus} and response: {response.ResponseError.Err}");
 				else
 				{
-					Assert.That(response.ResponseSuccess.Spaces.Count == 1, $"The Response of the request through the method '{methodName}' did not return one space!");
+					Assert.That(response.ResponseSuccess.Spaces.Any(x => x.Id == _spaceId), $"The Response of the request through the method '{methodName}' did not return at least one space with an expected value!");
 				}
 			}
 			else
@@ -229,7 +235,9 @@ namespace Chinchilla.ClickUp.Tests
 				Assert.Fail($"The Response of the request through the method '{methodName}' is null!");
 			}
 		}
+		#endregion
 
+		#region Folders
 		/// <summary>
 		/// Tests of ShouldGetSpaceFolders method
 		/// </summary>
@@ -294,6 +302,41 @@ namespace Chinchilla.ClickUp.Tests
 				else
 				{
 					Assert.That(response.ResponseSuccess.Name == newFolderName, $"The Response of the request through the method '{methodName}' did not return a new space with the same name!");
+				}
+			}
+			else
+			{
+				Assert.Fail($"The Response of the request through the method '{methodName}' is null!");
+			}
+		}
+		#endregion
+
+		#region Lists
+		/// <summary>
+		/// Tests of GetListById method
+		/// </summary>
+		[Test]
+		public void ShouldGetListById()
+		{
+			string methodName = "GetListById";
+			ResponseGeneric<ResponseModelList, ResponseError> response = null;
+			try
+			{
+				ClickUpApi clickUpAPI = new ClickUpApi(_accessToken);
+				response = clickUpAPI.GetListById(new ParamsGetListById(_listId));
+			}
+			catch (Exception ex)
+			{
+				Assert.Fail($"The Test Method of '{methodName}' generate exception: {ex.Message}"); // Always return false
+			}
+			if (response != null)
+			{
+				Assert.That(response.ResponseSuccess != null || response.ResponseError != null, $"The ResponseSuccess and the ResponseError of the GenericResponse of the request through the method '{methodName}' are null!"); // Always return false
+				if (response.ResponseError != null)
+					Assert.Fail($"The Test Method of '{methodName}' generate an error with status: {response.RequestStatus} and response: {response.ResponseError.Err}");
+				else
+				{
+					Assert.That(response.ResponseSuccess.Id == _listId, $"The Response of the request through the method '{methodName}' did not return the expected list!");
 				}
 			}
 			else
@@ -449,7 +492,9 @@ namespace Chinchilla.ClickUp.Tests
 				Assert.Fail($"The Response of the request through the method '{methodName}' is null!");
 			}
 		}
+		#endregion
 
+		#region Tasks
 		/// <summary>
 		/// Tests of GetTasks method
 		/// </summary>
@@ -571,6 +616,41 @@ namespace Chinchilla.ClickUp.Tests
 				Assert.Fail($"The Response of the request through the method '{methodName}' is null!");
 			}
 		}
+		#endregion
+
+		#region Webhooks
+		/// <summary>
+		/// Tests of GetTeamWebhooks method
+		/// </summary>
+		[Test]
+		public void ShouldGetTeamWebhooks()
+		{
+			string methodName = "GetTeamWebhooks";
+			ResponseGeneric<ResponseWebhooks, ResponseError> response = null;
+			try
+			{
+				ClickUpApi clickUpAPI = new ClickUpApi(_accessToken);
+				response = clickUpAPI.GetTeamWebhooks(new ParamsGetTeamWebhooks(_teamId));
+			}
+			catch (Exception ex)
+			{
+				Assert.Fail($"The Test Method of '{methodName}' generate exception: {ex.Message}"); // Always return false
+			}
+			if (response != null)
+			{
+				Assert.That(response.ResponseSuccess != null || response.ResponseError != null, $"The ResponseSuccess and the ResponseError of the GenericResponse of the request through the method '{methodName}' are null!"); // Always return false
+				if (response.ResponseError != null)
+					Assert.Fail($"The Test Method of '{methodName}' generate an error with status: {response.RequestStatus} and response: {response.ResponseError.Err}");
+				else
+				{
+					Assert.That(response.ResponseSuccess.Webhooks.Any(x => x.Endpoint.StartsWith("https://localhost:")), $"The Response of the request through the method '{methodName}' did not return one space!");
+				}
+			}
+			else
+			{
+				Assert.Fail($"The Response of the request through the method '{methodName}' is null!");
+			}
+		}
 
 		/// <summary>
 		/// Tests of CreateTeamWebhook method
@@ -609,11 +689,14 @@ namespace Chinchilla.ClickUp.Tests
 				Assert.Fail($"The Response of the request through the method '{methodName}' is null!");
 			}
 		}
+		#endregion
 
 		#endregion
 
 
 		#region Test Async Methods
+
+		#region User
 
 		/// <summary>
 		/// Tests of GetAutorizedUserAsync method
@@ -651,7 +734,9 @@ namespace Chinchilla.ClickUp.Tests
 				Assert.Fail($"The Response of the request through the method '{methodName}' is null!");
 			}
 		}
+		#endregion
 
+		#region Teams
 		/// <summary>
 		/// Tests of GetAuthotizedTeamsAsync method
 		/// </summary>
@@ -726,7 +811,9 @@ namespace Chinchilla.ClickUp.Tests
 				Assert.Fail($"The Response of the request through the method '{methodName}' is null!");
 			}
 		}
+		#endregion
 
+		#region Spaces
 		/// <summary>
 		/// Tests of GetTeamSpacesAsync method
 		/// </summary>
@@ -734,12 +821,12 @@ namespace Chinchilla.ClickUp.Tests
 		public void ShouldGetTeamSpacesAsync()
 		{
 			string methodName = "GetTeamSpacesAsync";
-			ResponseGeneric<ResponseTeamSpace, ResponseError> response = null;
+			ResponseGeneric<ResponseTeamSpaces, ResponseError> response = null;
 			try
 			{
 				ClickUpApi clickUpAPI = new ClickUpApi(_accessToken);
 				Task.Run(async () => {
-					response = await clickUpAPI.GetTeamSpacesAsync(new ParamsGetTeamSpace(_teamId));
+					response = await clickUpAPI.GetTeamSpacesAsync(new ParamsGetTeamSpaces(_teamId));
 				})
 				.Wait();
 			}
@@ -754,48 +841,7 @@ namespace Chinchilla.ClickUp.Tests
 					Assert.Fail($"The Test Method of '{methodName}' generate an error with status: {response.RequestStatus} and response: {response.ResponseError.Err}");
 				else
 				{
-					Assert.That(response.ResponseSuccess.Spaces.Count == 1, $"The Response of the request through the method '{methodName}' did not return one space!");
-				}
-			}
-			else
-			{
-				Assert.Fail($"The Response of the request through the method '{methodName}' is null!");
-			}
-		}
-
-		/// <summary>
-		/// Tests of CreateFolder method
-		/// </summary>
-		[Test]
-		public void ShouldCreateFolderAsync()
-		{
-			string methodName = "CreateFolderAsync";
-			string newFolderName = $"Test Folder {new Random().Next(0, 999)} created from Tests";
-			ResponseGeneric<ResponseModelFolder, ResponseError> response = null;
-			try
-			{
-				ClickUpApi clickUpAPI = new ClickUpApi(_accessToken);
-				Task.Run(async () => {
-					response = await clickUpAPI.CreateFolderAsync
-					(
-						new ParamsCreateFolder(_spaceId),
-						new RequestCreateFolder(newFolderName)
-					);
-				})
-				.Wait();
-			}
-			catch (Exception ex)
-			{
-				Assert.Fail($"The Test Method of '{methodName}' generate exception: {ex.Message}"); // Always return false
-			}
-			if (response != null)
-			{
-				Assert.That(response.ResponseSuccess != null || response.ResponseError != null, $"The ResponseSuccess and the ResponseError of the GenericResponse of the request through the method '{methodName}' are null!"); // Always return false
-				if (response.ResponseError != null)
-					Assert.Fail($"The Test Method of '{methodName}' generate an error with status: {response.RequestStatus} and response: {response.ResponseError.Err}");
-				else
-				{
-					Assert.That(response.ResponseSuccess.Name == newFolderName, $"The Response of the request through the method '{methodName}' did not return a new space with the same name!");
+					Assert.That(response.ResponseSuccess.Spaces.Any(x => x.Id == _spaceId), $"The Response of the request through the method '{methodName}' did not return at least one space with an expected value!");
 				}
 			}
 			else
@@ -844,6 +890,49 @@ namespace Chinchilla.ClickUp.Tests
 				Assert.Fail($"The Response of the request through the method '{methodName}' is null!");
 			}
 		}
+		#endregion
+
+		#region Folders
+		/// <summary>
+		/// Tests of CreateFolder method
+		/// </summary>
+		[Test]
+		public void ShouldCreateFolderAsync()
+		{
+			string methodName = "CreateFolderAsync";
+			string newFolderName = $"Test Folder {new Random().Next(0, 999)} created from Tests";
+			ResponseGeneric<ResponseModelFolder, ResponseError> response = null;
+			try
+			{
+				ClickUpApi clickUpAPI = new ClickUpApi(_accessToken);
+				Task.Run(async () => {
+					response = await clickUpAPI.CreateFolderAsync
+					(
+						new ParamsCreateFolder(_spaceId),
+						new RequestCreateFolder(newFolderName)
+					);
+				})
+				.Wait();
+			}
+			catch (Exception ex)
+			{
+				Assert.Fail($"The Test Method of '{methodName}' generate exception: {ex.Message}"); // Always return false
+			}
+			if (response != null)
+			{
+				Assert.That(response.ResponseSuccess != null || response.ResponseError != null, $"The ResponseSuccess and the ResponseError of the GenericResponse of the request through the method '{methodName}' are null!"); // Always return false
+				if (response.ResponseError != null)
+					Assert.Fail($"The Test Method of '{methodName}' generate an error with status: {response.RequestStatus} and response: {response.ResponseError.Err}");
+				else
+				{
+					Assert.That(response.ResponseSuccess.Name == newFolderName, $"The Response of the request through the method '{methodName}' did not return a new space with the same name!");
+				}
+			}
+			else
+			{
+				Assert.Fail($"The Response of the request through the method '{methodName}' is null!");
+			}
+		}
 
 		/// <summary>
 		/// Tests of GetSpaceFoldersAsync method
@@ -874,6 +963,44 @@ namespace Chinchilla.ClickUp.Tests
 				{
 					Assert.That(response.ResponseSuccess.Folders.Count > 1, $"The Response of the request through the method '{methodName}' did not return one space!");
 					Assert.That(response.ResponseSuccess.Folders.Any(x => x.Lists.Count > 2), $"The Response of the request through the method '{methodName}' returned a space but without at least two lists!");
+				}
+			}
+			else
+			{
+				Assert.Fail($"The Response of the request through the method '{methodName}' is null!");
+			}
+		}
+		#endregion
+
+		#region Lists
+		/// <summary>
+		/// Tests of GetListByIdAsync method
+		/// </summary>
+		[Test]
+		public void ShouldGetListByIdAsync()
+		{
+			string methodName = "GetListByIdAsync";
+			ResponseGeneric<ResponseModelList, ResponseError> response = null;
+			try
+			{
+				ClickUpApi clickUpAPI = new ClickUpApi(_accessToken);
+				Task.Run(async () => {
+					response = await clickUpAPI.GetListByIdAsync(new ParamsGetListById(_listId));
+				})
+				.Wait();
+			}
+			catch (Exception ex)
+			{
+				Assert.Fail($"The Test Method of '{methodName}' generate exception: {ex.Message}"); // Always return false
+			}
+			if (response != null)
+			{
+				Assert.That(response.ResponseSuccess != null || response.ResponseError != null, $"The ResponseSuccess and the ResponseError of the GenericResponse of the request through the method '{methodName}' are null!"); // Always return false
+				if (response.ResponseError != null)
+					Assert.Fail($"The Test Method of '{methodName}' generate an error with status: {response.RequestStatus} and response: {response.ResponseError.Err}");
+				else
+				{
+					Assert.That(response.ResponseSuccess.Id == _listId, $"The Response of the request through the method '{methodName}' did not return the expected list!");
 				}
 			}
 			else
@@ -1041,7 +1168,9 @@ namespace Chinchilla.ClickUp.Tests
 				Assert.Fail($"The Response of the request through the method '{methodName}' is null!");
 			}
 		}
+		#endregion
 
+		#region Tasks
 		/// <summary>
 		/// Tests of GetTasksAsync method
 		/// </summary>
@@ -1172,6 +1301,44 @@ namespace Chinchilla.ClickUp.Tests
 				Assert.Fail($"The Response of the request through the method '{methodName}' is null!");
 			}
 		}
+		#endregion
+
+		#region Webhooks
+		/// <summary>
+		/// Tests of GetTeamWebhooksAsync method
+		/// </summary>
+		[Test]
+		public void ShouldGetTeamWebhooksAsync()
+		{
+			string methodName = "GetTeamWebhooksAsync";
+			ResponseGeneric<ResponseWebhooks, ResponseError> response = null;
+			try
+			{
+				ClickUpApi clickUpAPI = new ClickUpApi(_accessToken);
+				Task.Run(async () => {
+					response = await clickUpAPI.GetTeamWebhooksAsync(new ParamsGetTeamWebhooks(_teamId));
+				})
+				.Wait();
+			}
+			catch (Exception ex)
+			{
+				Assert.Fail($"The Test Method of '{methodName}' generate exception: {ex.Message}"); // Always return false
+			}
+			if (response != null)
+			{
+				Assert.That(response.ResponseSuccess != null || response.ResponseError != null, $"The ResponseSuccess and the ResponseError of the GenericResponse of the request through the method '{methodName}' are null!"); // Always return false
+				if (response.ResponseError != null)
+					Assert.Fail($"The Test Method of '{methodName}' generate an error with status: {response.RequestStatus} and response: {response.ResponseError.Err}");
+				else
+				{
+					Assert.That(response.ResponseSuccess.Webhooks.Any(x => x.Endpoint.StartsWith("https://localhost:")), $"The Response of the request through the method '{methodName}' did not return one space!");
+				}
+			}
+			else
+			{
+				Assert.Fail($"The Response of the request through the method '{methodName}' is null!");
+			}
+		}
 
 		/// <summary>
 		/// Tests of CreateTeamWebhookAsync method
@@ -1213,6 +1380,7 @@ namespace Chinchilla.ClickUp.Tests
 				Assert.Fail($"The Response of the request through the method '{methodName}' is null!");
 			}
 		}
+		#endregion
 
 		#endregion
 	}

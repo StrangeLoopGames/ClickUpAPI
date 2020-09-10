@@ -8,7 +8,7 @@ namespace Chinchilla.ClickUp.Responses
 	/// <summary>
 	/// Response object of the method GetTeamSpaces()
 	/// </summary>
-	public class ResponseTeamSpace
+	public class ResponseTeamSpaces
 		: Helpers.IResponse
 	{
 		/// <summary>

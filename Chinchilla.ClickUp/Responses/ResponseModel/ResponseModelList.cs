@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace Chinchilla.ClickUp.Responses.Model
 {
@@ -21,5 +22,20 @@ namespace Chinchilla.ClickUp.Responses.Model
 		/// </summary>
 		[JsonProperty("name")]
 		public string Name { get; set; }
+
+		[JsonProperty("content")]
+		public string Content { get; set; }
+
+		[JsonProperty("folder")]
+		public ResponseModelFolder Folder { get; set; }
+
+		[JsonProperty("space")]
+		public ResponseModelSpace Space { get; set; }
+
+		/// <summary>
+		/// List of Status Model that contains the information of Statuses (Only if Override Statuses is true)
+		/// </summary>
+		[JsonProperty("statuses")]
+		public List<ResponseModelStatus> Statuses { get; set; }
 	}
 }

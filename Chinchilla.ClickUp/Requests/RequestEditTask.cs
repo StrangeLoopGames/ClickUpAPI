@@ -24,7 +24,13 @@ namespace Chinchilla.ClickUp.Requests
 		/// </summary>
 		[JsonProperty("content")]
 		public string Content { get; set; }
-		
+
+		/// <summary>
+		/// Content of the task in MarkDown
+		/// </summary>
+		[JsonProperty("markdown_content")]
+		public string MarkDownContent { get; set; }
+
 		/// <summary>
 		/// List of users id added or removed to the task
 		/// </summary>
@@ -36,6 +42,9 @@ namespace Chinchilla.ClickUp.Requests
 		/// </summary>
 		[JsonProperty("status")]
 		public string Status { get; set; }
+
+		[JsonProperty("archived")]
+		public bool IsArchived { get; set; }
 
 		/// <summary>
 		/// Priority of the Task

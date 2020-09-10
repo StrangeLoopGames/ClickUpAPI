@@ -6,9 +6,9 @@ namespace Chinchilla.ClickUp.Params
 {
 
 	/// <summary>
-	/// The param object of get team space request
+	/// The param object of get team webhooks request
 	/// </summary>
-	public class ParamsGetTeamSpace
+	public class ParamsGetTeamWebhooks
 	{
 		#region Attributes
 
@@ -25,10 +25,10 @@ namespace Chinchilla.ClickUp.Params
 		#region Constructor
 
 		/// <summary>
-		/// The constructor of ParamsGetTeamSpace
+		/// The constructor of ParamsGetTeamWebhooks
 		/// </summary>
 		/// <param name="teamId"></param>
-		public ParamsGetTeamSpace(string teamId)
+		public ParamsGetTeamWebhooks(string teamId)
 		{
 			TeamId = teamId;
 		}
