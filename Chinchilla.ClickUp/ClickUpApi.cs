@@ -25,7 +25,7 @@ namespace Chinchilla.ClickUp
 		/// <summary>
 		/// The Access Token to add during the request
 		/// </summary>
-		public string AccessToken { protected get; set; }
+		public string AccessToken { get; protected set; }
 
 		#endregion
 

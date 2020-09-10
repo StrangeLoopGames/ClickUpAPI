@@ -12,9 +12,9 @@
 		<RepositoryType>git</RepositoryType>
 		<PackageTags>api;csharp;rest;clickup</PackageTags>
 		<PackageId>Chinchilla.ClickUp</PackageId>
-		<Version>2.0.8.1</Version>
+		<Version>2.0.8.2</Version>
 		<PackageReleaseNotes>
-			Version 2.0.8.1
+			Version 2.0.8.2
 
 			* Added an ability to get the access token when using OAuth 2 flow.
 
