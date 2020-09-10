@@ -265,6 +265,44 @@ namespace Chinchilla.ClickUp.Tests
 		}
 
 		/// <summary>
+		/// Tests of CreateFolder method
+		/// </summary>
+		[Test]
+		public void ShouldCreateFolder()
+		{
+			string methodName = "CreateFolder";
+			string newFolderName = $"Test Folder {new Random().Next(0, 999)} created from Tests";
+			ResponseGeneric<ResponseModelFolder, ResponseError> response = null;
+			try
+			{
+				ClickUpApi clickUpAPI = new ClickUpApi(_accessToken);
+				response = clickUpAPI.CreateFolder
+				(
+					new ParamsCreateFolder(_spaceId),
+					new RequestCreateFolder(newFolderName)
+				);
+			}
+			catch (Exception ex)
+			{
+				Assert.Fail($"The Test Method of '{methodName}' generate exception: {ex.Message}"); // Always return false
+			}
+			if (response != null)
+			{
+				Assert.That(response.ResponseSuccess != null || response.ResponseError != null, $"The ResponseSuccess and the ResponseError of the GenericResponse of the request through the method '{methodName}' are null!"); // Always return false
+				if (response.ResponseError != null)
+					Assert.Fail($"The Test Method of '{methodName}' generate an error with status: {response.RequestStatus} and response: {response.ResponseError.Err}");
+				else
+				{
+					Assert.That(response.ResponseSuccess.Name == newFolderName, $"The Response of the request through the method '{methodName}' did not return a new space with the same name!");
+				}
+			}
+			else
+			{
+				Assert.Fail($"The Response of the request through the method '{methodName}' is null!");
+			}
+		}
+
+		/// <summary>
 		/// Tests of CreateList method
 		/// </summary>
 		[Test]
@@ -278,7 +316,45 @@ namespace Chinchilla.ClickUp.Tests
 				ClickUpApi clickUpAPI = new ClickUpApi(_accessToken);
 				response = clickUpAPI.CreateList
 				(
-					new ParamsCreateList(_folderId),
+					new ParamsCreateFolderList(_folderId),
+					new RequestCreateList(newListName)
+				);
+			}
+			catch (Exception ex)
+			{
+				Assert.Fail($"The Test Method of '{methodName}' generate exception: {ex.Message}"); // Always return false
+			}
+			if (response != null)
+			{
+				Assert.That(response.ResponseSuccess != null || response.ResponseError != null, $"The ResponseSuccess and the ResponseError of the GenericResponse of the request through the method '{methodName}' are null!"); // Always return false
+				if (response.ResponseError != null)
+					Assert.Fail($"The Test Method of '{methodName}' generate an error with status: {response.RequestStatus} and response: {response.ResponseError.Err}");
+				else
+				{
+					Assert.That(response.ResponseSuccess.Name == newListName, $"The Response of the request through the method '{methodName}' did not return a new list with the same name!");
+				}
+			}
+			else
+			{
+				Assert.Fail($"The Response of the request through the method '{methodName}' is null!");
+			}
+		}
+
+		/// <summary>
+		/// Tests of CreateFolderlessList method
+		/// </summary>
+		[Test]
+		public void ShouldCreateFolderlessList()
+		{
+			string methodName = "CreateList";
+			string newListName = $"Test Folderless List {new Random().Next(0, 999)} created from Tests";
+			ResponseGeneric<ResponseModelList, ResponseError> response = null;
+			try
+			{
+				ClickUpApi clickUpAPI = new ClickUpApi(_accessToken);
+				response = clickUpAPI.CreateFolderlessList
+				(
+					new ParamsCreateFolderlessList(_spaceId),
 					new RequestCreateList(newListName)
 				);
 			}
@@ -616,6 +692,47 @@ namespace Chinchilla.ClickUp.Tests
 		}
 
 		/// <summary>
+		/// Tests of CreateFolder method
+		/// </summary>
+		[Test]
+		public void ShouldCreateFolderAsync()
+		{
+			string methodName = "CreateFolderAsync";
+			string newFolderName = $"Test Folder {new Random().Next(0, 999)} created from Tests";
+			ResponseGeneric<ResponseModelFolder, ResponseError> response = null;
+			try
+			{
+				ClickUpApi clickUpAPI = new ClickUpApi(_accessToken);
+				Task.Run(async () => {
+					response = await clickUpAPI.CreateFolderAsync
+					(
+						new ParamsCreateFolder(_spaceId),
+						new RequestCreateFolder(newFolderName)
+					);
+				})
+				.Wait();
+			}
+			catch (Exception ex)
+			{
+				Assert.Fail($"The Test Method of '{methodName}' generate exception: {ex.Message}"); // Always return false
+			}
+			if (response != null)
+			{
+				Assert.That(response.ResponseSuccess != null || response.ResponseError != null, $"The ResponseSuccess and the ResponseError of the GenericResponse of the request through the method '{methodName}' are null!"); // Always return false
+				if (response.ResponseError != null)
+					Assert.Fail($"The Test Method of '{methodName}' generate an error with status: {response.RequestStatus} and response: {response.ResponseError.Err}");
+				else
+				{
+					Assert.That(response.ResponseSuccess.Name == newFolderName, $"The Response of the request through the method '{methodName}' did not return a new space with the same name!");
+				}
+			}
+			else
+			{
+				Assert.Fail($"The Response of the request through the method '{methodName}' is null!");
+			}
+		}
+
+		/// <summary>
 		/// Tests of CreateTeamSpaceAsync method
 		/// </summary>
 		[Test]
@@ -708,7 +825,48 @@ namespace Chinchilla.ClickUp.Tests
 				Task.Run(async () => {
 					response = await clickUpAPI.CreateListAsync
 					(
-						new ParamsCreateList(_folderId),
+						new ParamsCreateFolderList(_folderId),
+						new RequestCreateList(newListName)
+					);
+				})
+				.Wait();
+			}
+			catch (Exception ex)
+			{
+				Assert.Fail($"The Test Method of '{methodName}' generate exception: {ex.Message}"); // Always return false
+			}
+			if (response != null)
+			{
+				Assert.That(response.ResponseSuccess != null || response.ResponseError != null, $"The ResponseSuccess and the ResponseError of the GenericResponse of the request through the method '{methodName}' are null!"); // Always return false
+				if (response.ResponseError != null)
+					Assert.Fail($"The Test Method of '{methodName}' generate an error with status: {response.RequestStatus} and response: {response.ResponseError.Err}");
+				else
+				{
+					Assert.That(response.ResponseSuccess.Name == newListName, $"The Response of the request through the method '{methodName}' did not return a new list with the same name!");
+				}
+			}
+			else
+			{
+				Assert.Fail($"The Response of the request through the method '{methodName}' is null!");
+			}
+		}
+
+		/// <summary>
+		/// Tests of CreateFolderlessListAsync method
+		/// </summary>
+		[Test]
+		public void ShouldCreateFolderlessListAsync()
+		{
+			string methodName = "CreateListAsync";
+			string newListName = $"Test Folderless List {new Random().Next(0, 999)} created from Tests";
+			ResponseGeneric<ResponseModelList, ResponseError> response = null;
+			try
+			{
+				ClickUpApi clickUpAPI = new ClickUpApi(_accessToken);
+				Task.Run(async () => {
+					response = await clickUpAPI.CreateFolderlessListAsync
+					(
+						new ParamsCreateFolderlessList(_spaceId),
 						new RequestCreateList(newListName)
 					);
 				})

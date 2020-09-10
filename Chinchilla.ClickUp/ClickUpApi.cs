@@ -168,17 +168,57 @@ namespace Chinchilla.ClickUp
 		}
 
 		/// <summary>
+		/// Create a folder
+		/// </summary>
+		/// <param name="paramsCreateList">param object of create folder request</param>
+		/// <param name="requestData">RequestCreateFolder object</param>
+		/// <returns>ResponseGeneric with ModelFolder object expected</returns>
+		public ResponseGeneric<ResponseModelFolder, ResponseError> CreateFolder(ParamsCreateFolder paramsCreateFolder, RequestCreateFolder requestData)
+		{
+			requestData.ValidateData();
+
+			var client = new RestClient(_baseAddress);
+			var request = new RestRequest($"space/{paramsCreateFolder.SpaceId}/folder", Method.POST);
+			request.AddHeader("authorization", _accessToken);
+			request.AddJsonBody(requestData);
+
+			// execute the request
+			ResponseGeneric<ResponseModelFolder, ResponseError> result = RestSharperHelper.ExecuteRequest<ResponseModelFolder, ResponseError>(client, request);
+			return result;
+		}
+
+		/// <summary>
 		/// Create List in Folder
 		/// </summary>
 		/// <param name="paramsCreateList">param object of create list request</param>
 		/// <param name="requestData">RequestCreateList object</param>
 		/// <returns>ResponseGeneric with ModelList response object</returns>
-		public ResponseGeneric<ResponseModelList, ResponseError> CreateList(ParamsCreateList paramsCreateList, RequestCreateList requestData)
+		public ResponseGeneric<ResponseModelList, ResponseError> CreateList(ParamsCreateFolderList paramsCreateList, RequestCreateList requestData)
 		{
 			requestData.ValidateData();
 
 			var client = new RestClient(_baseAddress);
 			var request = new RestRequest($"folder/{paramsCreateList.FolderId}/list", Method.POST);
+			request.AddHeader("authorization", _accessToken);
+			request.AddJsonBody(requestData);
+
+			// execute the request
+			ResponseGeneric<ResponseModelList, ResponseError> result = RestSharperHelper.ExecuteRequest<ResponseModelList, ResponseError>(client, request);
+			return result;
+		}
+
+		/// <summary>
+		/// Create folderless List
+		/// </summary>
+		/// <param name="paramsCreateList">param object of create list request</param>
+		/// <param name="requestData">RequestCreateList object</param>
+		/// <returns>ResponseGeneric with ModelList response object</returns>
+		public ResponseGeneric<ResponseModelList, ResponseError> CreateFolderlessList(ParamsCreateFolderlessList paramsCreateList, RequestCreateList requestData)
+		{
+			requestData.ValidateData();
+
+			var client = new RestClient(_baseAddress);
+			var request = new RestRequest($"space/{paramsCreateList.SpaceId}/list", Method.POST);
 			request.AddHeader("authorization", _accessToken);
 			request.AddJsonBody(requestData);
 
@@ -357,17 +397,55 @@ namespace Chinchilla.ClickUp
 		}
 
 		/// <summary>
+		/// Create a folder
+		/// </summary>
+		/// <param name="paramsCreateList">param object of create folder request</param>
+		/// <param name="requestData">RequestCreateFolder object</param>
+		/// <returns>ResponseGeneric with ModelFolder object expected</returns>
+		public Task<ResponseGeneric<ResponseModelFolder, ResponseError>> CreateFolderAsync(ParamsCreateFolder paramsCreateFolder, RequestCreateFolder requestData)
+		{
+			requestData.ValidateData();
+
+			var client = new RestClient(_baseAddress);
+			var request = new RestRequest($"space/{paramsCreateFolder.SpaceId}/folder", Method.POST);
+			request.AddHeader("authorization", _accessToken);
+			request.AddJsonBody(requestData);
+
+			// execute the request
+			return RestSharperHelper.ExecuteRequestAsync<ResponseModelFolder, ResponseError>(client, request);
+		}
+
+		/// <summary>
 		/// Create List in Folder
 		/// </summary>
 		/// <param name="paramsCreateList">param object of create list request</param>
 		/// <param name="requestData">RequestCreateList object</param>
 		/// <returns>ResponseGeneric with ModelList object expected</returns>
-		public Task<ResponseGeneric<ResponseModelList, ResponseError>> CreateListAsync(ParamsCreateList paramsCreateList, RequestCreateList requestData)
+		public Task<ResponseGeneric<ResponseModelList, ResponseError>> CreateListAsync(ParamsCreateFolderList paramsCreateList, RequestCreateList requestData)
 		{
 			requestData.ValidateData();
 
 			var client = new RestClient(_baseAddress);
 			var request = new RestRequest($"folder/{paramsCreateList.FolderId}/list", Method.POST);
+			request.AddHeader("authorization", _accessToken);
+			request.AddJsonBody(requestData);
+
+			// execute the request
+			return RestSharperHelper.ExecuteRequestAsync<ResponseModelList, ResponseError>(client, request);
+		}
+
+		/// <summary>
+		/// Create a folderless List
+		/// </summary>
+		/// <param name="paramsCreateList">param object of create list request</param>
+		/// <param name="requestData">RequestCreateList object</param>
+		/// <returns>ResponseGeneric with ModelList object expected</returns>
+		public Task<ResponseGeneric<ResponseModelList, ResponseError>> CreateFolderlessListAsync(ParamsCreateFolderlessList paramsCreateList, RequestCreateList requestData)
+		{
+			requestData.ValidateData();
+
+			var client = new RestClient(_baseAddress);
+			var request = new RestRequest($"space/{paramsCreateList.SpaceId}/list", Method.POST);
 			request.AddHeader("authorization", _accessToken);
 			request.AddJsonBody(requestData);
 
