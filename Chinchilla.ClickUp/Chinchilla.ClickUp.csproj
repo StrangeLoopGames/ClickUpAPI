@@ -12,8 +12,13 @@
 		<RepositoryType>git</RepositoryType>
 		<PackageTags>api;csharp;rest;clickup</PackageTags>
 		<PackageId>Chinchilla.ClickUp</PackageId>
-		<Version>2.0.7</Version>
+		<Version>2.0.8</Version>
 		<PackageReleaseNotes>
+			Version 2.0.8
+
+			* Patched OAuth 2 flow to be POST not GET.
+			* Added an async static Create method.
+
 			Version 2.0.7
 
 			* Added an ability to get a task by its ID.

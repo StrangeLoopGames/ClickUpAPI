@@ -47,7 +47,7 @@ namespace Chinchilla.ClickUp
 		public static ClickUpApi Create(ParamsAccessToken paramAccessToken)
 		{
 			var client = new RestClient(_baseAddress);
-			var request = new RestRequest("oauth/token", Method.GET);
+			var request = new RestRequest("oauth/token", Method.POST);
 			request.AddParameter("client_id", paramAccessToken.ClientId);
 			request.AddParameter("client_secret", paramAccessToken.ClientSecret);
 			request.AddParameter("code", paramAccessToken.Code);
@@ -63,6 +63,36 @@ namespace Chinchilla.ClickUp
 			accessToken = response.ResponseSuccess.AccessToken;
 
 			return new ClickUpApi(accessToken);
+		}
+
+		/// <summary>
+		/// Create Object with <see cref="ParamsAccessToken"/>
+		/// </summary>
+		/// <param name="paramAccessToken">param access token object</param>
+		public static Task<ClickUpApi> CreateAsync(ParamsAccessToken paramAccessToken)
+		{
+			var client = new RestClient(_baseAddress);
+			var request = new RestRequest("oauth/token", Method.POST);
+			request.AddParameter("client_id", paramAccessToken.ClientId);
+			request.AddParameter("client_secret", paramAccessToken.ClientSecret);
+			request.AddParameter("code", paramAccessToken.Code);
+
+			// execute the request
+			var taskCompletionSource = new TaskCompletionSource<ClickUpApi>();
+			var task = RestSharperHelper.ExecuteRequestAsync<ResponseAccessToken, ResponseError>(client, request)
+				.ContinueWith(responseTask => {
+					ResponseGeneric<ResponseAccessToken, ResponseError> response = responseTask.Result;
+
+					// Manage Response
+					if (response.ResponseSuccess == null)
+						throw new Exception(response.ResponseError.Err);
+
+					string accessToken = response.ResponseSuccess.AccessToken;
+
+					taskCompletionSource.SetResult(new ClickUpApi(accessToken));
+				});
+
+			return taskCompletionSource.Task;
 		}
 
 		#endregion
