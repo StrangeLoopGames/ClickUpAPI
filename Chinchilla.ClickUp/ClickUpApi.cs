@@ -289,6 +289,22 @@ namespace Chinchilla.ClickUp
 
 		#region Tasks
 		/// <summary>
+		/// Get a task by id
+		/// </summary>
+		/// <param name="paramsGetTaskById">param object of get task by id request</param>
+		/// <returns>ResponseGeneric with ResponseModelTask response object</returns>
+		public ResponseGeneric<ResponseModelTask, ResponseError> GetTaskById(ParamsGetTaskById paramsGetTaskById)
+		{
+			var client = new RestClient(_baseAddress);
+			var request = new RestRequest($"task/{paramsGetTaskById.TaskId}", Method.GET);
+			request.AddHeader("authorization", _accessToken);
+
+			// execute the request
+			ResponseGeneric<ResponseModelTask, ResponseError> result = RestSharperHelper.ExecuteRequest<ResponseModelTask, ResponseError>(client, request);
+			return result;
+		}
+
+		/// <summary>
 		/// Get Tasks of the Team and filter its by optionalParams
 		/// </summary>
 		/// <param name="paramsGetTasks">params obkect of get tasks request</param>
@@ -593,6 +609,21 @@ namespace Chinchilla.ClickUp
 		#endregion
 
 		#region Tasks
+		/// <summary>
+		/// Get a task by id
+		/// </summary>
+		/// <param name="paramsGetTaskById">param object of get task by id request</param>
+		/// <returns>ResponseGeneric with ResponseModelTask response object</returns>
+		public Task<ResponseGeneric<ResponseModelTask, ResponseError>> GetTaskByIdAsync(ParamsGetTaskById paramsGetTaskById)
+		{
+			var client = new RestClient(_baseAddress);
+			var request = new RestRequest($"task/{paramsGetTaskById.TaskId}", Method.GET);
+			request.AddHeader("authorization", _accessToken);
+
+			// execute the request
+			return RestSharperHelper.ExecuteRequestAsync<ResponseModelTask, ResponseError>(client, request);
+		}
+
 		/// <summary>
 		/// Get Tasks of the Team and filter its by optionalParams
 		/// </summary>

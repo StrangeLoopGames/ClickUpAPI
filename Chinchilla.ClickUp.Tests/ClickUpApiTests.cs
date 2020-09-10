@@ -496,6 +496,40 @@ namespace Chinchilla.ClickUp.Tests
 
 		#region Tasks
 		/// <summary>
+		/// Tests of GetTaskById method
+		/// </summary>
+		[Test]
+		public void ShouldGetTaskById()
+		{
+			string methodName = "GetTaskById";
+			ResponseGeneric<ResponseModelTask, ResponseError> response = null;
+			try
+			{
+				ClickUpApi clickUpAPI = new ClickUpApi(_accessToken);
+				response = clickUpAPI.GetTaskById(new ParamsGetTaskById("te05k"));
+			}
+			catch (Exception ex)
+			{
+				Assert.Fail($"The Test Method of '{methodName}' generate exception: {ex.Message}"); // Always return false
+			}
+			if (response != null)
+			{
+				Assert.That(response.ResponseSuccess != null || response.ResponseError != null, $"The ResponseSuccess and the ResponseError of the GenericResponse of the request through the method '{methodName}' are null!"); // Always return false
+				if (response.ResponseError != null)
+					Assert.Fail($"The Test Method of '{methodName}' generate an error with status: {response.RequestStatus} and response: {response.ResponseError.Err}");
+				else
+				{
+					Assert.That(response.ResponseSuccess.Id == "te05k", $"The Response of the request through the method '{methodName}' did not return the expected task by ID!");
+					Assert.That(response.ResponseSuccess.Name == "test task", $"The Response of the request through the method '{methodName}' did not return the expected task by name!");
+				}
+			}
+			else
+			{
+				Assert.Fail($"The Response of the request through the method '{methodName}' is null!");
+			}
+		}
+
+		/// <summary>
 		/// Tests of GetTasks method
 		/// </summary>
 		[Test]
@@ -1171,6 +1205,43 @@ namespace Chinchilla.ClickUp.Tests
 		#endregion
 
 		#region Tasks
+		/// <summary>
+		/// Tests of GetTaskByIdAsync method
+		/// </summary>
+		[Test]
+		public void ShouldGetTaskByIdAsync()
+		{
+			string methodName = "GetTaskByIdAsync";
+			ResponseGeneric<ResponseModelTask, ResponseError> response = null;
+			try
+			{
+				ClickUpApi clickUpAPI = new ClickUpApi(_accessToken);
+				Task.Run(async () => {
+					response = await clickUpAPI.GetTaskByIdAsync(new ParamsGetTaskById("te05k"));
+				})
+				.Wait();
+			}
+			catch (Exception ex)
+			{
+				Assert.Fail($"The Test Method of '{methodName}' generate exception: {ex.Message}"); // Always return false
+			}
+			if (response != null)
+			{
+				Assert.That(response.ResponseSuccess != null || response.ResponseError != null, $"The ResponseSuccess and the ResponseError of the GenericResponse of the request through the method '{methodName}' are null!"); // Always return false
+				if (response.ResponseError != null)
+					Assert.Fail($"The Test Method of '{methodName}' generate an error with status: {response.RequestStatus} and response: {response.ResponseError.Err}");
+				else
+				{
+					Assert.That(response.ResponseSuccess.Id == "te05k", $"The Response of the request through the method '{methodName}' did not return the expected task by ID!");
+					Assert.That(response.ResponseSuccess.Name == "test task", $"The Response of the request through the method '{methodName}' did not return the expected task by name!");
+				}
+			}
+			else
+			{
+				Assert.Fail($"The Response of the request through the method '{methodName}' is null!");
+			}
+		}
+
 		/// <summary>
 		/// Tests of GetTasksAsync method
 		/// </summary>
