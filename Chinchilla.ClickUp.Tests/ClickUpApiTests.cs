@@ -231,7 +231,7 @@ namespace Chinchilla.ClickUp.Tests
 		}
 
 		/// <summary>
-		/// Tests of GetSpaceProjects method
+		/// Tests of ShouldGetSpaceFolders method
 		/// </summary>
 		[Test]
 		public void ShouldGetSpaceFolders()
@@ -332,6 +332,40 @@ namespace Chinchilla.ClickUp.Tests
 				else
 				{
 					Assert.That(response.ResponseSuccess.Name == newListName, $"The Response of the request through the method '{methodName}' did not return a new list with the same name!");
+				}
+			}
+			else
+			{
+				Assert.Fail($"The Response of the request through the method '{methodName}' is null!");
+			}
+		}
+
+		/// <summary>
+		/// Tests of GetFolderlessLists method
+		/// </summary>
+		[Test]
+		public void ShouldGetFolderlessLists()
+		{
+			string methodName = "GetFolderlessLists";
+			ResponseGeneric<ResponseFolderlessLists, ResponseError> response = null;
+			try
+			{
+				ClickUpApi clickUpAPI = new ClickUpApi(_accessToken);
+				response = clickUpAPI.GetFolderlessLists(new ParamsGetFolderlessLists(_spaceId));
+			}
+			catch (Exception ex)
+			{
+				Assert.Fail($"The Test Method of '{methodName}' generate exception: {ex.Message}"); // Always return false
+			}
+			if (response != null)
+			{
+				Assert.That(response.ResponseSuccess != null || response.ResponseError != null, $"The ResponseSuccess and the ResponseError of the GenericResponse of the request through the method '{methodName}' are null!"); // Always return false
+				if (response.ResponseError != null)
+					Assert.Fail($"The Test Method of '{methodName}' generate an error with status: {response.RequestStatus} and response: {response.ResponseError.Err}");
+				else
+				{
+					Assert.That(response.ResponseSuccess.Lists.Any(), $"The Response of the request through the method '{methodName}' did not return any spaces!");
+					Assert.That(response.ResponseSuccess.Lists.Any(x => x.Name == "Test Folderless List 212 created from Tests"), $"The Response of the request through the method '{methodName}' returned a list without one with an expected name!");
 				}
 			}
 			else
@@ -843,6 +877,43 @@ namespace Chinchilla.ClickUp.Tests
 				else
 				{
 					Assert.That(response.ResponseSuccess.Name == newListName, $"The Response of the request through the method '{methodName}' did not return a new list with the same name!");
+				}
+			}
+			else
+			{
+				Assert.Fail($"The Response of the request through the method '{methodName}' is null!");
+			}
+		}
+
+		/// <summary>
+		/// Tests of ShouldGetFolderlessListsAsync method
+		/// </summary>
+		[Test]
+		public void ShouldGetFolderlessListsAsync()
+		{
+			string methodName = "GetFolderlessListsAsync";
+			ResponseGeneric<ResponseFolderlessLists, ResponseError> response = null;
+			try
+			{
+				ClickUpApi clickUpAPI = new ClickUpApi(_accessToken);
+				Task.Run(async () => {
+					response = await clickUpAPI.GetFolderlessListsAsync(new ParamsGetFolderlessLists(_spaceId));
+				})
+				.Wait();
+			}
+			catch (Exception ex)
+			{
+				Assert.Fail($"The Test Method of '{methodName}' generate exception: {ex.Message}"); // Always return false
+			}
+			if (response != null)
+			{
+				Assert.That(response.ResponseSuccess != null || response.ResponseError != null, $"The ResponseSuccess and the ResponseError of the GenericResponse of the request through the method '{methodName}' are null!"); // Always return false
+				if (response.ResponseError != null)
+					Assert.Fail($"The Test Method of '{methodName}' generate an error with status: {response.RequestStatus} and response: {response.ResponseError.Err}");
+				else
+				{
+					Assert.That(response.ResponseSuccess.Lists.Any(), $"The Response of the request through the method '{methodName}' did not return any spaces!");
+					Assert.That(response.ResponseSuccess.Lists.Any(x => x.Name == "Test Folderless List 212 created from Tests"), $"The Response of the request through the method '{methodName}' returned a list without one with an expected name!");
 				}
 			}
 			else

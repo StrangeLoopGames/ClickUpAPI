@@ -208,6 +208,22 @@ namespace Chinchilla.ClickUp
 		}
 
 		/// <summary>
+		/// Get a space's lists AKA folderless lists
+		/// </summary>
+		/// <param name="paramsGetFolderlessLists">param object of get folderless lists request</param>
+		/// <returns>ResponseGeneric with ResponseFolderlessLists response object</returns>
+		public ResponseGeneric<ResponseFolderlessLists, ResponseError> GetFolderlessLists(ParamsGetFolderlessLists paramsGetFolderlessLists)
+		{
+			var client = new RestClient(_baseAddress);
+			var request = new RestRequest($"space/{paramsGetFolderlessLists.SpaceId}/list", Method.GET);
+			request.AddHeader("authorization", _accessToken);
+
+			// execute the request
+			ResponseGeneric<ResponseFolderlessLists, ResponseError> result = RestSharperHelper.ExecuteRequest<ResponseFolderlessLists, ResponseError>(client, request);
+			return result;
+		}
+
+		/// <summary>
 		/// Create folderless List
 		/// </summary>
 		/// <param name="paramsCreateList">param object of create list request</param>
@@ -432,6 +448,21 @@ namespace Chinchilla.ClickUp
 
 			// execute the request
 			return RestSharperHelper.ExecuteRequestAsync<ResponseModelList, ResponseError>(client, request);
+		}
+
+		/// <summary>
+		/// Get a space's lists AKA folderless lists
+		/// </summary>
+		/// <param name="paramsGetFolderlessLists">param object of get folderless lists request</param>
+		/// <returns>ResponseGeneric with ResponseFolderlessLists response object</returns>
+		public Task<ResponseGeneric<ResponseFolderlessLists, ResponseError>> GetFolderlessListsAsync(ParamsGetFolderlessLists paramsGetFolderlessLists)
+		{
+			var client = new RestClient(_baseAddress);
+			var request = new RestRequest($"space/{paramsGetFolderlessLists.SpaceId}/list", Method.GET);
+			request.AddHeader("authorization", _accessToken);
+
+			// execute the request
+			return RestSharperHelper.ExecuteRequestAsync<ResponseFolderlessLists, ResponseError>(client, request);
 		}
 
 		/// <summary>
