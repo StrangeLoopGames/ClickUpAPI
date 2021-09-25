@@ -37,5 +37,12 @@ namespace Chinchilla.ClickUp.Responses.Model
 		/// </summary>
 		[JsonProperty("statuses")]
 		public List<ResponseModelStatus> Statuses { get; set; }
+
+
+		[JsonProperty("start_date")]
+		public long StartDate { get; set; }
+
+		[JsonProperty("due_date")]
+		public long DueDate { get; set; }
 	}
 }

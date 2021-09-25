@@ -5,6 +5,7 @@ using Chinchilla.ClickUp.Params;
 using Chinchilla.ClickUp.Requests;
 using Chinchilla.ClickUp.Responses;
 using Chinchilla.ClickUp.Responses.Model;
+using Chinchilla.ClickUp.Responses.ResponseModel;
 using RestSharp;
 
 namespace Chinchilla.ClickUp
@@ -223,6 +224,22 @@ namespace Chinchilla.ClickUp
 			ResponseGeneric<ResponseModelFolder, ResponseError> result = RestSharperHelper.ExecuteRequest<ResponseModelFolder, ResponseError>(client, request);
 			return result;
 		}
+
+		/// <summary>
+		/// Get a folder by id
+		/// </summary>
+		/// <param name="paramsGetListById">param object of get folder by id request</param>
+		/// <returns>ResponseGeneric with ResponseModelFolder response object</returns>
+		public ResponseGeneric<ResponseModelFolder, ResponseError> GetFolderById(ParamsGetFolderById paramsGetFolderById)
+		{
+			var client = new RestClient(_baseAddress);
+			var request = new RestRequest($"folder/{paramsGetFolderById.FolderId}", Method.GET);
+			request.AddHeader("authorization", AccessToken);
+
+			// execute the request
+			ResponseGeneric<ResponseModelFolder, ResponseError> result = RestSharperHelper.ExecuteRequest<ResponseModelFolder, ResponseError>(client, request);
+			return result;
+		}
 		#endregion
 
 		#region Lists
@@ -239,6 +256,22 @@ namespace Chinchilla.ClickUp
 
 			// execute the request
 			ResponseGeneric<ResponseModelList, ResponseError> result = RestSharperHelper.ExecuteRequest<ResponseModelList, ResponseError>(client, request);
+			return result;
+		}
+
+		/// <summary>
+		/// Get a lists views by list id
+		/// </summary>
+		/// <param name="paramsGetListViews">param object of get list views by list id request</param>
+		/// <returns>ResponseGeneric with ResponseModelListViews response object</returns>
+		public ResponseGeneric<ResponseModelListViews, ResponseError> GetListViews(ParamsGetListViews paramsGetListViews)
+		{
+			var client = new RestClient(_baseAddress);
+			var request = new RestRequest($"list/{paramsGetListViews.ListId}/view", Method.GET);
+			request.AddHeader("authorization", AccessToken);
+
+			// execute the request
+			ResponseGeneric<ResponseModelListViews, ResponseError> result = RestSharperHelper.ExecuteRequest<ResponseModelListViews, ResponseError>(client, request);
 			return result;
 		}
 
@@ -338,12 +371,27 @@ namespace Chinchilla.ClickUp
 		/// Get Tasks of the Team and filter its by optionalParams
 		/// </summary>
 		/// <param name="paramsGetTasks">params obkect of get tasks request</param>
-		/// <param name="optionalParams">OptionalParamsGetTask object</param>
 		/// <returns>ResponseGeneric with ResponseTasks response object</returns>
 		public ResponseGeneric<ResponseTasks, ResponseError> GetTasks(ParamsGetTasks paramsGetTasks)
 		{
 			var client = new RestClient(_baseAddress);
 			var request = new RestRequest($"team/{paramsGetTasks.TeamId}/task", Method.GET);
+			request.AddHeader("authorization", AccessToken);
+
+			// execute the request
+			ResponseGeneric<ResponseTasks, ResponseError> result = RestSharperHelper.ExecuteRequest<ResponseTasks, ResponseError>(client, request);
+			return result;
+		}
+
+		/// <summary>
+		/// Get Tasks of the View and filter its by optionalParams
+		/// </summary>
+		/// <param name="paramsGetTasksByViewId">params objects of get tasks by view idrequest</param>
+		/// <returns>ResponseGeneric with ResponseTasks response object</returns>
+		public ResponseGeneric<ResponseTasks, ResponseError> GetTasksFromView(ParamsGetTasksByViewId paramsGetTasksByViewId)
+		{
+			var client = new RestClient(_baseAddress);
+			var request = new RestRequest($"view/{paramsGetTasksByViewId.ViewId}/task?page={paramsGetTasksByViewId.PageId}", Method.GET);
 			request.AddHeader("authorization", AccessToken);
 
 			// execute the request
